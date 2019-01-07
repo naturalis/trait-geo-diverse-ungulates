@@ -33,9 +33,9 @@ UniqueSpecies_df<- as.data.frame(list_unique_species)
 for (i in 1:220){
   species<- as.character(UniqueSpecies_df$list_unique_species[i])
   selection <- filter(Species_df, Species_df$taxon_name == species)
+  selection_Unique <- subset(selection[!duplicated(selection[c(3,4)]),])
   name <- str_replace_all(string=species, pattern=" ", repl="_")
-  write.csv(selection, file = paste0(name, ".csv" ))
-
+  write.csv(selection_Unique, file = paste0(name, ".csv" ))
 }
 
 ## you can plot the datasets using the following code 
