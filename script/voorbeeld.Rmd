@@ -8,7 +8,7 @@ Background
 - bullet item
 - bullet item
 
-```{r code}``
+```{r code}
 library(gdal)
 ```
 
