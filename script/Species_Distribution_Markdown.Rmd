@@ -9,10 +9,10 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
 Introduction 
 =============================
 The following script describes the steps that need to be taken to construct a species distribution model based on MaxEnt. 
+
 
 '''
 
