@@ -28,4 +28,7 @@ We then pre-processed the DarwinCore records resulting from these searches by th
    fields, records with [geospatial issues](https://github.com/naturalis/trait-geo-diverse/blob/master/script/load_occurrences.pl#L46), 
    and records whose basis was [UNKNOWN](https://github.com/naturalis/trait-geo-diverse/blob/master/script/load_occurrences.pl#L49)
 
-After these steps, the number of remaining records was 834,182.
+After these steps, the number of remaining records was 834,182. We then exported these per species to CSV files, which we
+stored [here](../data). The files in this folder are filtered such that all the records for a species are _distinct_ (i.e. no
+multiples of the same lat/lon pair for multiple occurrences), only retaining species with more than 10 records (as per Raes & Aguirre-
+Gutierrez, 2018).
