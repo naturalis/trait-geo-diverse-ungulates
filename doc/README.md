@@ -1,8 +1,8 @@
 Methods
 =======
 
-> Here we describe the overall workflow of the analysis. The general idea is that this will become the 
-> skeleton for a _Materials and methods_ section of a publication.
+Occurrence data collection
+--------------------------
 
 We collected occurrence data from GBIF using higher taxon searches for _Artiodactyla_ and
 _Perissodactyla_. The results of these searches are shown in the following table:
@@ -29,6 +29,13 @@ We then pre-processed the DarwinCore records resulting from these searches by th
    and records whose basis was [UNKNOWN](https://github.com/naturalis/trait-geo-diverse/blob/master/script/load_occurrences.pl#L49)
 
 After these steps, the number of remaining records was 834,182. We then exported these per species to CSV files, which we
-stored [here](../data). The files in this folder are filtered such that all the records for a species are _distinct_ (i.e. no
-multiples of the same lat/lon pair for multiple occurrences), only retaining species with more than 10 records (as per Raes & Aguirre-
-Gutierrez, 2018).
+stored [here](../data). The files in this folder are filtered such that:
+
+1. all the records for a species are _distinct_, i.e. there are no multiples of the same lat/lon pair for multiple occurrences 
+2. we only retain species with more than 10 records (as per Raes & Aguirre-Gutierrez, 2018)
+
+Additional pre-processing that may still need to happen to these records includes:
+
+1. only retaining those occurrences that fall within the known species range, as per the shape files for terrestrial mammals
+   from IUCN, which are stored in the Range_Data folder on dropbox
+2. only retaining those occurrences that do not deviate more from the mean by one standard deviation (for example)
