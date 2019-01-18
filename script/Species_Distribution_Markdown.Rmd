@@ -2,7 +2,7 @@
 title: "Species Distribution Model"
 author: "Elke Hendrix"
 date: "January 14, 2019"
-output: html_document
+output: rmarkdown::github_document
 ---
 
 ```{r setup, include=FALSE}
