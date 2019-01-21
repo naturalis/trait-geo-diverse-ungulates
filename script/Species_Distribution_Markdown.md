@@ -213,17 +213,16 @@ for (i in 1:length(list_species_model_high_accuracy)){
   name<- names(list_species_model_high_accuracy[i])
   prediction_rasters<- stack(prediction_rasters, species.pred)
 }
+
+names(prediction_rasters)<- names(list_species_model_high_accuracy)
 ```
 
 The outcomes of the species distribution model predictions can be plotted as followes.
 
 ``` r
 # set p to the number of the prediction you want to plot 
-p=2 
-speciesname<- names(list_species_model_high_accuracy[p])
-title<- paste("Prediction map of ", speciesname, sep="")
-predictionplot<-raster(prediction_rasters, p)
-plot(predictionplot, main=title)
+
+plot(prediction_rasters$Alcelaphus_caama.csv, main="Prediction map of Alcelaphus Caama")
 ```
 
 ![](Species_Distribution_Markdown_files/figure-markdown_github/unnamed-chunk-12-1.png)
@@ -231,4 +230,31 @@ plot(predictionplot, main=title)
 Niche overlap
 =============
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+``` r
+overlap<- calc.niche.overlap(prediction_rasters, stat="D", maxent.args )
+```
+
+    ## 
+      |                                                                       
+      |                                                                 |   0%
+      |                                                                       
+      |======================                                           |  33%
+      |                                                                       
+      |===========================================                      |  67%
+      |                                                                       
+      |=================================================================| 100%
+
+``` r
+overlap
+```
+
+    ##                           Aepyceros_melampus.csv Alcelaphus_buselaphus.csv
+    ## Aepyceros_melampus.csv                        NA                        NA
+    ## Alcelaphus_buselaphus.csv              0.4048981                        NA
+    ## Alcelaphus_caama.csv                   0.0716154                0.08065401
+    ## Alces_alces.csv                        0.1244729                0.04101610
+    ##                           Alcelaphus_caama.csv Alces_alces.csv
+    ## Aepyceros_melampus.csv                      NA              NA
+    ## Alcelaphus_buselaphus.csv                   NA              NA
+    ## Alcelaphus_caama.csv                        NA              NA
+    ## Alces_alces.csv                    0.001225382              NA
