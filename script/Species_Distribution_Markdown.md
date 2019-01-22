@@ -3,15 +3,25 @@ Species Distribution Model
 Elke Hendrix
 January 18, 2019
 
-Introduction
-============
+\# Introduction
+===============
 
-dus even uitleggen wat voor model dit is en waar je het voor kan gebruiken
+The following chapters explain and show r-code examples to construct a species distribution model for a set of domesticated and wild Ungulates. First the concept of a species distribution model and the case study are explained. Second the steps involving the construction of a species distribution model are explained and examples are given. The data needed can either be downloaded online or in the github data file.
 
-Case study : domesticated vs wild ungulates
-===========================================
+\#\# Species distribution models
+================================
 
-The domestication of flora and fauna is one of the most significant transitions in humankind's history and domination of planet earth (Kareiva et al., 2007, Larson et al., 2014). Domestication can be explained as the alteration of wild species by selecting traits that are useful to our society, examples of this are the selection of dogs that are able to live with people or the selection of larger wheat that have more seeds per plant (Kareiva et al., 2007). Over the course of thousands of years’ humans have domesticated relatively few large animals. The group of large animals that we have domesticated are called Ungulates (Perissodactyla + Artiodactyla) but we have only domesticated about 20 species from the +- 200 Ungulates. Interestingly, some of the 20 domesticated Ungulate species were domesticated multiple times independently through space and time, while the other +180 Ungulate species were never domesticated for a variety of reasons. Some of these reasons can be explained by behavioral preadaptations like social structures, sexual behaviour, parent-young interaction, feeding behaviour and response to humans and new environments (Zeder, 2012). Hence, it might be possible that domestication can be explained by abiotic preferences.
+Over the past decades and even centuries humans have shown interest in the relationship between the distribution of species and the environment they live in. The earliest attempts by Grinnel, 1904 were mostly quantitative, but currently numerical models called species distribution models (SDM) are used to describe the patterns in distribution and their environment (Elith and Leathwick, 2009). The use of SDM has been applied in a wide variety of fields such as, evolutionary biology and conservation biology to map for example the probable distribution of species after climate change (Pearson, 2007). SDMs are empirical models that correlate environmental data (precipitation data or soil characteristics) to occurence datasets to identify the environmental conditions needed to maintain populations (Guisan & Thuiller, 2005, Pearson, 2007). The result of a SDM can for example be that species X has only been recorded in environmental conditions in which the soil pH is lower than 7 and the precipitation is between 60 mm and 120mm. The suitable environmental conditions can be used to map suitable sites for species X all over the world. Hence, it should be notes that suitable spaces and the actual occurrence of species is not the same, geographic barriers can limit the dispersal to suitable sites (Pearson, 2007).
+
+\#\# Case study : domesticated vs wild ungulates
+================================================
+
+For this research we construct a SDM to analyse whether there is a significant difference in suitable environmental conditions for domesticated ungulates and wild ungulates. The domestication of flora and fauna is one of the most significant transitions in humankind's history and domination of planet earth (Kareiva et al., 2007, Larson et al., 2014). Domestication can be explained as the alteration of wild species by selecting traits that are useful to our society, examples of this are the selection of dogs that are able to live with people or the selection of larger wheat that have more seeds per plant (Kareiva et al., 2007). Over the course of thousands of years’ humans have domesticated relatively few large animals. The group of large animals that we have domesticated are called Ungulates (Perissodactyla + Artiodactyla) but we have only domesticated about 20 species from the +- 200 Ungulates. Interestingly, some of the 20 domesticated Ungulate species were domesticated multiple times independently through space and time, while the other +180 Ungulate species were never domesticated for a variety of reasons. Some of these reasons can be explained by behavioral preadaptations like social structures, sexual behaviour, parent-young interaction, feeding behaviour and response to humans and new environments (Zeder, 2012). Hence, it might be possible that domestication can be explained by environmental preferences.
+
+Today human societies are completely dependent on domesticated species both in flora and fauna (Kareiva et al., 2007). While domestication has brought a lot of benefits to humankind we have made some unforeseen changes to our environment to such an extent that there are hardly any truly natural environments left. Better understanding domestication can help us foresee trade-offs and improve decision making for more resilient ecosystems.
+
+\# Data
+=======
 
 The following libraries need to be loaded:
 
@@ -51,13 +61,13 @@ library(dismo)
 library(virtualspecies)
 ```
 
-Data
-====
+Environmental data
+------------------
 
-Abiotic data
-------------
+The environmental data used in this research are based on climatic variables, topography and soil characteristics.
 
-Our model is going to be based on climatic variables, topography and vegetation variables.
+\#\#\# Climatic datasets
+========================
 
 Climatic information about the present was subtracted from the widely used Bioclim dataset which includes 19 bioclimatic datasets. The datasets contain information such as precipitation in the driest quarter or maximum temperatures of the coldest month and are constructed based on monthly remote sensing data between 1950 and 2000, with a spatial resolution of 2.5 minutes (Hijmans et al., 2005, Title et al ., 2018). The dataset can directly be downloaded with the getData() function from the raster package. It is also possible to adjust the spatial resolution res=2.5 to 30 seconds, 5 minutes and 10 minutes.
 
@@ -67,11 +77,22 @@ The Bioclim dataset contains information about the present climatic variables. T
 currentEnv1=getData("worldclim", var="bio", res=10)
 ```
 
+\#\#\# Topography
+=================
+
 Topography datasets were extracted from the Harmonized World Soil Database (HWSD) and are based on NASA’s Shuttle Radar Topographic Mission (SRTM) dataset. The topography height datasets are directly correlated to temperature and can therefore not directly be used in a species distribution model. In order to be usefull we calculated slope and aspect variables from the HWSD dataset which can directly be downloaded from our dropbox (<https://www.dropbox.com/sh/12yi6vjyqpixmvj/AAAfx-4yRKYMfeW8RaZjbK4Za?dl=1>). Again we made the assumption that slope and aspect are largely static through the course of the Holocene but we are aware that this is not always the case, for example coastline areas (Title et al., 2018).
 
 ``` r
 SlopeAspect<- stack("C:/Users/elkeh/Dropbox/trait-geo-diverse-ungulates/Input_Datasets/Abiotic_Data/Slope_Aspect_10min.tif")
 ```
+
+\#\#\# Soil characteristics
+===========================
+
+hier moet even stukje komen over soil --&gt; maar eerst even vragen aan iemand welke datasets handig zijn?
+
+\#\#\# Environmental stack
+==========================
 
 The abiotic raster layers are combined using the stack() function from the raster package.
 
@@ -250,11 +271,11 @@ overlap
 
     ##                           Aepyceros_melampus.csv Alcelaphus_buselaphus.csv
     ## Aepyceros_melampus.csv                        NA                        NA
-    ## Alcelaphus_buselaphus.csv              0.4048981                        NA
-    ## Alcelaphus_caama.csv                   0.0716154                0.08065401
-    ## Alces_alces.csv                        0.1244729                0.04101610
+    ## Alcelaphus_buselaphus.csv             0.45230873                        NA
+    ## Alcelaphus_caama.csv                  0.11771308                0.14678222
+    ## Alces_alces.csv                       0.06910462                0.02930975
     ##                           Alcelaphus_caama.csv Alces_alces.csv
     ## Aepyceros_melampus.csv                      NA              NA
     ## Alcelaphus_buselaphus.csv                   NA              NA
     ## Alcelaphus_caama.csv                        NA              NA
-    ## Alces_alces.csv                    0.001225382              NA
+    ## Alces_alces.csv                   0.0009501188              NA
