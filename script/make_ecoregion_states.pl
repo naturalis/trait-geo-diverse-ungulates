@@ -77,7 +77,7 @@ for my $id ( 1 .. $shp->shapes ) {
 }
 
 # print header
-print join( ",", ( 'taxon_name', 'biomes', sort { $a cmp $b } keys %biomes ) ), "\n";
+print join( "\t", ( 'taxon_name', 'biomes', sort { $a cmp $b } keys %biomes ) ), "\n";
 for my $taxon ( sort { $a cmp $b } keys %taxa ) {
 
 	# prepare output record
@@ -86,5 +86,5 @@ for my $taxon ( sort { $a cmp $b } keys %taxa ) {
 	for my $biome ( sort { $a cmp $b } keys %biomes ) {
 		push @result, $taxa{$taxon}->{'biomes'}->{$biome} || 0;	
 	}
-	print join(",", @result), "\n";
+	print join("\t", @result), "\n";
 }
