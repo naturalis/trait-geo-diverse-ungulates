@@ -17,31 +17,27 @@ Maxent_fuction<- function(species_occurence, currentEnv){
   
   point_df2<-max(distance, na.rm=TRUE)
   
-  x <- polygons(circles((rs_species[, c("decimal_longitude", "decimal_latitude")]), d= point_df2 , lonlat=TRUE)) 
-  
+  # You take the radius but if the radius is bigger than half the radius of the earth you take the whole dataset as an extent
+  x <- polygons(circles((rs_species[, c("decimal_longitude", "decimal_latitude")]), d= point_df2 , lonlat=TRUE, r=6378137,dissolve=TRUE))
   ## clip function 
   modelEnv=clip(currentEnv, x)
+  plot(modelEnv)
   
   # remove collinearity 
   Env_removed_correlation<-removeCollinearity(modelEnv, multicollinearity.cutoff = 0.7, select.variables = TRUE)
   currentEnv2<- subset(modelEnv, Env_removed_correlation)
-  plot(currentEnv2)
-  
+
   ## make a dataframe of just the longitude and latitude locations remove all the other variables
   Species_occ<- cbind.data.frame(rs_species$decimal_longitude,rs_species$decimal_latitude)
   
   # create a k-fold cross validation. This means we set aside 25% of the data as test data and we use the other 75% as train data. 
-  fold<- kfold(rs_species, k=4)
-  Species_test<- rs_species[fold == 1, ]
-  Species_train<- rs_species[fold != 1, ]
+  fold<- kfold(Species_occ, k=4)
+  Species_test<- Species_occ[fold == 1, ]
+  Species_train<- Species_occ[fold != 1, ]
   
   ## Maxent model with training data and cropped extent to train the model 
-  species_model<- dismo::maxent(modelEnv, Species_train)
+  species_model<- dismo::maxent(currentEnv2, Species_train)
   
-  # validate the model with the test data
-  # to construct an AUC model we need random points
-  
-  random<- randomPoints(modelEnv, 1000)
-  Validation_species<- evaluate(p=Species_test, a=random, x=modelEnv, model =species_model)
-  
+  output<- list(species_model, currentEnv2, Species_test)
+
 }
