@@ -9,21 +9,13 @@ Maxent_fuction<- function(species_occurence, currentEnv){
   #random sample 10 rows in dataframe 
   #rs_species<- species_occurence[sample(nrow(species_occurence), 10), ]
   
-  # calculate the suitable extent for the training model 
-  # calculate all the point dinstances in meters
-  matrix<-as.matrix(species_occurence[, c("decimal_longitude", "decimal_latitude")])
-  
-  distance<-pointDistance(matrix, lonlat = TRUE)
-  
-  point_df2<-max(distance, na.rm=TRUE)
-  
-  ## we constrain the max distance with a maximum of 1000 km 
-  if (point_df2 > 1000000) point_df2 <- 1000000 else point_df2<- point_df2
+  if (nrow(species_occurence) > 200 ) species_occurence <- species_occurence[sample(nrow(species_occurence), 200), ] else species_occurence <- species_occurence
   
   # You take the radius but if the radius is bigger than half the radius of the earth you take the whole dataset as an extent
-  x <- polygons(circles((species_occurence[, c("decimal_longitude", "decimal_latitude")]), d= point_df2 , lonlat=TRUE, r=6378137,dissolve=TRUE))
-  ## clip function 
-  modelEnv=clip(currentEnv, x)
+  x <- polygons(circles(species_occurence[, c("decimal_longitude", "decimal_latitude")], lonlat=TRUE, dissolve=TRUE))
+
+  ## clip function
+  modelEnv=crop(currentEnv, x)
   names(modelEnv)<- names(currentEnv)
 
   # remove collinearity 
