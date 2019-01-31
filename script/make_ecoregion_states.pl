@@ -11,9 +11,11 @@ Log::Log4perl->easy_init($INFO);
 # process command line arguments
 my $indir;
 my $shape;
+my $max;
 GetOptions(
 	'indir=s' => \$indir,
 	'shape=s' => \$shape,
+	'max=i'   => \$max,
 );
 
 # read occurrences
@@ -67,7 +69,14 @@ for my $id ( 1 .. $shp->shapes ) {
 	# iterate over species
 	for my $taxon ( keys %taxa ) {
 		my @points = shuffle( @{ $taxa{$taxon}->{'points'} } );
-		my @sample = @points[0..9];
+		my @sample;
+		if ( $max ) {
+			my $max_index = $max <= $#points ? $max : $#points;
+			@sample = @points[ 0 .. $max_index ];
+		}
+		else {
+			@sample = @points;
+		}
 		for my $point ( @sample ) {
 			if ( $shape->contains_point($point) ) {
 				$taxa{$taxon}->{'biomes'}->{$biome}++;
