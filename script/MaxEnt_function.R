@@ -16,16 +16,16 @@ Maxent_fuction<- function(species_occurence, currentEnv){
   coordinates(points)<- ~ decimal_longitude + decimal_latitude
   x<- gBuffer(points, width= 5, byid = TRUE)
   x<- gUnaryUnion(x)
- 
+ plot(x)
    ## clip function
   modelEnv=clip(currentEnv, x)
   names(modelEnv)<- names(currentEnv)
   plot(modelEnv)
-
-  # remove collinearity 
-  Env_removed_correlation<-removeCollinearity(modelEnv, multicollinearity.cutoff = 0.7, select.variables = TRUE)
-  currentEnv2<- subset(modelEnv, Env_removed_correlation)
   
+  # remove collinearity 
+  Env_removed_correlation<- removeCollinearity_adjusted(modelEnv, multicollinearity.cutoff = 0.7, select.variables = TRUE)
+   currentEnv2<- subset(modelEnv, Env_removed_correlation)
+
   ## make a dataframe of just the longitude and latitude locations remove all the other variables
   Species_occ<- cbind.data.frame(species_occurence$decimal_longitude,species_occurence$decimal_latitude)
   
