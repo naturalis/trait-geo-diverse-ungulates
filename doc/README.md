@@ -29,13 +29,13 @@ We then pre-processed the DarwinCore records resulting from these searches by th
    and records whose basis was [UNKNOWN](https://github.com/naturalis/trait-geo-diverse/blob/master/script/load_occurrences.pl#L49)
 
 After these steps, the number of remaining records was 834,182. We then exported these per species to CSV files, which we
-stored [here](../data). The files in this folder are filtered such that:
+stored [here](../data/filtered). The files in this folder are processed such that:
 
-1. all the records for a species are _distinct_, i.e. there are no multiples of the same lat/lon pair for multiple occurrences 
-2. we only retain species with more than 10 records (as per Raes & Aguirre-Gutierrez, 2018)
-
-Additional pre-processing that may still need to happen to these records includes:
-
-1. only retaining those occurrences that fall within the known species range, as per the shape files for terrestrial mammals
-   from IUCN, which are stored in the Range_Data folder on dropbox
-2. only retaining those occurrences that do not deviate more from the mean by one standard deviation (for example)
+1. all records for a species, including those for any subspecies are lumped
+2. no filtering is applied to the `basisOfRecord` (in plants one would normally only keep `PHYSICAL_SPECIMEN`)
+3. only records whose `eventDate` ranges onwards from 1900-01-01 are retained
+4. only records where the latitude and longitude have a precision of at least two decimal places are retained
+5. only records that are _distinct_ are kept, i.e. there are no multiples of the same lat/lon pair for multiple occurrences 
+6. if polygons for the species ranges are available (in a shape file) only those occurrences within the polygons are kept
+7. average pairwise great circle distance to all records for that species may not exceed 1 standard deviation
+8. we only retain species with more than 10 records (as per Raes & Aguirre-Gutierrez, 2018)
