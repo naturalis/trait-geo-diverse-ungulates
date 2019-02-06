@@ -6,22 +6,26 @@ clip<-function(raster,shape) {
   a1_crop*step1}
 
 Maxent_fuction<- function(species_occurence, currentEnv){
-  #random sample 10 rows in dataframe 
-  #rs_species<- species_occurence[sample(nrow(species_occurence), 10), ]
+  # You can random sample the datasets to less occurence datasets using the following line:
+  #if (nrow(species_occurence) > 500 ) species_occurence <- species_occurence[sample(nrow(species_occurence), 500), ] else species_occurence <- species_occurence
   
-  if (nrow(species_occurence) > 200 ) species_occurence <- species_occurence[sample(nrow(species_occurence), 200), ] else species_occurence <- species_occurence
-  
-  # You take the radius but if the radius is bigger than half the radius of the earth you take the whole dataset as an extent
-  x <- polygons(circles(species_occurence[, c("decimal_longitude", "decimal_latitude")], lonlat=TRUE, dissolve=TRUE))
-
-  ## clip function
-  modelEnv=crop(currentEnv, x)
+  bindlonglat<- as.data.frame(cbind(species_occurence[, c("decimal_longitude", "decimal_latitude")]))
+  points<- bindlonglat
+  points$decimal_longitude<- as.numeric(as.character(points$decimal_longitude))
+  points$decimal_latitude<- as.numeric(as.character(points$decimal_latitude))
+  coordinates(points)<- ~ decimal_longitude + decimal_latitude
+  x<- gBuffer(points, width= 5, byid = TRUE)
+  x<- gUnaryUnion(x)
+ 
+   ## clip function
+  modelEnv=clip(currentEnv, x)
   names(modelEnv)<- names(currentEnv)
+  plot(modelEnv)
 
   # remove collinearity 
   Env_removed_correlation<-removeCollinearity(modelEnv, multicollinearity.cutoff = 0.7, select.variables = TRUE)
   currentEnv2<- subset(modelEnv, Env_removed_correlation)
-
+  
   ## make a dataframe of just the longitude and latitude locations remove all the other variables
   Species_occ<- cbind.data.frame(species_occurence$decimal_longitude,species_occurence$decimal_latitude)
   
