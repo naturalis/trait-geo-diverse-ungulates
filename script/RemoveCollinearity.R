@@ -14,9 +14,7 @@ removeCollinearity_adjusted <- function(raster.stack, multicollinearity.cutoff =
   
   # Correlation based on Pearson
   cor.matrix<-1 - abs(stats::cor(env.df, method = "pearson" ))
-  
-  
-  
+  cor.matrix[is.na(cor.matrix)]<- 0
 
   # Transforming the correlation matrix into an ascendent hierarchical classification
   dist.matrix <- stats::as.dist(cor.matrix)
