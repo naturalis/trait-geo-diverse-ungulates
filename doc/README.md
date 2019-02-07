@@ -55,7 +55,7 @@ We consider the following, possibly extinct, (sub)species as wild ancestors of d
 | Bubalus bubalis arnee       | Indian water buffalo | Water buffalo  | 7559792 | 14200696 |
 | Camelus bactrianus          | Bactrian camel       | Bactrian camel | 2441238 | 14200112 |
 | Camelus dromedarius         | Arabian camel        | Arabian camel  | 9055455 | 14200115 |  
-| Capra aegagrus aegagrus     |
+| Capra hircus aegagrus       | Bezoar               | Goat           | 4262706 | 14200778 |
 | Equus africanus africanus   |
 | Equus africanus somaliensis |
 | Equus ferus caballus        |
