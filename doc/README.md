@@ -31,12 +31,12 @@ We then pre-processed the DarwinCore records resulting from these searches by th
 After these steps, the number of remaining records was 834,182. We then exported these per species to CSV files, which we
 stored [here](../data/filtered). For any given species, the following steps were taken to produce its output file:
 
-1. collect all records for the species, including all subspecies
-2. keep an initial random sample of 1000 records
-3. do not filter on `basisOfRecord` (in plants one would normally only keep `PHYSICAL_SPECIMEN`)
-4. keep records whose `eventDate` is onwards from 1900-01-01
-5. keep records where latitude and longitude have a precision of at least two decimal places
-6. keep records whose coordinates are _distinct_
-7. keep records whose coordinates fall within polygons for the species ranges (in a shape file) if available
-7. keep records whose mean pairwise distance to all others does not differ from the species mean by more than 1 standard deviation
+1. [collect all records](https://github.com/naturalis/trait-geo-diverse/blob/9701ab15ec27aa47bedea11b0ff18a3e75589911/lib/MY/OccurrenceFilter.pm#L125-L146) for the species, including all subspecies
+2. keep an initial [random sample of 1000 records](https://github.com/naturalis/trait-geo-diverse/blob/9701ab15ec27aa47bedea11b0ff18a3e75589911/lib/MY/OccurrenceFilter.pm#L150-L156)
+3. [do not filter on `basisOfRecord`](https://github.com/naturalis/trait-geo-diverse/blob/9701ab15ec27aa47bedea11b0ff18a3e75589911/lib/MY/OccurrenceFilter.pm#L158-L166) (in plants one would normally only keep `PHYSICAL_SPECIMEN`, here we keep all types)
+4. keep records whose [`eventDate` is onwards from 1900-01-01](https://github.com/naturalis/trait-geo-diverse/blob/9701ab15ec27aa47bedea11b0ff18a3e75589911/lib/MY/OccurrenceFilter.pm#L169-L190)
+5. keep records where latitude and longitude have a [precision](https://github.com/naturalis/trait-geo-diverse/blob/9701ab15ec27aa47bedea11b0ff18a3e75589911/lib/MY/OccurrenceFilter.pm#L193-L204) of at least two decimal places
+6. keep records whose coordinates are [_distinct_](https://github.com/naturalis/trait-geo-diverse/blob/9701ab15ec27aa47bedea11b0ff18a3e75589911/lib/MY/OccurrenceFilter.pm#L207-L217)
+7. keep records whose coordinates [fall within polygons](https://github.com/naturalis/trait-geo-diverse/blob/9701ab15ec27aa47bedea11b0ff18a3e75589911/lib/MY/OccurrenceFilter.pm#L223-L302) for the species ranges (in a shape file) if available
+7. keep records whose [mean pairwise distance to all others does not differ from the species mean](https://github.com/naturalis/trait-geo-diverse/blob/9701ab15ec27aa47bedea11b0ff18a3e75589911/lib/MY/OccurrenceFilter.pm#L305-L352) by more than 1 standard deviation
 8. only keep species with more than 10 records (as per Raes & Aguirre-Gutierrez, 2018)
