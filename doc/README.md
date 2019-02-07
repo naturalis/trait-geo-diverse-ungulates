@@ -58,7 +58,7 @@ We consider the following, possibly extinct, (sub)species as wild ancestors of d
 | Capra hircus aegagrus       | Bezoar               | Goat           | 4262706 | 14200778 |
 | Equus africanus africanus   | Nubian wild ass      | Donkey         | 8697171 | 14100006 | 
 | Equus africanus somaliensis | Somali wild ass      | Donkey         | 8612957 | 14100007 |
-| Equus ferus caballus        |
+| Equus ferus                 | Russian wild horse   | Horse          | 4409270 | 14100017 |
 | Lama guanicoe cacsilensis   |
 | Ovis orientalis gmelini     |
 | Rangifer tarandus           |
