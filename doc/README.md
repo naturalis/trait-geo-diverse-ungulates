@@ -60,7 +60,7 @@ We consider the following, possibly extinct, (sub)species as wild ancestors of d
 | Equus ferus                 | Russian wild horse   | Horse          | 4409270 | 14100017 | 10.1073/pnas.1111122109          |
 | Lama glama guanicoe         | Guanaco              | Llama          | 5706328 | 14200120 | 10.1098/rspb.2001.1774 |
 | Ovis aries orientalis       | Mouflon              | Sheep          | 4262537 | 14200833 | 10.1038/hdy.2010.122 |
-| Rangifer tarandus           |
+| Rangifer tarandus           | Reindeer             | Reindeer       | 5220114 | 14200328 | 10.1098/rspb.2008.0332 |
 | Sus scrofa libycus          |
 | Sus scrofa moupinensis      |
 | Vicugna vicugna mensalis    |
