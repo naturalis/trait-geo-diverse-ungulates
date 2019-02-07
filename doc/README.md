@@ -56,8 +56,8 @@ We consider the following, possibly extinct, (sub)species as wild ancestors of d
 | Camelus bactrianus          | Bactrian camel       | Bactrian camel | 2441238 | 14200112 |
 | Camelus dromedarius         | Arabian camel        | Arabian camel  | 9055455 | 14200115 |  
 | Capra hircus aegagrus       | Bezoar               | Goat           | 4262706 | 14200778 |
-| Equus africanus africanus   |
-| Equus africanus somaliensis |
+| Equus africanus africanus   | Nubian wild ass      | Donkey         | 8697171 | 14100006 | 
+| Equus africanus somaliensis | Somali wild ass      | Donkey         | 8612957 | 14100007 |
 | Equus ferus caballus        |
 | Lama guanicoe cacsilensis   |
 | Ovis orientalis gmelini     |
