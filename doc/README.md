@@ -1,8 +1,8 @@
 Methods
 =======
 
-Occurrence data collection
---------------------------
+Occurrence data collection for wild species
+-------------------------------------------
 
 We collected occurrence data from GBIF using higher taxon searches for _Artiodactyla_ and
 _Perissodactyla_. The results of these searches are shown in the following table:
@@ -40,3 +40,29 @@ stored [here](../data/filtered). For any given species, the following steps were
 7. keep records whose coordinates [fall within polygons](https://github.com/naturalis/trait-geo-diverse/blob/9701ab15ec27aa47bedea11b0ff18a3e75589911/lib/MY/OccurrenceFilter.pm#L223-L302) for the species ranges (in a shape file) if available
 7. keep records whose [mean pairwise distance to all others does not differ from the species mean](https://github.com/naturalis/trait-geo-diverse/blob/9701ab15ec27aa47bedea11b0ff18a3e75589911/lib/MY/OccurrenceFilter.pm#L305-L352) by more than 1 standard deviation
 8. only keep species with more than 10 records (as per Raes & Aguirre-Gutierrez, 2018)
+
+Domesticated species
+--------------------
+
+We consider the following, possibly extinct, (sub)species as wild ancestors of domesticated ungulates.
+
+| Scientific name             |
+|-----------------------------|
+| Bos javanicus javanicus     |
+| Bos gaurus gaurus           |
+| Bos mutus                   |
+| Bos primigenius primigenius |
+| Bos primigenius namadicus   |
+| Bubalus arnee               |
+| Camelus ferus               |
+| Camelus thomasi             |
+| Capra aegagrus aegagrus     |
+| Equus africanus africanus   |
+| Equus africanus somaliensis |
+| Equus ferus caballus        |
+| Lama guanicoe cacsilensis   |
+| Ovis orientalis gmelini     |
+| Rangifer tarandus           |
+| Sus scrofa libycus          |
+| Sus scrofa moupinensis      |
+| Vicugna vicugna mensalis    |
