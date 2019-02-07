@@ -53,8 +53,8 @@ We consider the following, possibly extinct, (sub)species as wild ancestors of d
 | Bos grunniens mutus         | Wild yak             | Yak            | 6165160 | 14200682 |
 | Bos taurus primigenius      | Aurochs              | Cattle         | 4262590 | 14200690 |
 | Bubalus bubalis arnee       | Indian water buffalo | Water buffalo  | 7559792 | 14200696 |
-| Camelus ferus               |
-| Camelus thomasi             |
+| Camelus bactrianus          | Bactrian camel       | Bactrian camel | 2441238 | 14200112 |
+| Camelus dromedarius         | Arabian camel        | Arabian camel  | 9055455 | 14200115 |  
 | Capra aegagrus aegagrus     |
 | Equus africanus africanus   |
 | Equus africanus somaliensis |
