@@ -46,13 +46,13 @@ Domesticated species
 
 We consider the following, possibly extinct, (sub)species as wild ancestors of domesticated ungulates.
 
-| Scientific name             | Wild name | Domestic name  | GBIF ID | MSW3 ID  |
-|-----------------------------|-----------|----------------|---------|----------|
-| Bos javanicus javanicus     | Banteng   | Bali cattle    | 4262589 | 14200684 |
-| Bos frontalis gaurus        | Gaur      | Gayal / mithun | 4262588 | 14200678 |
-| Bos grunniens mutus         | Wild yak  | Yak            | 6165160 | 14200682 |
-| Bos taurus primigenius      | Aurochs   | Cattle         | 4262590 | 14200690 |
-| Bubalus arnee               |
+| Scientific name             | Wild name            | Domestic name  | GBIF ID | MSW3 ID  |
+|-----------------------------|----------------------|----------------|---------|----------|
+| Bos javanicus javanicus     | Banteng              | Bali cattle    | 4262589 | 14200684 |
+| Bos frontalis gaurus        | Gaur                 | Gayal / mithun | 4262588 | 14200678 |
+| Bos grunniens mutus         | Wild yak             | Yak            | 6165160 | 14200682 |
+| Bos taurus primigenius      | Aurochs              | Cattle         | 4262590 | 14200690 |
+| Bubalus bubalis arnee       | Indian water buffalo | Water buffalo  | 7559792 | 14200696 |
 | Camelus ferus               |
 | Camelus thomasi             |
 | Capra aegagrus aegagrus     |
