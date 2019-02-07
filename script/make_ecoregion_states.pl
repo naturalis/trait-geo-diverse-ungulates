@@ -8,6 +8,26 @@ use List::Util qw(shuffle);
 use Log::Log4perl qw(:easy);
 Log::Log4perl->easy_init($INFO);
 
+=begin pod
+
+How many occurrences for a species are in any given biome?
+
+This script takes as inputs a 'shape file' with polygons that outline the different
+biomes of the world, and a directory of CSV files with species occurrences. Each file
+should be named after the (sub)species, using underscores for species, and with the 
+.csv extension, e.g. 'Homo_sapiens.csv'. From these CSV files, the columns 
+'decimal_latitude' and 'decimal_longitude' will be used. Optionally, a maximum number 
+of occurrences per species can be specified. Occurrences will then be sampled without 
+replacement up to that number. The invocation thus is:
+
+    make_ecoregion_states.pl -i <dir> -s <shape file> -m <integer> > outfile.tsv
+
+The result is a tab-separated file where each row is a species (i.e. file name 
+converted from 'Homo_sapiens.csv' to 'Homo sapiens'), and the columns are the biome
+names as per the value of 'BIOME_NAME' in the shape file's DBF record.
+
+=cut
+
 # process command line arguments
 my $indir;
 my $shape;
