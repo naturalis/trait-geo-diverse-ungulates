@@ -29,13 +29,14 @@ We then pre-processed the DarwinCore records resulting from these searches by th
    and records whose basis was [UNKNOWN](https://github.com/naturalis/trait-geo-diverse/blob/master/script/load_occurrences.pl#L49)
 
 After these steps, the number of remaining records was 834,182. We then exported these per species to CSV files, which we
-stored [here](../data/filtered). The files in this folder are processed such that:
+stored [here](../data/filtered). For any given species, the following steps were taken to produce its output file:
 
-1. all records for a species, including those for any subspecies are lumped
-2. no filtering is applied to the `basisOfRecord` (in plants one would normally only keep `PHYSICAL_SPECIMEN`)
-3. only records whose `eventDate` ranges onwards from 1900-01-01 are retained
-4. only records where the latitude and longitude have a precision of at least two decimal places are retained
-5. only records that are _distinct_ are kept, i.e. there are no multiples of the same lat/lon pair for multiple occurrences 
-6. if polygons for the species ranges are available (in a shape file) only those occurrences within the polygons are kept
-7. average pairwise great circle distance to all records for that species may not exceed 1 standard deviation
-8. we only retain species with more than 10 records (as per Raes & Aguirre-Gutierrez, 2018)
+1. collect all records for the species, including all subspecies
+2. keep an initial random sample of 1000 records
+3. do not filter on `basisOfRecord` (in plants one would normally only keep `PHYSICAL_SPECIMEN`)
+4. keep records whose `eventDate` is onwards from 1900-01-01
+5. keep records where latitude and longitude have a precision of at least two decimal places
+6. keep records whose coordinates are _distinct_
+7. keep records whose coordinates fall within polygons for the species ranges (in a shape file) if available
+7. keep records whose mean pairwise distance to all others does not differ from the species mean by more than 1 standard deviation
+8. only keep species with more than 10 records (as per Raes & Aguirre-Gutierrez, 2018)
