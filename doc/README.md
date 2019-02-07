@@ -49,7 +49,7 @@ We consider the following, possibly extinct, (sub)species as wild ancestors of d
 | Scientific name             | Wild name            | Domestic name  | GBIF ID | MSW3 ID  | Evidence DOI                     |
 |-----------------------------|----------------------|----------------|---------|----------|----------------------------------|
 | Bos javanicus javanicus     | Banteng              | Bali cattle    | 4262589 | 14200684 |                                  |
-| Bos frontalis gaurus        | Gaur                 | Gayal / mithun | 4262588 | 14200678 |                                  |
+| Bos frontalis gaurus        | Gaur                 | Gayal / mithun | 4262588 | 14200678 | 10.1093/gigascience/gix094       |
 | Bos grunniens mutus         | Wild yak             | Yak            | 6165160 | 14200682 | 10.1111/j.1365-2699.2010.02379.x |
 | Bos taurus primigenius      | Aurochs              | Cattle         | 4262590 | 14200690 | 10.1038/hdy.2016.79              |
 | Bubalus bubalis arnee       | Indian water buffalo | Water buffalo  | 7559792 | 14200696 | 10.1111/j.1365-2052.2010.02166.x |
