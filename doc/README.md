@@ -59,7 +59,7 @@ We consider the following, possibly extinct, (sub)species as wild ancestors of d
 | Equus africanus africanus   | Nubian wild ass      | Donkey         | 8697171 | 14100006 | 10.1098/rspb.2010.0708           |
 | Equus ferus                 | Russian wild horse   | Horse          | 4409270 | 14100017 | 10.1073/pnas.1111122109          |
 | Lama glama guanicoe         | Guanaco              | Llama          | 5706328 | 14200120 | 10.1098/rspb.2001.1774 |
-| Ovis orientalis gmelini     |
+| Ovis aries orientalis       | Mouflon              | Sheep          | 4262537 | 14200833 | 10.1038/hdy.2010.122 |
 | Rangifer tarandus           |
 | Sus scrofa libycus          |
 | Sus scrofa moupinensis      |
