@@ -46,7 +46,7 @@ Domesticated species
 
 We consider the following, possibly extinct, (sub)species as wild ancestors of domesticated ungulates.
 
-| Scientific name           | Wild name            | Domestic name  | GBIF ID | MSW3 ID  | Evidence DOI                     |
+| Scientific name           | Wild name            | Domestic name  | GBIF ID | MSW3 ID  | Article DOI                      |
 |---------------------------|----------------------|----------------|---------|----------|----------------------------------|
 | Bos javanicus             | Banteng              | Bali cattle    | 2441027 | 14200683 | 10.13057/biodiv/d160230          |
 | Bos frontalis gaurus      | Gaur                 | Gayal / mithun | 4262588 | 14200678 | 10.1093/gigascience/gix094       |
