@@ -16,6 +16,11 @@ Over the past decades and even centuries humans have shown interest in the relat
 \#\# Case study : domesticated vs wild ungulates
 ================================================
 
+<img src="C:/Users/elkeh/Documents/Stage_Naturalis/ungulates.jpg" alt="Ungulates" width="100%" />
+<p class="caption">
+Ungulates
+</p>
+
 For this research we construct a SDM to analyse whether there is a significant difference in suitable environmental conditions for domesticated ungulates and wild ungulates. The domestication of flora and fauna is one of the most significant transitions in humankind's history and domination of planet earth (Kareiva et al., 2007, Larson et al., 2014). Domestication can be explained as the alteration of wild species by selecting traits that are useful to our society, examples of this are the selection of dogs that are able to live with people or the selection of larger wheat that have more seeds per plant (Kareiva et al., 2007). Over the course of thousands of years’ humans have domesticated relatively few large animals. The group of large animals that we have domesticated are called Ungulates (Perissodactyla + Artiodactyla) but we have only domesticated about 20 species from the +- 200 Ungulates. Interestingly, some of the 20 domesticated Ungulate species were domesticated multiple times independently through space and time, while the other +180 Ungulate species were never domesticated for a variety of reasons. Some of these reasons can be explained by behavioral preadaptations like social structures, sexual behaviour, parent-young interaction, feeding behaviour and response to humans and new environments (Zeder, 2012). Hence, it might be possible that domestication can be explained by environmental preferences.
 
 Today human societies are completely dependent on domesticated species both in flora and fauna (Kareiva et al., 2007). While domestication has brought a lot of benefits to humankind we have made some unforeseen changes to our environment to such an extent that there are hardly any truly natural environments left. Better understanding domestication can help us foresee trade-offs and improve decision making for more resilient ecosystems.
@@ -271,11 +276,11 @@ overlap
 
     ##                           Aepyceros_melampus.csv Alcelaphus_buselaphus.csv
     ## Aepyceros_melampus.csv                        NA                        NA
-    ## Alcelaphus_buselaphus.csv             0.45230873                        NA
-    ## Alcelaphus_caama.csv                  0.11771308                0.14678222
-    ## Alces_alces.csv                       0.06910462                0.02930975
+    ## Alcelaphus_buselaphus.csv             0.51962311                        NA
+    ## Alcelaphus_caama.csv                  0.07728380                0.14201502
+    ## Alces_alces.csv                       0.02639311                0.06327373
     ##                           Alcelaphus_caama.csv Alces_alces.csv
     ## Aepyceros_melampus.csv                      NA              NA
     ## Alcelaphus_buselaphus.csv                   NA              NA
     ## Alcelaphus_caama.csv                        NA              NA
-    ## Alces_alces.csv                   0.0009501188              NA
+    ## Alces_alces.csv                   0.0002086356              NA
