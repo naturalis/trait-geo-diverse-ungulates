@@ -53,7 +53,7 @@ We consider the following, possibly extinct, (sub)species as wild ancestors of d
 | Bos javanicus          | Banteng              | Bali cattle    | 2441027 | 14200683 | 10.13057/biodiv/d160230          | 10.15468/dl.gez0fu |
 | Bos frontalis gaurus   | Gaur                 | Gayal / mithun | 4262588 | 14200678 | 10.1093/gigascience/gix094       | 10.15468/dl.4wqyum |
 | Bos grunniens mutus    | Wild yak             | Yak            | 6165160 | 14200682 | 10.1111/j.1365-2699.2010.02379.x | 10.15468/dl.ghsq5k |
-| Bos taurus primigenius | Aurochs              | Cattle         | 4262590 | 14200690 | 10.1038/hdy.2016.79              | 10.15468/dl.6kqnaj |
+| Bos taurus primigenius | Aurochs              | Cattle         | 4262590 | 14200690 | 10.1038/hdy.2016.79              | 10.15468/dl.knygnz |
 | Bubalus bubalis arnee  | Indian water buffalo | Water buffalo  | 7559792 | 14200696 | 10.1111/j.1365-2052.2010.02166.x | 10.15468/dl.hmvx8i |
 | Camelus bactrianus     | Bactrian camel       | Bactrian camel | 2441238 | 14200112 | 10.1111/j.1365-2052.2008.01848.x | 10.15468/dl.xsugri |
 | Camelus dromedarius    | Arabian camel        | Arabian camel  | 9055455 | 14200115 | 10.1073/pnas.1519508113          | 10.15468/dl.jlypmm |
