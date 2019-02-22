@@ -44,28 +44,40 @@ source("MaxEnt_function.R")
 In addition, here we define the global variables that we will reuse throughout the code
 
 ```{r globals}
-# the base URL of the location of our data
-DATA_URL <- "https://github.com/naturalis/trait-geo-diverse-ungulates/raw/master/data/filtered/"
-
+# this is the location of the root directory of the git repository in the local file system.
+# normally you would be running the code from within rstudio, using a project that is initialized
+# within that directory, so the working directory should automatically be set.
+REPO_HOME <- paste(getwd(),'/../',sep='')
 ```
 
 To calculate niches and niche overlap environmental data and occurrence data per species are needed.
 
 The environmental data used in this research are based on climatic variables, topography and soil 
-characteristics. Climatic information about the present was subtracted from the widely used Bioclim 
-dataset which includes 19 bioclimatic datasets. The datasets contain information such as precipitation 
+characteristics. Climatic information about the present was extracted from the widely used Bioclim 
+dataset, which includes 19 bioclimatic layers. The datasets contain information such as precipitation 
 in the driest quarter or maximum temperatures of the coldest month and are constructed based on 
 monthly remote sensing data between 1950 and 2000 (Hijmans et al., 2005, Title et al., 2018). The 
 dataset can directly be downloaded with the getData() function from the raster package. It is also 
 possible to adjust the spatial resolution res=2.5 to 30 seconds, 5 minutes and 10 minutes.
 
 ```{r getdata}
-currentEnv1 = getData("worldclim", var="bio", res=10)
+# This function from the raster package loads bioclimatic layers. It first attempts to do this
+# from files in data/GIS/wc10, but if these are not found it will attempt to download them
+# and cache them locally. Since the files are small enough to commit to github we will normally
+# have these files already. This could change if we move to a resolution that is finer than 10
+# arcminutes, as the layer files will then grow above 10MB.
+currentEnv1 = raster::getData(
+  "worldclim", 
+  var="bio", 
+  res=10, 
+  path=paste(REPO_HOME, '/data/GIS', sep=''), 
+  download=T
+)
 ```
 
 The other environmental datasets that we used are the new ENVIREM variables that give additional 
 climatic information to the Bioclim datasets. We used median elevation variables from the Harmonized 
-World Soil Database (HWSD) which are based on NASA’s Shuttle Radar Topographic Mission to calculate 
+World Soil Database (HWSD), which are based on NASA’s Shuttle Radar Topographic Mission to calculate 
 worldwide slope and aspect. We used indirect height measures such as slope and aspect because the 
 height variables are directly correlated with the temperature Bioclim datasets. To capture soil 
 characteristics, we used organic carbon, pH CaCL, bulk density and clay percentage datasets obtained 
@@ -75,48 +87,74 @@ The additional environmental datasets that we used for this research can be down
 dropbox folder at a spatial resolution of 5 and 10 minutes.
 
 ```{r add_layers}
-# here we make a temporary file name with the .tif extension. portable between mac and windows
-temp_name <- tempfile(pattern = "file", tmpdir = tempdir(), fileext = ".tif")
+# The location of the TIFF file with the stacked layers described directly above
+totalstack.tif <- paste(REPO_HOME, '/data/GIS/Totalstack.tif', sep = '')
 
-# with the ?dl=1 argument the file is downloaded directly and stored as the temporary file
-download.file("https://www.dropbox.com/s/nlfe349hykg9pfs/Totalstack.tif?dl=1", temp_name, quiet = T)
+# This file is too large to keep under git, so this download is likely to happen at least once
+if (!file.exists(totalstack.tif)) {
+
+  # With the ?dl=1 argument the file is downloaded directly and stored as the temporary file
+  download.file("https://www.dropbox.com/s/nlfe349hykg9pfs/Totalstack.tif?dl=1", totalstack.tif, quiet = T)
+}
 
 # here we complete the stacking
-soilproperties <- stack(temp_name)
+soilproperties <- stack(totalstack.tif)
 currentEnv <- stack(soilproperties, currentEnv1)
-
-# now remove the temp file and the temporary variable symbols
-# unlink(temp_name)
-# rm(temp_name)
-# rm(currentEnv1)
 ```
 
 The occurrence datasets are needed to extract useful environmental information per species. The 
-line below downloads a list of the species of interest from the 
-[github data folder](https://github.com/naturalis/trait-geo-diverse-ungulates) data folder, 
-originally obtained via GBIF. The data contains the taxon name, taxon id and the longitude and 
-latitude, as well as the identifier of the original occurrence record. The latter is nearly
-always an integer (meaning it's a GBIF occurrence ID), though in rare cases it might be a
-URL, e.g. of an iNaturalist observation.
+segment below reads a list of the species of interest from the `/data/filtered/taxa.txt` file. From 
+this list we construct paths to input and output files per species. This way, we can work incrementally,
+and cache intermediate results, such as maps of raw occurrence data, maxent models, model predictions,
+and global projections.
 
 ```{r load_taxa}
-t <- read.table(paste(DATA_URL, "taxa.txt", sep = ""))
+# read listing
+taxa <- scan(paste(REPO_HOME, "/data/filtered/taxa.txt", sep = ""), sep = "\n", what = character())
+
+# make output directories, if needed
+for ( i in 1:length(taxa) ) {
+  taxon.dir.name <- sprintf('%s/results/per_species/%s/', REPO_HOME, taxa[i])
+  if(!dir.exists(taxon.dir.name)) {
+    dir.create(taxon.dir.name, recursive = T)
+  }
+}
 ```
 
 Below an example of how to plot these occurrence datasets is given.
 
 ```{r plot_points}
-# create the URL for the file whose occurrences you want to plot, then load that as CSV
-file <- paste(DATA_URL, t[5,1], sep = "")
-occ <- read.csv(file, header = T)
-lon <- occ$decimal_longitude
-lat <- occ$decimal_latitude
-
-# plot a simple world map
 data(wrld_simpl)
-plot(wrld_simpl, axes=TRUE, xlim=c(min(lon)-5,max(lon)+5), ylim=c(min(lat)-5,max(lat)+5), col="grey", main=t[5,1])
-points(lon, lat, col="orange", pch=20, cex=0.75)
-box()
+for ( i in 1:length(taxa) ) {
+
+  # construct the name of the occurrences file for the current taxon
+  taxon <- taxa[i]
+  occ.map.file <- sprintf('%s/results/per_species/%s/occurrences.png', REPO_HOME, taxon)
+  
+  # generate the map
+  if(!file.exists(occ.map.file)) {
+  
+    # create the path for the file whose occurrences you want to plot, then load occurrences as CSV
+    csv.file <- sprintf('%s/data/filtered/%s.csv', REPO_HOME, taxon)
+    occ <- read.csv(csv.file, header = T)
+    lon <- occ$decimal_longitude
+    lat <- occ$decimal_latitude
+
+    # plot a simple world map
+    png(file = occ.map.file)
+    plot(
+      wrld_simpl, 
+      axes=TRUE, 
+      xlim=c(min(lon)-5,max(lon)+5), 
+      ylim=c(min(lat)-5,max(lat)+5), 
+      col="grey", 
+      main=sprintf('Raw occurrences for %s',taxon)
+    )
+    points(lon, lat, col="orange", pch=20, cex=0.75)
+    box()
+    dev.off()
+  }
+}
 ```
 
 Maxent: species distribution model
