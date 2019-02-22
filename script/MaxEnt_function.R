@@ -59,7 +59,7 @@ clip<-function(raster,shape) {
   step1<-rasterize(shape,a1_crop)
   a1_crop*step1}
 
-Maxent_fuction<- function(species_occurence, currentEnv){
+Maxent_function<- function(species_occurence, currentEnv){
   # You can random sample the datasets to less occurence datasets using the following line:
   #if (nrow(species_occurence) > 500 ) species_occurence <- species_occurence[sample(nrow(species_occurence), 500), ] else species_occurence <- species_occurence
   
