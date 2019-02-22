@@ -10,7 +10,7 @@ Here we explain two different approaches to calculate the niche per species:
 1. Maxent species distribution models, and 
 2. Outlying Mean Index (OMI) and how to calculate their overlap.
 
-The following libraries need to be loaded:
+The following libraries and scripts need to be loaded:
 
 ```{r libraries}
 library(raster, quietly = T)
@@ -35,6 +35,18 @@ library(raster, quietly = T)
 library(SDMTools, quietly = T)
 library(factoextra, quietly = T)
 library(ecospat, quietly = T)
+
+# our local code. the goal is that this will eventually be properly portable code that lives
+# inside the ./R folder of the repository
+source("MaxEnt_function.R")
+```
+
+In addition, here we define the global variables that we will reuse throughout the code
+
+```{r globals}
+# the base URL of the location of our data
+DATA_URL <- "https://github.com/naturalis/trait-geo-diverse-ungulates/raw/master/data/filtered/"
+
 ```
 
 To calculate niches and niche overlap environmental data and occurrence data per species are needed.
@@ -74,9 +86,9 @@ soilproperties <- stack(temp_name)
 currentEnv <- stack(soilproperties, currentEnv1)
 
 # now remove the temp file and the temporary variable symbols
-unlink(temp_name)
-rm(temp_name)
-rm(currentEnv1)
+# unlink(temp_name)
+# rm(temp_name)
+# rm(currentEnv1)
 ```
 
 The occurrence datasets are needed to extract useful environmental information per species. The 
@@ -88,14 +100,14 @@ always an integer (meaning it's a GBIF occurrence ID), though in rare cases it m
 URL, e.g. of an iNaturalist observation.
 
 ```{r load_taxa}
-t <- read.table("https://github.com/naturalis/trait-geo-diverse-ungulates/raw/master/data/filtered/taxa.txt")
+t <- read.table(paste(DATA_URL, "taxa.txt", sep = ""))
 ```
 
 Below an example of how to plot these occurrence datasets is given.
 
 ```{r plot_points}
 # create the URL for the file whose occurrences you want to plot, then load that as CSV
-file <- paste("https://github.com/naturalis/trait-geo-diverse-ungulates/raw/master/data/filtered/", t[5,1], sep = "")
+file <- paste(DATA_URL, t[5,1], sep = "")
 occ <- read.csv(file, header = T)
 lon <- occ$decimal_longitude
 lat <- occ$decimal_latitude
@@ -107,141 +119,149 @@ points(lon, lat, col="orange", pch=20, cex=0.75)
 box()
 ```
 
+Maxent: species distribution model
+----------------------------------
 
-\# Maxent: species distribution model
-=====================================
+For this research we used the Maximum Entropy (MaxEnt) machine learning algorithm version 3.3.3 to 
+construct SDMs for all available species. Previous research has demonstrated that the MaxEnt technique 
+performs well when using presence only data to estimate the relationships between environmental 
+predictors and the occurrences of species (Elith et al., 2011, Philips et al., 2006, Tognelli et al., 2009, 
+Conolly et al., 2012). The widely used machine learning algorithm is very efficient in the complex 
+handling of response and predictor variable interactions and works well with little occurrence data 
+points (Elith et al., 2011, Elith et al., 2006, Wisz et al., 2008).
 
-For this research we used the Maximum Entropy (MaxEnt) machine learning algorithm version 3.3.3 to construct SDMs for the 156 remaining species. Previous research has demonstrated that the MaxEnt technique performs well when using presence only data to estimate the relationships between environmental predictors and the occurrences of species (Elith et al., 2011, Philips et al., 2006, Tognelli et al., 2009, Conolly et al., 2012). The widely used machine learning algorithm is very efficient in the complex handling of response and predictor variable interactions and works well with little occurrence data points (Elith et al., 2011, Elith et al., 2006, Wisz et al., 2008).
+Before the construction of the maxent model the environmental rasters are cropped to the extent 
+of the occurrence points for a specific species + a buffer around the total extent. Buffers that 
+are too small can result in underestimations of edge effects while buffers that are too large 
+have the risk of losing track of favorable environmental conditions due to noise. In this research 
+we base the extent of the buffer on the maximum distribution between two occurrence points, in 
+this way we account for species with a wide distribution and species with a small distribution. 
+The cropped environmental data are checked for collinearity, because only uncorrelated environmental 
+raster layers can be used in the SDM (Dormann et al., 2013, Reas & Aguirre-Gutierrez, 2018). To 
+remove correlated layers the removeCollinearity function in the virtualspecies version 1.4-4 R 
+package was used (Leroy et al., 2016). Environmental variables with a Pearson’s R correlation 
+coefficients above 0.7 were grouped and one variable within this group was randomly chosen, 
+resulting in a raster stack with only uncorrelated environmental rasters.
 
-Before the construction of the maxent model the environmental rasters are cropped to the extent of the occurrence points for a specific species + a buffer around the total extent. Buffers that are too small can result in underestimations of edge effects while buffer that are to large have the risk of losing track of favorable environmental conditions due to noise. In this research we base the extent of the buffer on the maximum distribution between two occurrence points, in this way we account for species with a wide distribution and species with a small distribution. The cropped environmental data are checked for collinearity, because only uncorrelated environmental raster layers can be used in the SDM (Dormann et al., 2013, Reas & Aguirre-Gutierrez, 2018). To remove correlated layers the removeCollinearity function in the virtualspecies version 1.4-4 R package was used (Leroy et al., 2016). Environmental variables with a Pearson’s R correlation coefficients above 0.7 were grouped and one variable within this group was randomly chosen, resulting in a raster stack with only uncorrelated environmental rasters.
+Afterwards the occurrence dataset is split in k-fold partitions: a training dataset containing 
+75% of the data and a test dataset containing 25% of the data. The maxent model is constructed 
+using the maxent function from the dismo R package (Hijmans & Elith, 2013). The function extracts 
+abiotic environmental data for the training occurrence locations and 1000 random sampled 
+background locations, resulting in a model maxent object that can be used to predict which other 
+locations are suitable.
 
-Afterwards the occurrence dataset is split in k-fold partitions: a training dataset containing 75% of the data and a test dataset containing 25% of the data. The maxent model is constructed using the maxent function from the dismo R package (Hijmans & Elith, 2013). The function extracts abiotic environmental data for the training occurrence locations and 1000 random sampled background locations, resulting in a model maxent object that can be used to predict which other locations are suitable.
+To assess the model performance we used the area under the receiver operating curve (ROC), also 
+known as the AUC, which is often used to estimate the ability of models (Fourcade et al., 2014). 
+The AUC was interpreted as the probability that a randomly chosen “presence point”, the location 
+of a species occurrence, has a higher predicted probability of occurrence than a randomly chosen 
+absence point (Reas & Aguirre-Gutierrez, 2018). To compare a presence point to an absence point 
+1000 absence points were randomly sampled within the study area. The test occurence datasets were 
+used to evaluate the model performance with the evaluate function in the dismo R package 
+(Hijmans & Elith, 2013). Only SDMs with an AUC value higher than 0.7 were used in the further steps, 
+since these models are generally accepted as useful models (Swets et al., 2000).
 
-To assess the model performance we used the area under the receiver operating curve (ROC), also known as the AUC, which is often used to estimate the ability of models (Fourcade et al., 2014). The AUC was interpreted as the probability that a randomly chosen “presence point”, the location of a species occurrence, has a higher predicted probability of occurrence than a randomly chosen absence point (Reas & Aguirre-Gutierrez, 2018). To compare a presence point to an absence point 1000 absence points were randomly sampled within the study area. The test occurence datasets were used to evaluate the model performance with the evaluate function in the dismo R package (Hijmans & Elith, 2013). Only SDMs with an AUC value higher than 0.7 were used in the further steps, since these models are generally accepted as useful models (Swets et al., 2000).
+The script below shows a loop that automatically loops through each species in the list and 
+separates them into two groups: 
 
-The script below shows a loop that automatically loops through each species in the list and seperates them into two groups (i) the models with a high accuracy and (ii) the models with a low accuracy. The Maxent\_function used in this loop can be viewed and adapted in our Github depository (<https://github.com/naturalis/trait-geo-diverse-ungulates/blob/master/script/MaxEnt_function.R>).
+1. the models with a high accuracy and, 
+2. the models with a low accuracy. 
 
-``` r
-# first we created two empty lists, one list for models with a low accuracy (AUC below 0.7) and one list for models with a high accurecy (AUC above 0.7)
+The Maxent function used in this loop can be viewed and adapted in our Github repository in this [script](https://github.com/naturalis/trait-geo-diverse-ungulates/blob/master/script/MaxEnt_function.R).
 
+```{r maxent1}
 
-list_species_model_low_accuracy<- list()
-list_species_model_high_accuracy<- list()
-for (i in 1:10){
+# first we created two empty lists, one list for models with a low accuracy (AUC below 0.7) and one 
+# list for models with a high accuracy (AUC above 0.7)
+list_species_model_low_accuracy <- list()
+list_species_model_high_accuracy <- list()
 
-# set the extent for the training model with a buffer of 5 lon and lat
-file<-paste("https://github.com/naturalis/trait-geo-diverse-ungulates/raw/master/data/filtered/", t[i,1], sep = "")
-species_occurence<-read.csv(file)
-colnames(species_occurence) <- c("taxon_id","taxon_name","decimal_latitude","decimal_longitude")
-i
-species_model<- Maxent_fuction(species_occurence, currentEnv)
+# iterate over n species
+for (i in 1:10) {
 
-# validate the model with the test data
-# to construct an AUC model we need random points
-random<- randomPoints(species_model[[2]], 1000)
-Validation_species<- evaluate(p=species_model[[3]], a=random, x=species_model[[2]], model =species_model[[1]])
+  # set the extent for the training model with a buffer of 5 lon and lat
+  file <- paste(DATA_URL, t[i,1], sep = "")
+  species_occurence <- read.csv(file, header = T)
+  species_model <- Maxent_function(species_occurence, currentEnv)
 
-# create two stacks one with the models with a low accuracy <0.7 and one with a high accuracy >0.7
-name <- paste(t[i,1])
-if (Validation_species@auc > 0.7) list_species_model_high_accuracy[[name]] <- species_model[[1]] else list_species_model_low_accuracy[[name]] <- species_model[[1]]
+  # validate the model with the test data
+  # to construct an AUC model we need random points
+  random <- randomPoints(species_model[[2]], 1000)
+  Validation_species <- evaluate(p=species_model[[3]], a=random, x=species_model[[2]], model =species_model[[1]])
+
+  # create two stacks one with the models with a low accuracy <0.7 and one with a high accuracy >0.7
+  name <- paste(t[i,1])
+  if (Validation_species@auc > 0.7) {
+    list_species_model_high_accuracy[[name]] <- species_model[[1]]
+  } 
+  else { 
+    list_species_model_low_accuracy[[name]] <- species_model[[1]]
+  }
 }
 ```
 
-![](Nich_Overlap_files/figure-markdown_github/unnamed-chunk-7-1.png)
 
 The models are now stacked in a list but can be viewed and examined as follows:
 
-``` r
+```{r plot_importance}
 # Select the first model in the list
-open_species_model<-list_species_model_high_accuracy[[1]]
+open_species_model <- list_species_model_high_accuracy[[1]]
+
 # name of the dataset plotted
-probeernaam<- names(list_species_model_high_accuracy[1])
-name<- paste("Variable importance for", probeernaam)
+name <- paste("Variable importance for", names(list_species_model_high_accuracy[1]))
+
 # plot the variable importance
 plot(open_species_model, main = name)
 ```
 
-![](Nich_Overlap_files/figure-markdown_github/unnamed-chunk-8-1.png)
 
-``` r
+```{r plot_envelopes}
 # plot the response curve to see what the range of important values is per abiotic dataset
 response(open_species_model)
 ```
 
-![](Nich_Overlap_files/figure-markdown_github/unnamed-chunk-8-2.png)
-
 The outcome of the species distribution models can be used to create a prediction of the areas that are suitable for the species. The script below shows a loop that creates prediction raster files for the models with a high prediction accuracy.
 
-``` r
-## Model predictions
-prediction_rasters <- stack()
-for (i in 1:length(list_species_model_high_accuracy)){
-open_species_model<-list_species_model_high_accuracy[[i]]
-#select non correlated layers from model environment in the world environment
-noncorrelated<- names(list_species_model_high_accuracy[[i]]@presence)
-subsetworldEnv<- subset(currentEnv,c(noncorrelated))
+```{r plot_suitability}
 
-# make prediction of the whole earth based on the maxent SDM
-species.pred<- predict(open_species_model, subsetworldEnv)
-prediction_rasters<- stack(prediction_rasters, species.pred)
+# model predictions
+prediction_rasters <- stack()
+for (i in 1:length(list_species_model_high_accuracy) ) {
+  open_species_model <- list_species_model_high_accuracy[[i]]
+  
+  # select non correlated layers from model environment in the world environment
+  noncorrelated <- names(list_species_model_high_accuracy[[i]]@presence)
+  subsetworldEnv <- subset(currentEnv,c(noncorrelated))
+
+  # make prediction of the whole earth based on the maxent SDM
+  species.pred <- predict(open_species_model, subsetworldEnv)
+  prediction_rasters <- stack(prediction_rasters, species.pred)
 }
 
-names(prediction_rasters)<- names(list_species_model_high_accuracy)
+names(prediction_rasters) <- names(list_species_model_high_accuracy)
 plot(prediction_rasters)
 ```
 
-![](Nich_Overlap_files/figure-markdown_github/unnamed-chunk-9-1.png)
+To assess whether the predicted suitable niche spaces differ per species we calculate their niche 
+overlap. We use Schoener’s D to calculate niche overlap since it has been suggested to be the best 
+suited index for maxent SDM outputs (Rödder & Engler, 2011). The index ranges from 0 which is no 
+overlap to 1 which is a complete overlap and is based on the model prediction maps.
 
-To assess whether the predicted suitable niche spaces differ per species we calculate their niche overlap. We used Schoener’s D to calculate niche overlap since it has been suggested to be the best suited index for maxent SDM outputs (Rödder & Engler, 2011). The index ranges from 0 which is no overlap to 1 which is a complete overlap and is based on the model prediction maps.
-
-``` r
+```{r calc_dist}
 # calculate niche overlap
-overlap<- calc.niche.overlap(prediction_rasters, stat="D", maxent.args )
+overlap <- calc.niche.overlap(prediction_rasters, stat="D", maxent.args )
 ```
 
-    ## 
-      |                                                                       
-      |                                                                 |   0%
-      |                                                                       
-      |=======                                                          |  11%
-      |                                                                       
-      |==============                                                   |  22%
-      |                                                                       
-      |======================                                           |  33%
-      |                                                                       
-      |=============================                                    |  44%
-      |                                                                       
-      |====================================                             |  56%
-      |                                                                       
-      |===========================================                      |  67%
-      |                                                                       
-      |===================================================              |  78%
-      |                                                                       
-      |==========================================================       |  89%
-      |                                                                       
-      |=================================================================| 100%
+Having calculated the Schoener's D distances, we can now use these to make a symmetrical distance
+matrix, and perform a n
 
-``` r
+```{r cluster_dist}
 # create a distance matrix
-m<-as.dist(1-overlap)
+dmatrix <- as.dist(1-overlap)
 
 # plot an unrooted dendrogram
-d<-nj(m)
-plot(d, type="unrooted", cex = 0.1, main= "Unrooted dendrogram")
+tree <- nj(dmatrix)
+plot(tree, type="unrooted", cex = 0.1, main = "Unrooted dendrogram of Schoener's D")
 ```
-
-![](Nich_Overlap_files/figure-markdown_github/unnamed-chunk-10-1.png)
-
-``` r
-# plot a circular fan dendrogram
-cl<- hclust(m)
-colors = c("red", "blue", "green", "black", "orange", "grey")
-clus4 = cutree(cl, 3)
-plot(as.phylo(cl), type = "fan", tip.color = colors[clus4],
-     label.offset = 0.1, cex = 0.7, main = "Fan dendrogram")
-```
-
-![](Nich_Overlap_files/figure-markdown_github/unnamed-chunk-10-2.png)
 
 \# Outlying Mean Index (OMI)
 ============================
