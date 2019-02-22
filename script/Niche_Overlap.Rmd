@@ -1,78 +1,112 @@
 Niche Models
-================
-Elke Hendrix
-February 13, 2019
+============
 
-\# Introduction
-===============
+Introduction
+------------
 
-The following R markdown file explains the steps needed to calculate niche overlap between 154 Ungulates. Here we explain two different approaches to calculate the niche per species (i) Maxent species distribution models and (ii) Outlying Mean Index (OMI) and how to calculate their overlap.
+The following R markdown file explains the steps needed to calculate niche overlap between the extant Ungulates. 
+Here we explain two different approaches to calculate the niche per species: 
+
+1. Maxent species distribution models, and 
+2. Outlying Mean Index (OMI) and how to calculate their overlap.
 
 The following libraries need to be loaded:
 
-``` r
-library(raster)
-library(knitr)
-library(maxent)
-library(maps)
-library(rJava) 
-library(maptools)
-library(jsonlite)
-library(caret)
-library(ENMeval)
-library(repmis)
-library(CoordinateCleaner)
-library(dismo) 
-library(virtualspecies)
-library(sp)
-library(rgeos)
-library(ape)
-library(adehabitatMA)
-library(ade4)
-library(raster)
-library(SDMTools)
-library(factoextra)
-library(ecospat)
+```{r libraries}
+library(raster, quietly = T)
+library(knitr, quietly = T)
+library(maxent, quietly = T)
+library(maps, quietly = T)
+library(rJava, quietly = T) 
+library(maptools, quietly = T)
+library(jsonlite, quietly = T)
+library(caret, quietly = T)
+library(ENMeval, quietly = T)
+library(repmis, quietly = T)
+library(CoordinateCleaner, quietly = T)
+library(dismo, quietly = T) 
+library(virtualspecies, quietly = T)
+library(sp, quietly = T)
+library(rgeos, quietly = T)
+library(ape, quietly = T)
+library(adehabitatMA, quietly = T)
+library(ade4, quietly = T)
+library(raster, quietly = T)
+library(SDMTools, quietly = T)
+library(factoextra, quietly = T)
+library(ecospat, quietly = T)
 ```
 
 To calculate niches and niche overlap environmental data and occurrence data per species are needed.
 
-The environmental data used in this research are based on climatic variables, topography and soil characteristics. Climatic information about the present was subtracted from the widely used Bioclim dataset which includes 19 bioclimatic datasets. The datasets contain information such as precipitation in the driest quarter or maximum temperatures of the coldest month and are constructed based on monthly remote sensing data between 1950 and 2000 (Hijmans et al., 2005, Title et al ., 2018). The dataset can directly be downloaded with the getData() function from the raster package. It is also possible to adjust the spatial resolution res=2.5 to 30 seconds, 5 minutes and 10 minutes.
+The environmental data used in this research are based on climatic variables, topography and soil 
+characteristics. Climatic information about the present was subtracted from the widely used Bioclim 
+dataset which includes 19 bioclimatic datasets. The datasets contain information such as precipitation 
+in the driest quarter or maximum temperatures of the coldest month and are constructed based on 
+monthly remote sensing data between 1950 and 2000 (Hijmans et al., 2005, Title et al., 2018). The 
+dataset can directly be downloaded with the getData() function from the raster package. It is also 
+possible to adjust the spatial resolution res=2.5 to 30 seconds, 5 minutes and 10 minutes.
 
-``` r
-currentEnv1=getData("worldclim", var="bio", res=10)
+```{r getdata}
+currentEnv1 = getData("worldclim", var="bio", res=10)
 ```
 
-The other environmental datasets that we used are the new ENVIREM variables that give additional climatic information to the Bioclim datasets. We used median elevation variables from the Harmonized World Soil Database (HWSD) which are based on NASA’s Shuttle Radar Topographic Mission to calculate worldwide slope and aspect. We used indirect height measures such as slope and aspect because the height variables are directly correlated with the temperature Bioclim datasets. To capture soil characteristics, we used organic carbon, pH CaCL, bulk density and clay percentage datasets obtained from the land-atmosphere interaction research group at Sun Yat-sen University.
+The other environmental datasets that we used are the new ENVIREM variables that give additional 
+climatic information to the Bioclim datasets. We used median elevation variables from the Harmonized 
+World Soil Database (HWSD) which are based on NASA’s Shuttle Radar Topographic Mission to calculate 
+worldwide slope and aspect. We used indirect height measures such as slope and aspect because the 
+height variables are directly correlated with the temperature Bioclim datasets. To capture soil 
+characteristics, we used organic carbon, pH CaCL, bulk density and clay percentage datasets obtained 
+from the land-atmosphere interaction research group at Sun Yat-sen University.
 
-The additional environmental datasets that we used for this research can be downloaded from our dropbox folder at a spatial resolution of 5 and 10 minutes.
+The additional environmental datasets that we used for this research can be downloaded from our 
+dropbox folder at a spatial resolution of 5 and 10 minutes.
 
-``` r
-soilproperties<-stack("C:/Users/elkeh/Dropbox/trait-geo-diverse-ungulates/Input_Datasets/Abiotic_Data/10_deg/Totalstack.tif")
-currentEnv<- stack(soilproperties, currentEnv1)
+```{r add_layers}
+# here we make a temporary file name with the .tif extension. portable between mac and windows
+temp_name <- tempfile(pattern = "file", tmpdir = tempdir(), fileext = ".tif")
+
+# with the ?dl=1 argument the file is downloaded directly and stored as the temporary file
+download.file("https://www.dropbox.com/s/nlfe349hykg9pfs/Totalstack.tif?dl=1", temp_name, quiet = T)
+
+# here we complete the stacking
+soilproperties <- stack(temp_name)
+currentEnv <- stack(soilproperties, currentEnv1)
+
+# now remove the temp file and the temporary variable symbols
+unlink(temp_name)
+rm(temp_name)
+rm(currentEnv1)
 ```
 
-The occurrence datasets are needed to extract useful environmental information per species. The line below downloads a list of the species of interest from the github (<https://github.com/naturalis/trait-geo-diverse-ungulates>) data folder, originally obtained via GBIF. The data contains the taxon name, taxon id and the longitude and latitude.
+The occurrence datasets are needed to extract useful environmental information per species. The 
+line below downloads a list of the species of interest from the 
+[github data folder](https://github.com/naturalis/trait-geo-diverse-ungulates) data folder, 
+originally obtained via GBIF. The data contains the taxon name, taxon id and the longitude and 
+latitude, as well as the identifier of the original occurrence record. The latter is nearly
+always an integer (meaning it's a GBIF occurrence ID), though in rare cases it might be a
+URL, e.g. of an iNaturalist observation.
 
-``` r
-t<-read.table("https://github.com/naturalis/trait-geo-diverse-ungulates/raw/master/data/filtered/taxa.txt", header = FALSE, sep = "", dec = ".")
+```{r load_taxa}
+t <- read.table("https://github.com/naturalis/trait-geo-diverse-ungulates/raw/master/data/filtered/taxa.txt")
 ```
 
-Below an example of how to plot these occurece datasets is given.
+Below an example of how to plot these occurrence datasets is given.
 
-``` r
-# here you select the file in the list that you want to plot
-file<-paste("https://github.com/naturalis/trait-geo-diverse-ungulates/raw/master/data/filtered/", t[5,1], sep = "")
-species_occurence<-read.csv(file)
-colnames(species_occurence) <- c("taxon_id","taxon_name","decimal_latitude","decimal_longitude")
+```{r plot_points}
+# create the URL for the file whose occurrences you want to plot, then load that as CSV
+file <- paste("https://github.com/naturalis/trait-geo-diverse-ungulates/raw/master/data/filtered/", t[5,1], sep = "")
+occ <- read.csv(file, header = T)
+lon <- occ$decimal_longitude
+lat <- occ$decimal_latitude
+
 # plot a simple world map
 data(wrld_simpl)
-plot(wrld_simpl, axes=TRUE, xlim=c(min(species_occurence$decimal_longitude)-5,max(species_occurence$decimal_longitude)+5), ylim=c(min(species_occurence$decimal_latitude)-5,max(species_occurence$decimal_latitude)+5), fill=TRUE, col="grey", main= "Occurence points")
-points(species_occurence$decimal_longitude, species_occurence$decimal_latitude, col="orange", pch=20, cex=0.75)
+plot(wrld_simpl, axes=TRUE, xlim=c(min(lon)-5,max(lon)+5), ylim=c(min(lat)-5,max(lat)+5), col="grey", main=t[5,1])
+points(lon, lat, col="orange", pch=20, cex=0.75)
 box()
 ```
 
-![](Nich_Overlap_files/figure-markdown_github/unnamed-chunk-5-1.png)
 
 \# Maxent: species distribution model
 =====================================
