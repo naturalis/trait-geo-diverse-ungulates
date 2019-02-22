@@ -100,6 +100,7 @@ if (!file.exists(totalstack.tif)) {
 # here we complete the stacking
 soilproperties <- stack(totalstack.tif)
 currentEnv <- stack(soilproperties, currentEnv1)
+rm(soilproperties,totalstack.tif,currentEnv1)
 ```
 
 The occurrence datasets are needed to extract useful environmental information per species. The 
@@ -119,6 +120,7 @@ for ( i in 1:length(taxa) ) {
     dir.create(taxon.dir.name, recursive = T)
   }
 }
+rm(i,taxon.dir.name)
 ```
 
 Below an example of how to plot these occurrence datasets is given.
@@ -155,6 +157,7 @@ for ( i in 1:length(taxa) ) {
     dev.off()
   }
 }
+rm(i,occ.map.file,taxon,wrld_simpl)
 ```
 
 Maxent: species distribution model
@@ -214,25 +217,47 @@ list_species_model_low_accuracy <- list()
 list_species_model_high_accuracy <- list()
 
 # iterate over n species
-for (i in 1:10) {
+for (i in 1:length(taxa)) {
+  name <- taxa[i]
+  valid.model.file <- sprintf('%s/results/per_species/%s/valid_maxent_model.rda', REPO_HOME, name)
+  invalid.model.file <- sprintf('%s/results/per_species/%s/invalid_maxent_model.rda', REPO_HOME, name)
+  
+  # check if we have the model cached
+  if(!file.exists(valid.model.file) && !file.exists(invalid.model.file)) {
+    message(name)
 
-  # set the extent for the training model with a buffer of 5 lon and lat
-  file <- paste(DATA_URL, t[i,1], sep = "")
-  species_occurence <- read.csv(file, header = T)
-  species_model <- Maxent_function(species_occurence, currentEnv)
+    # set the extent for the training model with a buffer of 5 lon and lat
+    csv.file <- sprintf('%s/data/filtered/%s.csv', REPO_HOME, name)
+    species_occurence <- read.csv(csv.file, header = T)
+    species_model <- Maxent_function(species_occurence, currentEnv)
 
-  # validate the model with the test data
-  # to construct an AUC model we need random points
-  random <- randomPoints(species_model[[2]], 1000)
-  Validation_species <- evaluate(p=species_model[[3]], a=random, x=species_model[[2]], model =species_model[[1]])
+    # validate the model with the test data
+    # to construct an AUC model we need random points
+    random <- randomPoints(species_model[[2]], 1000)
+    Validation_species <- evaluate(p=species_model[[3]], a=random, x=species_model[[2]], model=species_model[[1]])
 
-  # create two stacks one with the models with a low accuracy <0.7 and one with a high accuracy >0.7
-  name <- paste(t[i,1])
-  if (Validation_species@auc > 0.7) {
-    list_species_model_high_accuracy[[name]] <- species_model[[1]]
-  } 
-  else { 
-    list_species_model_low_accuracy[[name]] <- species_model[[1]]
+    # create two stacks one with the models with a low accuracy <0.7 and one with a high accuracy >0.7
+    if (Validation_species@auc > 0.7) {
+      list_species_model_high_accuracy[[name]] <- species_model[[1]]
+      save(species_model, file = valid.model.file)
+    } 
+    else { 
+      list_species_model_low_accuracy[[name]] <- species_model[[1]]
+      save(species_model, file = invalid.model.file)
+    }
+  } else if (file.exists(valid.model.file)) {
+    
+    # valid model was previously constructed, load it
+    env <- new.env()
+    nm <- load(valid.model.file, env)[1]
+    list_species_model_high_accuracy[[name]] <- env[[nm]]
+    
+  } else if (file.exists(invalid.model.file)) {
+    
+    # invalid model was previously constructed, load it
+    env <- new.env()
+    nm <- load(invalid.model.file)
+    list_species_model_low_accuracy[[name]] <- env[[nm]]
   }
 }
 ```
