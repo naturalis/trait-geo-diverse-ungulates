@@ -100,7 +100,6 @@ if (!file.exists(totalstack.tif)) {
 # here we complete the stacking
 soilproperties <- stack(totalstack.tif)
 currentEnv <- stack(soilproperties, currentEnv1)
-rm(soilproperties,totalstack.tif,currentEnv1)
 ```
 
 The occurrence datasets are needed to extract useful environmental information per species. The 
@@ -123,7 +122,7 @@ for ( i in 1:length(taxa) ) {
 rm(i,taxon.dir.name)
 ```
 
-Below an example of how to plot these occurrence datasets is given.
+Below, the raw occurrence data are plotted on a map, which goes to `/results/per_species/<taxon>/occurrences.png`:
 
 ```{r plot_points}
 data(wrld_simpl)
@@ -237,26 +236,27 @@ for (i in 1:length(taxa)) {
     Validation_species <- evaluate(p=species_model[[3]], a=random, x=species_model[[2]], model=species_model[[1]])
 
     # create two stacks one with the models with a low accuracy <0.7 and one with a high accuracy >0.7
+    model <- species_model[[1]]
     if (Validation_species@auc > 0.7) {
-      list_species_model_high_accuracy[[name]] <- species_model[[1]]
-      save(species_model, file = valid.model.file)
+      list_species_model_high_accuracy[[name]] <- model
+      save(model, file = valid.model.file)
     } 
     else { 
-      list_species_model_low_accuracy[[name]] <- species_model[[1]]
-      save(species_model, file = invalid.model.file)
+      list_species_model_low_accuracy[[name]] <- model
+      save(model, file = invalid.model.file)
     }
   } else if (file.exists(valid.model.file)) {
     
     # valid model was previously constructed, load it
     env <- new.env()
-    nm <- load(valid.model.file, env)[1]
+    nm <- load(valid.model.file, env)[[1]]
     list_species_model_high_accuracy[[name]] <- env[[nm]]
     
   } else if (file.exists(invalid.model.file)) {
     
     # invalid model was previously constructed, load it
     env <- new.env()
-    nm <- load(invalid.model.file)
+    nm <- load(invalid.model.file)[[1]]
     list_species_model_low_accuracy[[name]] <- env[[nm]]
   }
 }
@@ -286,14 +286,17 @@ The outcome of the species distribution models can be used to create a predictio
 
 ```{r plot_suitability}
 
+# XXX predictions from the cached models don't work because the layers from Totalstack.tif
+# don't have the right names
+
 # model predictions
 prediction_rasters <- stack()
 for (i in 1:length(list_species_model_high_accuracy) ) {
   open_species_model <- list_species_model_high_accuracy[[i]]
   
   # select non correlated layers from model environment in the world environment
-  noncorrelated <- names(list_species_model_high_accuracy[[i]]@presence)
-  subsetworldEnv <- subset(currentEnv,c(noncorrelated))
+  noncorrelated <- names(open_species_model@presence)
+  subsetworldEnv <- subset(currentEnv,noncorrelated)
 
   # make prediction of the whole earth based on the maxent SDM
   species.pred <- predict(open_species_model, subsetworldEnv)
