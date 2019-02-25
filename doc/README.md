@@ -56,7 +56,7 @@ We consider the following, possibly extinct, (sub)species as wild ancestors of d
 | Bos taurus primigenius | Aurochs              | Cattle         | 4262590 | 14200690 | 10.1038/hdy.2016.79              | 10.15468/dl.rs9oyz |
 | Bubalus bubalis arnee  | Indian water buffalo | Water buffalo  | 7559792 | 14200696 | 10.1111/j.1365-2052.2010.02166.x | 10.15468/dl.hmvx8i |
 | Camelus bactrianus     | Bactrian camel       | Bactrian camel | 2441238 | 14200112 | 10.1111/j.1365-2052.2008.01848.x | 10.15468/dl.xsugri |
-| Camelus dromedarius    | Arabian camel        | Arabian camel  | 9055455 | 14200115 | 10.1073/pnas.1519508113          | 10.15468/dl.jlypmm |
+| Camelus dromedarius    | Arabian camel        | Arabian camel  | 9055455 | 14200115 | 10.1073/pnas.1519508113          | 10.15468/dl.rkekce |
 | Capra hircus aegagrus  | Bezoar               | Goat           | 4262706 | 14200778 | 10.1073/pnas.0804782105          | 10.15468/dl.eluwca |
 | Equus africanus        | African wild ass     | Donkey         | 5787168 | 14100004 | 10.1098/rspb.2010.0708           | 10.15468/dl.zwa3id |
 | Equus przewalskii      | Przewalski's horse   | Horse          | 5787169 | 14100018 | 10.1073/pnas.1111122109          | 10.15468/dl.jemutr |
