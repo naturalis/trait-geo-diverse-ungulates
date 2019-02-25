@@ -97,8 +97,32 @@ if (!file.exists(totalstack.tif)) {
   download.file("https://www.dropbox.com/s/nlfe349hykg9pfs/Totalstack.tif?dl=1", totalstack.tif, quiet = T)
 }
 
-# here we complete the stacking
+# load the file contents, assign layer names, add to environment
 soilproperties <- stack(totalstack.tif)
+names(soilproperties) <- c(
+  "Aspect_10deg",
+  "BulkDensity_10min",
+  "ClayPercentage_10min",
+  "current_10arcmin_annualPET",
+  "current_10arcmin_aridityIndexThornthwaite",
+  "current_10arcmin_climaticMoistureIndex",
+  "current_10arcmin_continentality",
+  "current_10arcmin_embergerQ",
+  "current_10arcmin_growingDegDays0",
+  "current_10arcmin_growingDegDays5",
+  "current_10arcmin_maxTempColdest",
+  "current_10arcmin_minTempWarmest",
+  "current_10arcmin_monthCountByTemp10",
+  "current_10arcmin_PETColdestQuarter",
+  "current_10arcmin_PETDriestQuarter",
+  "current_10arcmin_PETseasonality",
+  "current_10arcmin_PETWarmestQuarter",
+  "current_10arcmin_PETWettestQuarter",
+  "current_10arcmin_thermicityIndex",
+  "OrganicCarbon_10min",
+  "PhCaCL_10min",
+  "slope_10deg"
+)
 currentEnv <- stack(soilproperties, currentEnv1)
 ```
 
@@ -282,25 +306,41 @@ plot(open_species_model, main = name)
 response(open_species_model)
 ```
 
-The outcome of the species distribution models can be used to create a prediction of the areas that are suitable for the species. The script below shows a loop that creates prediction raster files for the models with a high prediction accuracy.
+The outcome of the species distribution models can be used to create a prediction of the areas 
+that are suitable for the species. The script below shows a loop that creates prediction raster 
+files for the models with a high prediction accuracy.
 
 ```{r plot_suitability}
-
-# XXX predictions from the cached models don't work because the layers from Totalstack.tif
-# don't have the right names
-
-# model predictions
+# combine all prediction rasters, either by doing the projection or by reading from a file
 prediction_rasters <- stack()
+taxon.names <- names(list_species_model_high_accuracy)
 for (i in 1:length(list_species_model_high_accuracy) ) {
-  open_species_model <- list_species_model_high_accuracy[[i]]
   
-  # select non correlated layers from model environment in the world environment
-  noncorrelated <- names(open_species_model@presence)
-  subsetworldEnv <- subset(currentEnv,noncorrelated)
-
-  # make prediction of the whole earth based on the maxent SDM
-  species.pred <- predict(open_species_model, subsetworldEnv)
-  prediction_rasters <- stack(prediction_rasters, species.pred)
+  # file name: load if exists, create otherwise
+  valid.model.prediction <- sprintf('%s/results/per_species/%s/valid_maxent_prediction.rda', REPO_HOME, taxon.names[i])
+  if( file.exists(valid.model.prediction) ) {
+    
+    # load file
+    message(sprintf("loading prediction for taxon %s from file %s", taxon.names[i], valid.model.prediction))
+    env <- new.env()
+    nm <- load(valid.model.prediction, envir = env)[[1]]
+    prediction_rasters <- stack(prediction_rasters, env[[nm]])
+  }
+  else {
+    message(sprintf("computing prediction for taxon %s, will write to file %s", taxon.names[i], valid.model.prediction))
+    open_species_model <- list_species_model_high_accuracy[[i]]
+    
+    # select non correlated layers from model environment in the world environment
+    noncorrelated <- names(open_species_model@presence)
+    subsetworldEnv <- subset(currentEnv,noncorrelated)
+  
+    # make prediction of the whole earth based on the maxent SDM
+    species.pred <- predict(open_species_model, subsetworldEnv)
+    
+    # save file, stack prediction contents
+    save(species.pred, file = valid.model.prediction)
+    prediction_rasters <- stack(prediction_rasters, species.pred)
+  }
 }
 
 names(prediction_rasters) <- names(list_species_model_high_accuracy)
@@ -318,7 +358,7 @@ overlap <- calc.niche.overlap(prediction_rasters, stat="D", maxent.args )
 ```
 
 Having calculated the Schoener's D distances, we can now use these to make a symmetrical distance
-matrix, and perform a n
+matrix, and perform a neighbor joining clustering to visualize the distances in niche space.
 
 ```{r cluster_dist}
 # create a distance matrix
