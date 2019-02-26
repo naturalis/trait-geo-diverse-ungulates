@@ -250,36 +250,47 @@ for (i in 1:length(taxa)) {
   if(!file.exists(valid.model.file) && !file.exists(invalid.model.file)) {
     message(name)
 
-    # set the extent for the training model with a buffer of 5 lon and lat
+    # read occurrences
     csv.file <- sprintf('%s/data/filtered/%s.csv', REPO_HOME, name)
     species_occurence <- read.csv(csv.file, header = T)
+    
+    # Run maxent:
+    # - clip environment to ± 5 degrees lat/long relative to the occurrences
+    # - remove colinear layers
+    # - prepare k-folds cross-validation partition
+    # - run dismo::maxent()
     species_model <- Maxent_function(species_occurence, currentEnv)
 
     # validate the model with the test data
-    # to construct an AUC model we need random points
+    # to construct an AUC model we need random points drawn from the clipped, variable-selected, environment
     random <- randomPoints(species_model[[2]], 1000)
-    Validation_species <- evaluate(p=species_model[[3]], a=random, x=species_model[[2]], model=species_model[[1]])
+    Validation_species <- dismo::evaluate(
+      p = species_model[[3]],    # 25% sample of input occurrences
+      a = random,                # random absences
+      x = species_model[[2]],    # the clipped, variable-selected environment
+      model = species_model[[1]] # the maxent model
+    )
 
-    # create two stacks one with the models with a low accuracy <0.7 and one with a high accuracy >0.7
-    model <- species_model[[1]]
+    # populate two stacks, one with the models with a low accuracy <0.7 and one with a high accuracy >0.7
     if (Validation_species@auc > 0.7) {
+      model <- species_model[[1]]
       list_species_model_high_accuracy[[name]] <- model
       save(model, file = valid.model.file)
     } 
     else { 
+      model <- species_model[[1]]
       list_species_model_low_accuracy[[name]] <- model
       save(model, file = invalid.model.file)
     }
-  } else if (file.exists(valid.model.file)) {
     
-    # valid model was previously constructed, load it
+  # valid model was previously constructed, load it
+  } else if (file.exists(valid.model.file)) {
     env <- new.env()
     nm <- load(valid.model.file, env)[[1]]
     list_species_model_high_accuracy[[name]] <- env[[nm]]
-    
+  
+  # invalid model was previously constructed, load it  
   } else if (file.exists(invalid.model.file)) {
-    
-    # invalid model was previously constructed, load it
     env <- new.env()
     nm <- load(invalid.model.file)[[1]]
     list_species_model_low_accuracy[[name]] <- env[[nm]]
@@ -428,7 +439,7 @@ mean_pw_distance <- function(tree, tip.vector) {
   for ( i in 1:max ) {
     min <- i + 1
     for ( j in min:nt ) {
-      dist.vector[k] <- fastDist(tree, tip.vector[i], tip.vector[j])
+      dist.vector[k] <- phytools::fastDist(tree, tip.vector[i], tip.vector[j])
       k <- k + 1
     }
   }
