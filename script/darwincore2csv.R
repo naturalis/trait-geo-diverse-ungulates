@@ -6,7 +6,7 @@ library(dplyr) # data munging library
 
 # what to write in the data file and output csv file name
 genus.name   <- 'Camelus'
-species.name <- 'dromedarius'
+species.name <- 'bactrianus'
 
 # for the workflow of unpacking a zip file downloaded from gbif into the 
 # /data/domesticated folder these variables can be left unchanged
