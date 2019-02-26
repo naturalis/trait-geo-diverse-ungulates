@@ -347,6 +347,20 @@ names(prediction_rasters) <- names(list_species_model_high_accuracy)
 plot(prediction_rasters)
 ```
 
+Now that we have the prediction rasters we can write them to files:
+
+```{r write_predictions}
+for ( i in 1:length(names(prediction_rasters)) ) {
+  taxon.name <- names(prediction_rasters)[[i]]
+  prediction.map.file <- sprintf('%s/results/per_species/%s/prediction_map.pdf', REPO_HOME, taxon.name)
+  if ( !file.exists(prediction.map.file) ) {
+    pdf(file = prediction.map.file)
+    plot(prediction_rasters[[i]])
+    dev.off()
+  }
+}
+```
+
 To assess whether the predicted suitable niche spaces differ per species we calculate their niche 
 overlap. We use Schoener’s D to calculate niche overlap since it has been suggested to be the best 
 suited index for maxent SDM outputs (Rödder & Engler, 2011). The index ranges from 0 which is no 
