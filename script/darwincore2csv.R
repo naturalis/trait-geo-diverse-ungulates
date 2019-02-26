@@ -15,6 +15,7 @@ infile.name  <- sprintf("%s/data/domesticated/%s_%s/darwincore.zip", REPO_HOME, 
 outfile.name <- sprintf("%s/data/filtered/%s_%s.csv", REPO_HOME, genus.name, species.name)
 
 # read the occurrences file from darwincore archive
+dwca_cache$delete_all()
 infile.dwca_gbif <- dwca_read(infile.name, read = TRUE)
 occurrences.df   <- infile.dwca_gbif$data$occurrence.txt
 
