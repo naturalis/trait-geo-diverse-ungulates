@@ -426,6 +426,8 @@ dom.taxa <- c(
 # tips in tree
 dom.tips <- tree$tip.label[ which(tree$tip.label %in% dom.taxa) ]
 
+# this function calculates the average pairwise patristic distance among an
+# input vector of tip labels
 mean_pw_distance <- function(tree, tip.vector) {
 
   # calculate size of distance matrix, instantiate vector
@@ -446,7 +448,10 @@ mean_pw_distance <- function(tree, tip.vector) {
   return(mean(dist.vector))
 }
 
+# calculate average pairwise distance (APD) among domesticates
 dom.dist <- mean_pw_distance(tree, dom.tips)
+
+# take random tip samples, compute APD among these many time
 sam.num  <- 1000
 sam.dist <- vector( mode = "numeric", length = sam.num )
 for ( i in 1:sam.num ) {
@@ -454,13 +459,26 @@ for ( i in 1:sam.num ) {
   sam.dist[i] <- mean_pw_distance(tree, sam.tips)
 }
 
+
 {
-  hist(
+  h <- hist(
     sam.dist, 
     xlab = sprintf("Mean pairwise patristic distance in random sample of %i tips (n=%i)", length(dom.tips), sam.num ),
     col = "lightblue", 
     main = "Domesticated Ungulates cluster in niche space"
   )
+  
+  # fit normal distribution
+  xfit <- seq(min(sam.dist), max(sam.dist), length = length(sam.dist)) 
+  yfit <- dnorm(xfit, mean = mean(sam.dist), sd = sd(sam.dist)) 
+  yfit <- yfit * diff(h$mids[1:2]) * length(sam.dist)
+  lines(xfit, yfit, col = "black", lwd = 2)
+  
+  # draw ± 2 * standard deviation
+  abline(v=mean(sam.dist)+2*sd(sam.dist), col = "green")
+  abline(v=mean(sam.dist)-2*sd(sam.dist), col = "green")
+  
+  # indicate domesticated APD
   abline(v=dom.dist, col = "red")
 }
 ```
