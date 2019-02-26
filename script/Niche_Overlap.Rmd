@@ -35,6 +35,7 @@ library(raster, quietly = T)
 library(SDMTools, quietly = T)
 library(factoextra, quietly = T)
 library(ecospat, quietly = T)
+library(phytools, quietly = T)
 
 # our local code. the goal is that this will eventually be properly portable code that lives
 # inside the ./R folder of the repository
@@ -393,7 +394,54 @@ if ( !file.exists(dendrogram.file) ) {
 
   # plot an unrooted dendrogram
   tree <- nj(dmatrix)
-  write.tree(tree, file = dendrogram.tree.file)
+  write.tree(tree, file = dendrogram.file)
+} else {
+  tree <- read.tree(file = dendrogram.file)
 }
 ```
 
+Now we can assess whether domesticated Ungulates come from specific areas in niche space:
+
+```{r resample_niche_clustering}
+
+# vector of all tips
+dom.taxa <- c(
+  "Bos_frontalis_gaurus", "Bos_grunniens_mutus", "Bos_javanicus", "Bos_taurus_primigenius",
+ 	"Bubalus_bubalis_arnee", "Camelus_bactrianus", "Camelus_dromedarius", "Capra_hircus_aegagrus",
+ 	"Equus_przewalskii", "Equus_africanus", "Lama_glama_guanicoe", "Ovis_aries_orientalis",
+ 	"Rangifer_tarandus", "Sus_scrofa", "Vicagna_vicugna"
+)
+
+# tips in tree
+dom.tips <- tree$tip.label[ which(tree$tip.label %in% dom.taxa) ]
+
+all_pw_distances <- function(tree, tip.vector) {
+
+  # calculate size of distance matrix, instantiate vector
+  nt <- length(tip.vector)
+  nd <- ( ( nt * nt ) - nt ) / 2
+  dist.vector <- vector( mode = "numeric", length = nd )
+  
+  # do all pairwise comparisons
+  k <- 1
+  max <- nt - 1
+  for ( i in 1:max ) {
+    min <- i + 1
+    for ( j in min:nt ) {
+      dist.vector[k] <- fastDist(tree, tip.vector[i], tip.vector[j])
+      k <- k + 1
+    }
+  }
+  return(mean(dist.vector))
+}
+
+dom.dist <- all_pw_distances(tree, dom.tips)
+sam.dist <- vector( mode = "numeric", length = 1000 )
+for ( i in 1:1000 ) {
+  sam.tips <- sample(tree$tip.label, length(dom.tips), replace = F)
+  sam.dist[i] <- all_pw_distances(tree, sam.tips)
+}
+
+{hist(sam.dist, xlab = "Mean pairwise distance in sample", col = "lightblue", main = "Domesticated Ungulates cluster in niche space")
+abline(v=dom.dist, col = "red")}
+```
