@@ -78,3 +78,5 @@ were obtained for these:
 - Ovis ammon: 10.15468/dl.ykvnch
 - Procapra picticaudata: 10.15468/dl.a8nwfm
 - Rucervus duvaucelii: 10.15468/dl.1kfjfv
+- Tragulus javanicus: 10.15468/dl.ch6cpf
+- Tragulus kanchil: 10.15468/dl.a0fjcx
