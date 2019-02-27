@@ -76,3 +76,4 @@ were obtained for these:
 - Madoqua saltiana: 10.15468/dl.4c9ouv
 - Neotragus batesi: 10.15468/dl.orreg1
 - Ovis ammon: 10.15468/dl.ykvnch
+- Procapra picticaudata: 10.15468/dl.a8nwfm
