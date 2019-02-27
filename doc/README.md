@@ -65,3 +65,11 @@ We consider the following, possibly extinct, (sub)species as wild ancestors of d
 | Rangifer tarandus      | Reindeer             | Reindeer       | 5220114 | 14200328 | 10.1098/rspb.2008.0332           | 10.15468/dl.sh1osv |
 | Sus scrofa             | Wild boar            | Pig            | 7705930 | 14200054 | PMID:10747069                    | 10.15468/dl.rgyaaf |
 | Vicugna vicugna        | Vicugna              | Alpaca         | 5220192 | 14200122 | 10.1098/rspb.2001.1774           | 10.15468/dl.qpjtrx |
+
+Manually selected wild species data
+-----------------------------------
+
+The data cleaning workflow failed to produce sufficient records for a handful of wild species. Using custom queries, more data
+were obtained for these:
+
+- Budorcas taxicolor: 10.15468/dl.pbnqf0
