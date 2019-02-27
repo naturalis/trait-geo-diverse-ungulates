@@ -5,8 +5,8 @@ library(finch) # reads darwincore zip file
 library(dplyr) # data munging library
 
 # what to write in the data file and output csv file name
-genus.name <- "Camelus"
-species.name <- "bactrianus"
+genus.name <- "Tragulus"
+species.name <- "kanchil"
 
 # for the workflow of unpacking a zip file downloaded from gbif into the
 # /data/domesticated folder these variables can be left unchanged
@@ -15,12 +15,12 @@ infile.name <- sprintf("%s/data/domesticated/%s_%s/darwincore.zip", REPO_HOME, g
 outfile.name <- sprintf("%s/data/filtered/%s_%s.csv", REPO_HOME, genus.name, species.name)
 
 # read the occurrences file from darwincore archive
-dwca_cache$delete_all()
-infile.dwca_gbif <- dwca_read(infile.name, read = TRUE)
+finch::dwca_cache$delete_all()
+infile.dwca_gbif <- finch::dwca_read(infile.name, read = TRUE)
 occurrences.df <- infile.dwca_gbif$data$occurrence.txt
 
 # select, filter
-occurrences.df <- select(
+occurrences.df <- dplyr::select(
   occurrences.df,
   gbif_id = gbifID,
   decimal_latitude = decimalLatitude,
@@ -42,3 +42,4 @@ write.csv(
   eol = "\n",
   row.names = F
 )
+
