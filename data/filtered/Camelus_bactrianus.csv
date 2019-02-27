@@ -13,3 +13,7 @@ gbif_id,taxon_name,decimal_latitude,decimal_longitude
 https://www.inaturalist.org/observations/17528539,Camelus bactrianus,43.822232,102.394447
 https://www.inaturalist.org/observations/17503202,Camelus bactrianus,43.761328,102.387767
 https://www.inaturalist.org/observations/17493151,Camelus bactrianus,43.760583,102.390547
+https://www.ncbi.nlm.nih.gov/biosample/SAMN03365979,Camelus bactrianus,43.55659,96.365556
+https://www.ncbi.nlm.nih.gov/biosample/SAMN03365978,Camelus bactrianus,43.467675,96.539928
+https://www.ncbi.nlm.nih.gov/biosample/SAMN03365977,Camelus bactrianus,43.606073,97.162427
+https://www.ncbi.nlm.nih.gov/biosample/SAMN03365976,Camelus bactrianus,43.46148,97.203527
