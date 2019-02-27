@@ -1,0 +1,162 @@
+---
+title: "Niche Traits"
+author: "Rutger Vos (@rvosa)"
+date: "27-2-2019"
+output: html_document
+---
+
+Load the required libraries:
+
+```{r load_libs}
+library(phytools, quietly = T)
+```
+
+Initialize global variables:
+
+```{r globals}
+REPO_HOME <- paste(getwd(),'/../',sep='')
+```
+
+Load the list of taxa:
+
+```{r taxa}
+taxa.names <- scan(paste(REPO_HOME, "/data/filtered/taxa.txt", sep = ""), sep = "\n", what = character())
+```
+
+Define the list of GIS layers, i.e. the traits:
+
+```{r layers}
+layers.names <- c(
+	"Aspect_10deg",
+	"BulkDensity_10min",
+	"ClayPercentage_10min",
+	"OrganicCarbon_10min",
+	"PhCaCL_10min",
+	"current_10arcmin_PETColdestQuarter",
+	"current_10arcmin_PETDriestQuarter",       
+	"current_10arcmin_PETWarmestQuarter",   
+	"current_10arcmin_PETWettestQuarter",       
+	"current_10arcmin_PETseasonality",   
+	"current_10arcmin_annualPET",       
+	"current_10arcmin_aridityIndexThornthwaite",
+	"current_10arcmin_climaticMoistureIndex",       
+	"current_10arcmin_continentality",   
+	"current_10arcmin_embergerQ",       
+	"current_10arcmin_growingDegDays0",   
+	"current_10arcmin_growingDegDays5",       
+	"current_10arcmin_maxTempColdest",   
+	"current_10arcmin_minTempWarmest",       
+	"current_10arcmin_monthCountByTemp10",   
+	"current_10arcmin_thermicityIndex",       
+	"slope_10deg",   
+	"bio1",       
+	"bio2",   
+	"bio3",       
+	"bio4",   
+	"bio5",       
+	"bio6",   
+	"bio7",       
+	"bio8",
+	"bio9",       
+	"bio10",   
+	"bio11",       
+	"bio12",   
+	"bio13",       
+	"bio14",   
+	"bio15",       
+	"bio16",   
+	"bio17",       
+	"bio18",   
+	"bio19"
+)
+```
+
+Populate a data.frame of taxa x traits and record the contribution of each of these traits:
+
+```{r models}
+# instantiate data frame from a matrix of taxa x layers
+traits.means <- data.frame(matrix(
+  nrow = length(taxa.names), 
+  ncol = length(layers.names) + 1, 
+  dimnames = list(taxa.names,c("IsDomesticated",layers.names)))
+)
+
+# instantiate variable contributions frame from a matrix of taxa x layers
+traits.contributions <- data.frame(matrix(
+  nrow = length(taxa.names), 
+  ncol = length(layers.names), 
+  dimnames = list(taxa.names,layers.names))
+)
+
+# start iterating over taxa
+for ( i in 1:length(taxa.names) ) {
+  
+  # load maxent model if it exists
+  message(sprintf("loading layer traits for %s",taxa.names[i]))
+  maxent.model.file <- sprintf(
+    '%s/results/per_species/%s/valid_maxent_model.rda', 
+    REPO_HOME, 
+    taxa.names[i]
+  )
+  if ( file.exists(maxent.model.file) ) {
+    tmp.env <- new.env()
+    tmp.nm <- load(maxent.model.file, tmp.env)[[1]]
+    maxent.model <- tmp.env[[tmp.nm]]
+    
+    # the plot function returns a named list with the variable contributions
+    var.contrib <- plot(maxent.model)
+    
+    # iterate over layers
+    for ( j in 1:length(layers.names) ) {
+      if ( layers.names[j] %in% colnames(maxent.model@presence) ) {
+        values.list <- maxent.model@presence[layers.names[j]]
+        values.mean <- mean(values.list[,1])
+        traits.means[i,j+1] <- values.mean
+        traits.contributions[i,j] <- var.contrib[layers.names[j]]
+      }
+    }
+    rm(tmp.env,tmp.nm)
+  }
+}
+
+```
+
+Now let's summarize the variable importance:
+
+```{r contributions}
+
+# make a box plot. as a side effect, the summary statistics are returned
+traits.contributions.summary <- boxplot.default(traits.contributions, varwidth = T, outline = F)
+
+# we will populate a data frame with the returned summary statistics
+traits.contributions.df <- data.frame(matrix(
+  nrow = length(layers.names), 
+  ncol = 2, 
+  dimnames = list(layers.names,c("mean","n")))
+)
+for ( i in 1:length(traits.contributions.summary$names) ) {
+  taxon.name <- traits.contributions.summary$names[i]
+  traits.contributions.df[i,1] <- traits.contributions.summary$stats[i*5-2]
+  traits.contributions.df[i,2] <- traits.contributions.summary$n[i]
+}
+```
+
+We are going to look at the trait means as predictor variables for domestication, so 
+we must at the state of domestication to the data frame:
+
+```{r domestication}
+# vector of all tips
+dom.taxa <- c(
+  "Bos_frontalis_gaurus", "Bos_grunniens_mutus", "Bos_javanicus", "Bos_taurus_primigenius",
+ 	"Bubalus_bubalis_arnee", "Camelus_bactrianus", "Camelus_dromedarius", "Capra_hircus_aegagrus",
+ 	"Equus_przewalskii", "Equus_africanus", "Lama_glama_guanicoe", "Ovis_aries_orientalis",
+ 	"Rangifer_tarandus", "Sus_scrofa", "Vicagna_vicugna"
+)
+for ( i in 1:length(taxa.names) ) {
+  if ( taxa.names[i] %in% dom.taxa ) {
+    traits.means[i,1] <- T
+  } else {
+    traits.means[i,1] <- F
+  }
+}
+```
