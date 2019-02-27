@@ -77,3 +77,4 @@ were obtained for these:
 - Neotragus batesi: 10.15468/dl.orreg1
 - Ovis ammon: 10.15468/dl.ykvnch
 - Procapra picticaudata: 10.15468/dl.a8nwfm
+- Rucervus duvaucelii: 10.15468/dl.1kfjfv
