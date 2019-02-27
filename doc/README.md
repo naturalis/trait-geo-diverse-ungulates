@@ -74,3 +74,4 @@ were obtained for these:
 
 - Budorcas taxicolor: 10.15468/dl.pbnqf0
 - Madoqua saltiana: 10.15468/dl.4c9ouv
+- Neotragus batesi: 10.15468/dl.orreg1
