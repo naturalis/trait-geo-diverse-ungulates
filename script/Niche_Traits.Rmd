@@ -9,6 +9,7 @@ Load the required libraries:
 
 ```{r load_libs}
 library(phytools, quietly = T)
+library(phylolm, quietly = T)
 source('Data.R')
 ```
 
@@ -90,44 +91,117 @@ We are going to look at the trait means as predictor variables for domestication
 we create a data frame with domestication as a state:
 
 ```{r domestication}
-# instantiate data frame from a matrix of taxa x layers
-traits.means <- data.frame(matrix(
-  nrow = length(taxa.names), 
-  ncol = length(layers.names) + 1, 
-  dimnames = list(taxa.names,c("IsDomesticated",layers.names)))
-)
+traits.means.file <- sprintf('%s/results/OMI/Average_Species_Sites_Raw.csv', REPO_HOME)
 
-# vector of all domesticated taxa
-dom.taxa <- c(
-  "Bos_frontalis_gaurus", "Bos_grunniens_mutus", "Bos_javanicus", "Bos_taurus_primigenius",
- 	"Bubalus_bubalis_arnee", "Camelus_bactrianus", "Camelus_dromedarius", "Capra_hircus_aegagrus",
- 	"Equus_przewalskii", "Equus_africanus", "Lama_glama_guanicoe", "Ovis_aries_orientalis",
- 	"Rangifer_tarandus", "Sus_scrofa", "Vicagna_vicugna"
-)
+# do the averaging if we haven't already
+if (!file.exists(traits.means.file) ) {
 
-# iterate over taxa
-for ( i in 1:length(taxa.names) ) {
-  taxon.name <- taxa.names[i]
-  message(taxon.name)
+  # instantiate data frame from a matrix of taxa x layers
+  traits.means <- data.frame(matrix(
+    nrow = length(taxa.names), 
+    ncol = length(layers.names) + 1, 
+    dimnames = list(taxa.names,c("IsDomesticated",layers.names)))
+  )
   
-  # store whether this taxon is domesticated
-  if ( taxon.name %in% dom.taxa ) {
-    traits.means[i,1] <- T
-  } else {
-    traits.means[i,1] <- F
+  # vector of all domesticated taxa
+  dom.taxa <- c(
+    "Bos_frontalis_gaurus", "Bos_grunniens_mutus", "Bos_javanicus", "Bos_taurus_primigenius",
+   	"Bubalus_bubalis_arnee", "Camelus_bactrianus", "Camelus_dromedarius", "Capra_hircus_aegagrus",
+   	"Equus_przewalskii", "Equus_africanus", "Lama_glama_guanicoe", "Ovis_aries_orientalis",
+   	"Rangifer_tarandus", "Sus_scrofa", "Vicagna_vicugna"
+  )
+  
+  # iterate over taxa
+  for ( i in 1:length(taxa.names) ) {
+    taxon.name <- taxa.names[i]
+    message(taxon.name)
+    
+    # store whether this taxon is domesticated
+    if ( taxon.name %in% dom.taxa ) {
+      traits.means[i,1] <- T
+    } else {
+      traits.means[i,1] <- F
+    }
+    
+    # read occurrences, create df with numeric coordinates
+    taxon.occ <- get_occurrences(REPO_HOME,taxon.name)
+    taxon.coord <- as.data.frame(cbind(taxon.occ[, c("decimal_longitude", "decimal_latitude")]))
+    taxon.coord$decimal_longitude <- as.numeric(as.character(taxon.coord$decimal_longitude))
+    taxon.coord$decimal_latitude <- as.numeric(as.character(taxon.coord$decimal_latitude))  
+    
+    # extract data, store in mean values
+    taxon.values <- extract(data.layers, taxon.coord, df = T, fun = 'mean')
+    for ( j in 1:length(layers.names) ) {
+      layer.name <- layers.names[j] 
+      traits.means[taxon.name,layer.name] <- mean(taxon.values[,layer.name], na.rm = T)
+    }  
   }
   
-  # read occurrences, create df with numeric coordinates
-  taxon.occ <- get_occurrences(REPO_HOME,taxon.name)
-  taxon.coord <- as.data.frame(cbind(taxon.occ[, c("decimal_longitude", "decimal_latitude")]))
-  taxon.coord$decimal_longitude <- as.numeric(as.character(taxon.coord$decimal_longitude))
-  taxon.coord$decimal_latitude <- as.numeric(as.character(taxon.coord$decimal_latitude))  
+  # write result
+  write.csv(
+    traits.means, 
+    file = traits.means.file, 
+    quote = F, 
+    row.names = T
+  )
+} else {
   
-  # extract data, store in mean values
-  taxon.values <- extract(data.layers, taxon.coord, df = T, fun = 'mean')
-  for ( j in 1:length(layers.names) ) {
-    layer.name <- layers.names[j] 
-    traits.means[taxon.name,layer.name] <- mean(taxon.values[,layer.name], na.rm = T)
-  }  
+  # read means from file
+  traits.means <- read.csv(
+    traits.means.file, 
+    header = T, 
+    sep = ",", 
+    row.names = 1
+  )
+}
+```
+
+Let's plot some of these values on the niche clustering dendrogram:
+
+```{r trace}
+# load niche tree
+niche.tree.file <- sprintf('%s/results/maxent/dendrogram.tree',REPO_HOME)
+niche.tree <- read.tree(niche.tree.file)
+dom.tip.idx <- match(dom.taxa,niche.tree$tip.label)
+dom.tip.idx <- dom.tip.idx[!is.na(dom.tip.idx)]
+
+# iterate over layers
+for ( i in 1:length(layers.names) ) {
+  layer.name <- layers.names[i]
+  layer.file <- sprintf('%s/results/maxent/%s_contMap.pdf',REPO_HOME,layer.name)
+  
+  # write continuous mapping if not exists
+  if (!file.exists(layer.file)) {
+  
+    # extract named vector of local layer values, subset to match tips in trees
+    trait.vector <- traits.means[,layer.name]
+    names(trait.vector) <- row.names(traits.means)
+    trait.vector <- trait.vector[niche.tree$tip.label]
+  
+    # do the mapping
+    cm <- contMap(
+      niche.tree,
+      trait.vector,
+      plot = F
+    )
+    
+    # write result
+    pdf(file = layer.file)
+    plot(
+      cm,
+      type = "fan",
+      fsize = 0.4,
+      lwd = 2,
+      outline = F,
+      ftype = 'i'
+    )  
+    tiplabels(
+      tip = dom.tip.idx, 
+      frame = "none", 
+      pch = 20
+    )
+    dev.off()
+  }
+
 }
 ```
