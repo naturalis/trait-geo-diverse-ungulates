@@ -1,0 +1,150 @@
+---
+title: "Outlying mean index"
+author: "Elke Hendrix"
+date: "February 28, 2019"
+output: html_document
+---
+
+Load the required libraries:
+
+```{r load_libs}
+library(adehabitatHS, quietly = T)
+library(raster, quietly = T)
+library(SDMTools, quietly = T)
+library(factoextra, quietly = T)
+library(ecospat, quietly = T)
+```
+
+Set the location of the root directory of the git repository
+```{r globals}
+REPO_HOME <- paste(getwd(),'/../',sep='')
+```
+
+Import the taxa list 
+
+```{r taxa}
+taxa.names <- scan(paste(REPO_HOME, "/data/filtered/taxa.txt", sep = ""), sep = "\n", what = character())
+```
+
+Open the abiotic environmental raster layers in the GIS repository
+
+```{r layers}
+
+currentEnv1 = raster::getData(
+  "worldclim", 
+  var="bio", 
+  res=10, 
+  path=paste(REPO_HOME, '/data/GIS', sep=''), 
+  download=T
+)
+
+# The location of the TIFF file with the stacked layers described directly above
+files_list <- list.files(paste(REPO_HOME,'/data/GIS/10_deg', sep=''))
+additional_datasets<- stack()
+for (i in 1:length(files_list) ){
+# Open the raster file in the list
+directorypath<- paste(REPO_HOME,'/data/GIS/10_deg/', files_list[i], sep='')
+name<- files_list[i]
+dataset<- raster(directorypath)
+additional_datasets<-stack(additional_datasets,dataset)
+}
+
+names(additional_datasets)<- c("Aspect_10deg", 
+                               "BulkDensity_10min", 
+                               "ClayPercentage_10min", 
+                               "current_10arcmin_annualPET", 
+                               "current_10arcmin_aridityIndexThornthwaite", 
+                              "current_10arcmin_climaticMoistureIndex",
+                               "current_10arcmin_continentality",
+                               "current_10arcmin_embergerQ",
+                               "current_10arcmin_growingDegDays0", 
+                               "current_10arcmin_growingDegDays5", 
+                               "current_10arcmin_maxTempColdest", 
+                               "current_10arcmin_minTempWarmest",
+                               "current_10arcmin_monthCountByTemp10",
+                               "current_10arcmin_PETColdestQuarter",
+                               "current_10arcmin_PETDriestQuarter",
+                               "current_10arcmin_PETseasonality",
+                               "current_10arcmin_PETWarmestQuarter",
+                               "current_10arcmin_PETWettestQuarter",
+                              "current_10arcmin_thermicityIndex",          
+                                "OrganicCarbon_10min",
+                                "PhCaCL_10min", 
+                                "slope_10deg")
+
+currentEnv <- stack(additional_datasets, currentEnv1)
+
+```
+
+The raster layers are transformed to a spatialpixelsdataframe
+
+```{r taxa}
+rtoAsc<- as(currentEnv, "SpatialPixelsDataFrame")
+proj4string(rtoAsc) <- CRS("+proj=longlat +datum=WGS84")
+```
+
+
+Transform the csv files with longitude and latitude values to a SpatialPointsDataFrame
+
+```{r SpatialPointDataFrame}
+# create an empty SpatialPointDataFrame to populate in the following loop
+
+spdf<-new("SpatialPointsDataFrame", coords = structure(numeric(0), .Dim = c(0L, 2L),                  .Dimnames = list(NULL, c("decimal_longitude", "decimal_latitude"))),  
+    bbox = structure(c(1, 1, 1, 1), .Dim = c(2L, 2L),                         
+                     .Dimnames = list(c("decimal_longitude", "decimal_latitude"),
+                                      c("min", "max"))),
+    proj4string = new("CRS", projargs = "+proj=longlat +datum=WGS84")) 
+
+# populate the empty dataframe with longitude and latitude values from the taxa list
+
+for (i in 1:length(taxa.names)){
+  csv.file <- sprintf('%s/data/filtered/%s.csv', REPO_HOME, taxa.names[i])
+  species_occurence<-as.matrix(read.csv(csv.file))
+  name<- paste(taxa.names[i])
+  length_df<- NROW(species_occurence)
+  bindlonglat<- as.data.frame(cbind(species_occurence[, c("decimal_longitude", "decimal_latitude")]))
+  points<- bindlonglat
+  points$decimal_longitude<- as.numeric(as.character(points$decimal_longitude))
+  points$decimal_latitude<- as.numeric(as.character(points$decimal_latitude))
+  coordinates(points)<- ~ decimal_longitude + decimal_latitude
+  spdf2<- SpatialPointsDataFrame(points, data.frame(species = rep(name, length_df)), proj4string = CRS)
+  proj4string(spdf2) <- CRS("+proj=longlat +datum=WGS84")
+  spdf<- rbind(spdf, spdf2)
+}
+
+```
+
+Two dataframes are constructed:
+1. a dataframe (dfavail) with all the values in the SpatialPixelsDataframe i.e. the traits 
+2. a dataframe (dfused) with all the traits per occurence point 
+
+```{r create_dataframes}
+cp <- count.points(spdf, rtoAsc)
+
+dfavail <- slot(rtoAsc, "data")
+dfavail <- tibble::rowid_to_column(dfavail, "ID")
+dfavail<- na.omit(dfavail)
+
+dfused <- slot(cp, "data")
+dfused <- tibble::rowid_to_column(dfused, "ID")
+
+dfused<- subset(dfused, dfused$ID %in% dfavail$ID )
+dfused <- subset(dfused, select = -ID )
+```
+
+A PCA analysis is conducted to standardize all the environmental variables. This standardized dataframe is used a an input dataset for the niche function to calculate the OMI per species. The OMI is used to plot both niche breadth and niche position per species. 
+
+```{r PCA_analysis}
+dud<- dudi.pca(dfavail[2:42], scannf=FALSE)
+```
+
+
+```{r OMI_analysis}
+nic<- niche(dud, dfused, scannf=FALSE)
+
+# OMI values 
+niche.param(nic)
+
+## This dataframe shows the averages per species for the standardized environmental variables
+p<-nic$tab
+```
