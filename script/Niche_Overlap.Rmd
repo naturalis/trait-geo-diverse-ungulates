@@ -503,6 +503,8 @@ for ( i in 1:sam.num ) {
 
 
 {
+  clustering.pdf.file <- sprintf('%s/results/maxent/clustering.pdf',REPO_HOME)
+  pdf( file = clustering.pdf.file )
   h <- hist(
     sam.dist, 
     xlab = sprintf("Mean pairwise patristic distance in random sample of %i tips (n=%i)", length(dom.tips), sam.num ),
@@ -522,5 +524,6 @@ for ( i in 1:sam.num ) {
   
   # indicate domesticated APD
   abline(v=dom.dist, col = "red")
+  dev.off()
 }
 ```
