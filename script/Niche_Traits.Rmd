@@ -9,6 +9,7 @@ Load the required libraries:
 
 ```{r load_libs}
 library(phytools, quietly = T)
+source('Data.R')
 ```
 
 Initialize global variables:
@@ -26,60 +27,17 @@ taxa.names <- scan(paste(REPO_HOME, "/data/filtered/taxa.txt", sep = ""), sep = 
 Define the list of GIS layers, i.e. the traits:
 
 ```{r layers}
-layers.names <- c(
-	"Aspect_10deg",
-	"BulkDensity_10min",
-	"ClayPercentage_10min",
-	"OrganicCarbon_10min",
-	"PhCaCL_10min",
-	"current_10arcmin_PETColdestQuarter",
-	"current_10arcmin_PETDriestQuarter",       
-	"current_10arcmin_PETWarmestQuarter",   
-	"current_10arcmin_PETWettestQuarter",       
-	"current_10arcmin_PETseasonality",   
-	"current_10arcmin_annualPET",       
-	"current_10arcmin_aridityIndexThornthwaite",
-	"current_10arcmin_climaticMoistureIndex",       
-	"current_10arcmin_continentality",   
-	"current_10arcmin_embergerQ",       
-	"current_10arcmin_growingDegDays0",   
-	"current_10arcmin_growingDegDays5",       
-	"current_10arcmin_maxTempColdest",   
-	"current_10arcmin_minTempWarmest",       
-	"current_10arcmin_monthCountByTemp10",   
-	"current_10arcmin_thermicityIndex",       
-	"slope_10deg",   
-	"bio1",       
-	"bio2",   
-	"bio3",       
-	"bio4",   
-	"bio5",       
-	"bio6",   
-	"bio7",       
-	"bio8",
-	"bio9",       
-	"bio10",   
-	"bio11",       
-	"bio12",   
-	"bio13",       
-	"bio14",   
-	"bio15",       
-	"bio16",   
-	"bio17",       
-	"bio18",   
-	"bio19"
-)
+data.layers <- get_layers(REPO_HOME, data.res = 10)
+layers.names <- names(data.layers)
+
+# coerce layers to SpatialPixelsDataFrame with WGS84 coordinate reference system
+data.layers.spdf <- as(data.layers, "SpatialPixelsDataFrame")
+proj4string(data.layers.spdf) <- CRS("+proj=longlat +datum=WGS84")
 ```
 
 Populate a data.frame of taxa x traits and record the contribution of each of these traits:
 
 ```{r models}
-# instantiate data frame from a matrix of taxa x layers
-traits.means <- data.frame(matrix(
-  nrow = length(taxa.names), 
-  ncol = length(layers.names) + 1, 
-  dimnames = list(taxa.names,c("IsDomesticated",layers.names)))
-)
 
 # instantiate variable contributions frame from a matrix of taxa x layers
 traits.contributions <- data.frame(matrix(
@@ -92,30 +50,18 @@ traits.contributions <- data.frame(matrix(
 for ( i in 1:length(taxa.names) ) {
   
   # load maxent model if it exists
-  message(sprintf("loading layer traits for %s",taxa.names[i]))
-  maxent.model.file <- sprintf(
-    '%s/results/per_species/%s/valid_maxent_model.rda', 
-    REPO_HOME, 
-    taxa.names[i]
-  )
-  if ( file.exists(maxent.model.file) ) {
-    tmp.env <- new.env()
-    tmp.nm <- load(maxent.model.file, tmp.env)[[1]]
-    maxent.model <- tmp.env[[tmp.nm]]
+  maxent.model <- get_maxent_model( REPO_HOME, taxa.names[i] )
+  if (!is.null(maxent.model)) {
     
     # the plot function returns a named list with the variable contributions
     var.contrib <- plot(maxent.model)
-    
-    # iterate over layers
+      
+    # iterate over layers, store variable contribution
     for ( j in 1:length(layers.names) ) {
       if ( layers.names[j] %in% colnames(maxent.model@presence) ) {
-        values.list <- maxent.model@presence[layers.names[j]]
-        values.mean <- mean(values.list[,1])
-        traits.means[i,j+1] <- values.mean
         traits.contributions[i,j] <- var.contrib[layers.names[j]]
       }
     }
-    rm(tmp.env,tmp.nm)
   }
 }
 
@@ -135,28 +81,53 @@ traits.contributions.df <- data.frame(matrix(
   dimnames = list(layers.names,c("mean","n")))
 )
 for ( i in 1:length(traits.contributions.summary$names) ) {
-  taxon.name <- traits.contributions.summary$names[i]
   traits.contributions.df[i,1] <- traits.contributions.summary$stats[i*5-2]
   traits.contributions.df[i,2] <- traits.contributions.summary$n[i]
 }
 ```
 
 We are going to look at the trait means as predictor variables for domestication, so 
-we must at the state of domestication to the data frame:
+we create a data frame with domestication as a state:
 
 ```{r domestication}
-# vector of all tips
+# instantiate data frame from a matrix of taxa x layers
+traits.means <- data.frame(matrix(
+  nrow = length(taxa.names), 
+  ncol = length(layers.names) + 1, 
+  dimnames = list(taxa.names,c("IsDomesticated",layers.names)))
+)
+
+# vector of all domesticated taxa
 dom.taxa <- c(
   "Bos_frontalis_gaurus", "Bos_grunniens_mutus", "Bos_javanicus", "Bos_taurus_primigenius",
  	"Bubalus_bubalis_arnee", "Camelus_bactrianus", "Camelus_dromedarius", "Capra_hircus_aegagrus",
  	"Equus_przewalskii", "Equus_africanus", "Lama_glama_guanicoe", "Ovis_aries_orientalis",
  	"Rangifer_tarandus", "Sus_scrofa", "Vicagna_vicugna"
 )
+
+# iterate over taxa
 for ( i in 1:length(taxa.names) ) {
-  if ( taxa.names[i] %in% dom.taxa ) {
+  taxon.name <- taxa.names[i]
+  message(taxon.name)
+  
+  # store whether this taxon is domesticated
+  if ( taxon.name %in% dom.taxa ) {
     traits.means[i,1] <- T
   } else {
     traits.means[i,1] <- F
   }
+  
+  # read occurrences, create df with numeric coordinates
+  taxon.occ <- get_occurrences(REPO_HOME,taxon.name)
+  taxon.coord <- as.data.frame(cbind(taxon.occ[, c("decimal_longitude", "decimal_latitude")]))
+  taxon.coord$decimal_longitude <- as.numeric(as.character(taxon.coord$decimal_longitude))
+  taxon.coord$decimal_latitude <- as.numeric(as.character(taxon.coord$decimal_latitude))  
+  
+  # extract data, store in mean values
+  taxon.values <- extract(data.layers, taxon.coord, df = T, fun = 'mean')
+  for ( j in 1:length(layers.names) ) {
+    layer.name <- layers.names[j] 
+    traits.means[taxon.name,layer.name] <- mean(taxon.values[,layer.name], na.rm = T)
+  }  
 }
 ```
