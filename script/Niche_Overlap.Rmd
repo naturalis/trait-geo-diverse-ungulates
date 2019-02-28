@@ -101,7 +101,28 @@ dataset<- raster(directorypath)
 additional_datasets<-stack(additional_datasets,dataset)
 }
 
-names(additional_datasets)<- files_list
+names(additional_datasets)<- c("Aspect_10deg", 
+                               "BulkDensity_10min", 
+                               "ClayPercentage_10min", 
+                               "current_10arcmin_annualPET", 
+                               "current_10arcmin_aridityIndexThornthwaite", 
+                              "current_10arcmin_climaticMoistureIndex",
+                               "current_10arcmin_continentality",
+                               "current_10arcmin_embergerQ",
+                               "current_10arcmin_growingDegDays0", 
+                               "current_10arcmin_growingDegDays5", 
+                               "current_10arcmin_maxTempColdest", 
+                               "current_10arcmin_minTempWarmest",
+                               "current_10arcmin_monthCountByTemp10",
+                               "current_10arcmin_PETColdestQuarter",
+                               "current_10arcmin_PETDriestQuarter",
+                               "current_10arcmin_PETseasonality",
+                               "current_10arcmin_PETWarmestQuarter",
+                               "current_10arcmin_PETWettestQuarter",
+                              "current_10arcmin_thermicityIndex",          
+                                "OrganicCarbon_10min",
+                                "PhCaCL_10min", 
+                                "slope_10deg")
 
 currentEnv <- stack(additional_datasets, currentEnv1)
 ```
