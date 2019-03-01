@@ -37,6 +37,7 @@ library(SDMTools, quietly = T)
 library(factoextra, quietly = T)
 library(ecospat, quietly = T)
 library(phytools, quietly = T)
+library(rphylopic, quietly = T)
 
 # our local code. the goal is that this will eventually be properly portable code that lives
 # inside the ./R folder of the repository
@@ -182,6 +183,26 @@ for ( i in 1:length(taxa) ) {
   }
 }
 rm(i,occ.map.file,taxon,wrld_simpl)
+```
+
+download phylopic 
+
+```{r download_phylopic}
+for ( i in 1:length(taxa) ) {
+taxon <- taxa[i]
+image.name <- sprintf('%s/results/per_species/%s/image_taxa.png', REPO_HOME, taxon)
+
+if(!file.exists(image.name)){
+taxon_name <- gsub("_", " ", taxa[i])
+ubio_name<-name_search(text = taxon_name, options="namebankID")[[1]]
+image_search<- name_images(ubio_name$uid[1])
+
+image<- image_data(image_search$same[1] , size="128")
+
+save_png(image[[1]], image.name) 
+}
+
+}
 ```
 
 Maxent: species distribution model
