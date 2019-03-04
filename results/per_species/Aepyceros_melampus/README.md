@@ -1,5 +1,5 @@
-# Maxent species distribution model
+# Maxent species distribution model ![](image_taxa.png)
 
-![](image_taxa.png)
+
 
 
