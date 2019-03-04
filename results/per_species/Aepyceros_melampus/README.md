@@ -1,4 +1,5 @@
-# this is an example
+# Maxent species distribution model
 
-blabla leuk zeg allemaal 
+![](image_taxa.png)
+
 
