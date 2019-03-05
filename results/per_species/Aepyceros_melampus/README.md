@@ -1,4 +1,4 @@
-# Maxent species distribution model 
+# Aepyceros melampus
 ![](image_taxa.png)
 
 ## Distribution of occurence points 
