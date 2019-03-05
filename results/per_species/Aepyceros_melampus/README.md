@@ -1,4 +1,7 @@
 # Maxent species distribution model <img align="right" height="60" src= image_taxa.png>
+
+![](image_taxa.png)
+
 stukje text met wat 
 
 ## Distribution of occurence points 
