@@ -1,35 +1,19 @@
-# Maxent species distribution model <img align="right" height="60" src= image_taxa.png>
-
+# Aepyceros melampus
 ![](image_taxa.png)
 
-stukje text met wat 
-
 ## Distribution of occurence points 
-The following map shows the spatial distribution of the filtered GBIF occurence records. 
-<p align="center">
-  <img  height="450" src=occurrences.png>
-</p>
-
+The following map shows the distribution of the filtered occurence points used in the Maxent model. 
 ![](occurrences.png)
 
 ## Variable importance 
-The variable importance plot shows the importance per abiotic layer in the prediction of the species distribution. 
-<p align="center">
-  <img  height="450" src=valid_maxent_variable_importance.png>
-</p>
+The variable importance graph shows the relative importance of the abiotic raster layers in the Maxent model. 
+![](valid_maxent_variable_importance.png)
 
 ## Response curve 
-The response curves show how the maxent prediction model responds to the abiotic variables. 
-<p align="center">
-  <img  height="450" src=valid_maxent_response_curve.png>
-</p>
+The response curve graphs show the response of the Maxent model to different values in the abiotic raster layers. 
+![](valid_maxent_response_curve.png)
 
 ## prediction map 
-
-<p align="center">
-  <img  height="450" src=prediction_occurence_map.png>
-</p>
-
-<p align="center">
-  <img  height="450" src=prediction_map.png>
-</p>
+The first map shows the predicted suitable areas on earth based on the niche preferences calculated in the Maxent model. The second map shows the suitable area map with the original occurence points. 
+![](prediction_map.png)
+![](prediction_occurence_map.png)
