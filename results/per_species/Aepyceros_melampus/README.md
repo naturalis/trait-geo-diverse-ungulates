@@ -10,6 +10,8 @@ The following map shows the spatial distribution of the filtered GBIF occurence 
   <img  height="450" src=occurrences.png>
 </p>
 
+![](occurrences.png)
+
 ## Variable importance 
 The variable importance plot shows the importance per abiotic layer in the prediction of the species distribution. 
 <p align="center">
