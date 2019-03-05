@@ -1,30 +1,15 @@
-# Maxent species distribution model <img align="right" height="60" src= image_taxa.png>
-stukje text met wat 
+# Maxent species distribution model 
+![](image_taxa.png)
 
 ## Distribution of occurence points 
-The following map shows the spatial distribution of the filtered GBIF occurence records. 
-<p align="center">
-  <img  height="450" src=occurrences.png>
-</p>
+![](occurrences.png)
 
 ## Variable importance 
-The variable importance plot shows the importance per abiotic layer in the prediction of the species distribution. 
-<p align="center">
-  <img  height="450" src=valid_maxent_variable_importance.png>
-</p>
+![](valid_maxent_variable_importance.png)
 
 ## Response curve 
-The response curves show how the maxent prediction model responds to the abiotic variables. 
-<p align="center">
-  <img  height="450" src=valid_maxent_response_curve.png>
-</p>
+![](valid_maxent_response_curve.png)
 
 ## prediction map 
-
-<p align="center">
-  <img  height="450" src=prediction_occurence_map.png>
-</p>
-
-<p align="center">
-  <img  height="450" src=prediction_map.png>
-</p>
+![](prediction_occurence_map.png)
+![](prediction_map.png)
