@@ -1,4 +1,4 @@
- #Alcelaphus buselaphus ![](image_taxa.png)
+ # Alcelaphus buselaphus ![](image_taxa.png)
  ## Distribution of occurence points 
  The following map shows the distribution of the filtered occurence points used in the Maxent model. 
  ![](occurrences.png)
