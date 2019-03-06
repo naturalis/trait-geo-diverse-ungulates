@@ -1,10 +1,9 @@
-#Alcelaphus buselaphus ![](image_taxa.png)
-
-                    ## Distribution of occurence points 
-                    The following map shows the distribution of the filtered occurence points used in the Maxent model. 
-                    ![](occurrences.png)
+ #Alcelaphus buselaphus ![](image_taxa.png)
+ ## Distribution of occurence points 
+ The following map shows the distribution of the filtered occurence points used in the Maxent model. 
+ ![](occurrences.png)
                     
-                    ## Variable importance 
+ ## Variable importance 
                     The variable importance graph shows the relative importance of the abiotic raster layers in the Maxent model. 
                     ![](valid_maxent_variable_importance.png)
                     
