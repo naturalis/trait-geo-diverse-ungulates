@@ -1,6 +1,6 @@
 SDM results
 ===========
-jdsklfj
+We constructed seperate maxent models for the following species
 
 [Alcelaphus buselaphus](Alcelaphus_buselaphus)
 
