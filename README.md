@@ -1,5 +1,8 @@
 # trait-geo-diverse-ungulates
 
+![](Ungulates.JPG)
+
+
 Project repository for the analysis of abiotic niches of Ungulates. Contains
 source code (R) and data files. The overall layout is as follows:
 

@@ -37,6 +37,7 @@ library(SDMTools, quietly = T)
 library(factoextra, quietly = T)
 library(ecospat, quietly = T)
 library(phytools, quietly = T)
+library(rphylopic, quietly = T)
 
 # our local code. the goal is that this will eventually be properly portable code that lives
 # inside the ./R folder of the repository
@@ -184,6 +185,26 @@ for ( i in 1:length(taxa) ) {
 rm(i,occ.map.file,taxon,wrld_simpl)
 ```
 
+download phylopic 
+
+```{r download_phylopic}
+for ( i in 1:length(taxa) ) {
+taxon <- taxa[i]
+image.name <- sprintf('%s/results/per_species/%s/image_taxa.png', REPO_HOME, taxon)
+
+if(!file.exists(image.name)){
+taxon_name <- gsub("_", " ", taxa[i])
+ubio_name<-name_search(text = taxon_name, options="namebankID")[[1]]
+image_search<- name_images(ubio_name$uid[1])
+
+image<- image_data(image_search$same[1] , size="128")
+
+save_png(image[[1]], image.name) 
+}
+
+}
+```
+
 Maxent: species distribution model
 ----------------------------------
 
@@ -316,24 +337,24 @@ plot(open_species_model, main = name)
 response(open_species_model)
 
 # the model views can be saved in a loop 
-valid.model.variable.importance <- sprintf('%s/results/per_species/%s/valid_maxent_variable_importance.pdf', REPO_HOME, name)
-valid.model.response.curve <- sprintf('%s/results/per_species/%s/valid_maxent_response_curve.pdf', REPO_HOME, name)
+valid.model.variable.importance <- sprintf('%s/results/per_species/%s/valid_maxent_variable_importance.png', REPO_HOME, name)
+valid.model.response.curve <- sprintf('%s/results/per_species/%s/valid_maxent_response_curve.png', REPO_HOME, name)
 
 for ( i in 1:length(list_species_model_high_accuracy) ) {
   open_model<- list_species_model_high_accuracy[[i]]
   name<- names(list_species_model_high_accuracy[i])
   name2<- paste("Variable importance")
 
-  variable.map.file <- sprintf('%s/results/per_species/%s/valid_maxent_variable_importance.pdf', REPO_HOME, name)
+  variable.map.file <- sprintf('%s/results/per_species/%s/valid_maxent_variable_importance.png', REPO_HOME, name)
   if ( !file.exists(variable.map.file) ) {
-    pdf(file = variable.map.file)
+    png(file = variable.map.file)
     plot(open_model, main = name2)
     dev.off()
   }
   
-  response.map.file <- sprintf('%s/results/per_species/%s/valid_maxent_response_curve.pdf', REPO_HOME, name)
+  response.map.file <- sprintf('%s/results/per_species/%s/valid_maxent_response_curve.png', REPO_HOME, name)
   if ( !file.exists(response.map.file) ) {
-    pdf(file = response.map.file)
+    png(file = response.map.file, res=80, units = "px")
     response(open_model)
     dev.off()
   }
@@ -387,14 +408,14 @@ Now that we have the prediction rasters we can write them to files:
 ```{r write_predictions}
 for ( i in 1:length(names(prediction_rasters)) ) {
   taxon.name <- names(prediction_rasters)[[i]]
-  prediction.map.file <- sprintf('%s/results/per_species/%s/prediction_map.pdf', REPO_HOME, taxon.name)
+  prediction.map.file <- sprintf('%s/results/per_species/%s/prediction_map.png', REPO_HOME, taxon.name)
   if ( !file.exists(prediction.map.file) ) {
-    pdf(file = prediction.map.file)
+    png(file = prediction.map.file)
     plot(prediction_rasters[[i]])
     dev.off()
   }
   
-  prediction.occurence.map.file <- sprintf('%s/results/per_species/%s/prediction_occurence_map.pdf', REPO_HOME, taxon.name)
+  prediction.occurence.map.file <- sprintf('%s/results/per_species/%s/prediction_occurence_map.png', REPO_HOME, taxon.name)
 
   if ( !file.exists(prediction.occurence.map.file) ) {
     # select correct occurence datasets
@@ -404,7 +425,7 @@ for ( i in 1:length(names(prediction_rasters)) ) {
     lat <- occ$decimal_latitude
 
 
-    pdf(file = prediction.occurence.map.file)
+    png(file = prediction.occurence.map.file)
     plot(prediction_rasters[[i]])
     points(lon, lat, col="red", pch=20, cex=0.2)
     box()

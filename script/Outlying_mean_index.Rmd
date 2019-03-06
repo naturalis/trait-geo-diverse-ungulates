@@ -116,7 +116,7 @@ for (i in 1:length(taxa.names)){
 
 Two dataframes are constructed:
 1. a dataframe (dfavail) with all the values in the SpatialPixelsDataframe i.e. the traits 
-2. a dataframe (dfused) with all the traits per occurence point 
+2. a dataframe (dfused) with the amount of occurences per pixel  
 
 ```{r create_dataframes}
 cp <- count.points(spdf, rtoAsc)
@@ -143,8 +143,12 @@ dud<- dudi.pca(dfavail[2:42], scannf=FALSE)
 nic<- niche(dud, dfused, scannf=FALSE)
 
 # OMI values 
-niche.param(nic)
+OMI<-niche.param(nic)
+df_OMI<-as.data.frame(OMI)
 
 ## This dataframe shows the averages per species for the standardized environmental variables
 p<-nic$tab
+
+
+
 ```
