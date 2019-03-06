@@ -2,6 +2,8 @@ SDM results
 ===========
 We constructed seperate maxent models for the following species
 
+[Aepyceros melampus](Aepyceros_melampus)
+
 [Alcelaphus buselaphus](Alcelaphus_buselaphus)
 
 [Alcelaphus caama](Alcelaphus_caama)
@@ -307,3 +309,4 @@ We constructed seperate maxent models for the following species
 [Tragulus napu](Tragulus_napu)
 
 [Vicagna vicugna](Vicagna_vicugna)
+
