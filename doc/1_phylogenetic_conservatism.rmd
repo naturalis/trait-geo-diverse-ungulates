@@ -1,0 +1,134 @@
+---
+title: "Phylogenetic conservatism"
+author: "Rutger Vos (@rvosa)"
+date: "8-3-2019"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+Phylogenetic conservatism of the Ungulate niche
+===============================================
+
+The realized, abiotic Hutchinsonian niche [@Hutchinson57], i.e. an n-dimensional
+hypervolume whose dimensions are inferred from ecological niche modeling, is 
+maintained in ecological time. Whether it is conserved in evolutionary time 
+depends on the rate of niche evolution. If niche evolution is rapid enough, 
+species that are closely related might not resemble each other in terms of their
+niches at all. Conversely, if niche evolution is slower, phylogenetic 
+conservatism of the niche can be demonstrated: closely related species have 
+similar niches.
+
+Here we test the extent to which there is phylogenetic conservatism in the niche
+of terrestrial Artiodactyla and Perissodactyla, i.e. the folk taxonomic group of
+the Ungulates. The way we test this is by performing Mantel's permutation test
+for the similarity of two distance matrices [@Mantel67]. The procedure shuffles
+the distances in the second matrix many times and calculates the correlation 
+coefficient with respect to the first matrix each time. If the true correlation
+between the two matrices is outside of the distribution obtained from the 
+permutations, then the two matrices are interrelated. 
+
+In the present case, the first matrix is the set of all pairwise patristic
+distances among the Ungulates, e.g. as computed from a phylogenetic tree such
+as [@BinindaEmonds07]. The second matrix is the set of all pairwise distances
+in niche space, e.g. as computed by taking Schoener's D from the modeled niche
+projections.
+
+### Analysis pre-amble
+
+We begin by loading the required packages and defining the global variables that
+allow us to locate and reconcile our data:
+
+```{r preamble}
+library(ape)
+library(strap)
+library(cba)
+
+# this should define the root folder of the local copy of the git repository at:
+# https://github.com/naturalis/trait-geo-diverse-ungulates, which is
+# automatically defined correctly if we run the present code from within a
+# local clone of the repo and have set the working directory to the script
+# source (in RStudio: Session > Set working directory > To source file location)
+REPO_HOME <- paste(getwd(), "/../", sep = "")
+```
+
+### Load phylogeny
+
+We now load the subtree for the Ungulates extracted from the mammal supertree of
+[@BinindaEmonds07]. This is the complete subtree for the terrestrial 
+Artiodactyla and Perissodactyla, hence there are more tips in this tree then we
+have niche data for. We will reconcile these data sets later on.
+
+```{r supertree}
+tree.file <- sprintf('%s/data/ungulates.tree',REPO_HOME)
+#tree.file <- sprintf('%s/data/phylogeny/S21191.tree',REPO_HOME)
+tree <- ape::collapse.singles(ape::read.tree(file = tree.file), root.edge = T)
+
+# set the age of the root to absolute time
+tree$root.time <- max(node.depth.edgelength(tree))
+strap::geoscalePhylo(
+    tree, 
+    units = "Epoch", 
+    cex.age = 1, 
+    cex.ts = 0.5, 
+    boxes = T, 
+    show.tip.label = F
+)
+```
+
+### Load Schoener's D
+
+Subsequently, we load the matrix of Schoener's D pairwise distances in niche
+space. We read these distances from a file whose contents were pre-computed in
+another [script](../script/Niche_Overlap.Rmd).
+
+```{r distances}
+# a triangular, inverse distance (i.e. overlap) matrix file
+overlap.file <- paste(REPO_HOME, '/results/maxent/overlap.csv', sep = '')
+overlap <- read.table(overlap.file, sep = ",")
+
+# invert the inverse matrix to get distances
+distances <- as.dist(1-overlap)
+
+# compute and draw a dendrogram from the distances using neighbor joining
+dendrogram <- ape::nj(distances)
+ape::plot.phylo(
+    dendrogram, 
+    type = "unrooted",
+    show.tip.label = F,
+    no.margin = T
+)
+```
+
+### Perform Mantel test
+
+Now we will reconcile the two data sets and perform the Mantel test on the 
+intersection of the two.
+
+```{r mantel}
+# prune the tree
+tip.idx <- match(names(overlap),tree$tip.label)
+tip.idx <- tip.idx[!is.na(tip.idx)]
+tree.pruned <- ape::keep.tip(tree,tip.idx)
+
+# prune the overlap matrix
+overlap.pruned <- as.matrix(subset(as.dist(overlap),tree.pruned$tip.label))
+overlap.pruned <- as.matrix(1 - overlap.pruned)
+
+# make the tree into a distance matrix
+tree.pruned.cophenetic <- ape::cophenetic.phylo(tree.pruned)
+
+# do the test
+result <- ape::mantel.test(
+    tree.pruned.cophenetic, 
+    overlap.pruned, 
+    graph = T,
+    nperm = 1000
+)
+```
+
+So, is there phylogenetic conservatism in niches? In fact, no:
+
+```{r result}
+result$p < 0.05
+```
