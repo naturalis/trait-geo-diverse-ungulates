@@ -80,3 +80,8 @@ were obtained for these:
 - Rucervus duvaucelii: 10.15468/dl.1kfjfv
 - Tragulus javanicus: 10.15468/dl.ch6cpf
 - Tragulus kanchil: 10.15468/dl.a0fjcx
+
+Manuscript
+----------
+
+Apart from the notes being collected here, we are also preparing an [overleaf manuscript](https://www.overleaf.com/project/5c7cfef8ac6a080f4fd4476a)

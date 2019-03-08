@@ -18,14 +18,14 @@ library(raster, quietly = T)
 library(knitr, quietly = T)
 library(maxent, quietly = T)
 library(maps, quietly = T)
-library(rJava, quietly = T) 
+library(rJava, quietly = T)
 library(maptools, quietly = T)
 library(jsonlite, quietly = T)
 library(caret, quietly = T)
 library(ENMeval, quietly = T)
 library(repmis, quietly = T)
 library(CoordinateCleaner, quietly = T)
-library(dismo, quietly = T) 
+library(dismo, quietly = T)
 library(virtualspecies, quietly = T)
 library(sp, quietly = T)
 library(rgeos, quietly = T)
@@ -38,6 +38,7 @@ library(factoextra, quietly = T)
 library(ecospat, quietly = T)
 library(phytools, quietly = T)
 library(rphylopic, quietly = T)
+library(whisker, quietly = T)
 
 # our local code. the goal is that this will eventually be properly portable code that lives
 # inside the ./R folder of the repository
@@ -50,7 +51,7 @@ In addition, here we define the global variables that we will reuse throughout t
 # this is the location of the root directory of the git repository in the local file system.
 # normally you would be running the code from within rstudio, using a project that is initialized
 # within that directory, so the working directory should automatically be set.
-REPO_HOME <- paste(getwd(),'/../',sep='')
+REPO_HOME <- paste(getwd(), "/../", sep = "")
 ```
 
 To calculate niches and niche overlap environmental data and occurrence data per species are needed.
@@ -69,12 +70,12 @@ possible to adjust the spatial resolution res=2.5 to 30 seconds, 5 minutes and 1
 # and cache them locally. Since the files are small enough to commit to github we will normally
 # have these files already. This could change if we move to a resolution that is finer than 10
 # arcminutes, as the layer files will then grow above 10MB.
-currentEnv1 = raster::getData(
-  "worldclim", 
-  var="bio", 
-  res=10, 
-  path=paste(REPO_HOME, '/data/GIS', sep=''), 
-  download=T
+currentEnv1 <- raster::getData(
+  "worldclim",
+  var = "bio",
+  res = 5,
+  path = paste(REPO_HOME, "/data/GIS", sep = ""),
+  download = T
 )
 ```
 
@@ -91,39 +92,42 @@ dropbox folder at a spatial resolution of 5 and 10 minutes.
 
 ```{r add_layers}
 # The location of the TIFF file with the stacked layers described directly above
-files_list <- list.files(paste(REPO_HOME,'/data/GIS/10_deg', sep=''))
+files_list <- list.files(paste(REPO_HOME, "/data/GIS/5_deg", sep = ""))
 
-additional_datasets<- stack()
-for (i in 1:length(files_list) ){
-# Open the raster file in the list
-directorypath<- paste(REPO_HOME,'/data/GIS/10_deg/', files_list[i], sep='')
-name<- files_list[i]
-dataset<- raster(directorypath)
-additional_datasets<-stack(additional_datasets,dataset)
+additional_datasets <- stack()
+for (i in 1:length(files_list)) {
+  # Open the raster file in the list
+  # open files for 5 degrees or 10 degrees
+  directorypath <- paste(REPO_HOME, "/data/GIS/5_deg/", files_list[i], sep = "")
+  name <- files_list[i]
+  dataset <- raster(directorypath)
+  additional_datasets <- stack(additional_datasets, dataset)
 }
 
-names(additional_datasets)<- c("Aspect_10deg", 
-                               "BulkDensity_10min", 
-                               "ClayPercentage_10min", 
-                               "current_10arcmin_annualPET", 
-                               "current_10arcmin_aridityIndexThornthwaite", 
-                              "current_10arcmin_climaticMoistureIndex",
-                               "current_10arcmin_continentality",
-                               "current_10arcmin_embergerQ",
-                               "current_10arcmin_growingDegDays0", 
-                               "current_10arcmin_growingDegDays5", 
-                               "current_10arcmin_maxTempColdest", 
-                               "current_10arcmin_minTempWarmest",
-                               "current_10arcmin_monthCountByTemp10",
-                               "current_10arcmin_PETColdestQuarter",
-                               "current_10arcmin_PETDriestQuarter",
-                               "current_10arcmin_PETseasonality",
-                               "current_10arcmin_PETWarmestQuarter",
-                               "current_10arcmin_PETWettestQuarter",
-                              "current_10arcmin_thermicityIndex",          
-                                "OrganicCarbon_10min",
-                                "PhCaCL_10min", 
-                                "slope_10deg")
+names(additional_datasets) <- c(
+  "Aspect",
+  "BulkDensity",
+  "ClayPercentage",
+  "annualPET",
+  "aridityIndexThornthwaite",
+  "climaticMoistureIndex",
+  "continentality",
+  "embergerQ",
+  "growingDegDays0",
+  "growingDegDays5",
+  "maxTempColdest",
+  "minTempWarmest",
+  "monthCountByTemp10",
+  "PETColdestQuarter",
+  "PETDriestQuarter",
+  "PETseasonality",
+  "PETWarmestQuarter",
+  "PETWettestQuarter",
+  "thermicityIndex",
+  "OrganicCarbon",
+  "PhCaCL",
+  "slope"
+)
 
 currentEnv <- stack(additional_datasets, currentEnv1)
 ```
@@ -139,30 +143,30 @@ and global projections.
 taxa <- scan(paste(REPO_HOME, "/data/filtered/taxa.txt", sep = ""), sep = "\n", what = character())
 
 # make output directories, if needed
-for ( i in 1:length(taxa) ) {
-  taxon.dir.name <- sprintf('%s/results/per_species/%s/', REPO_HOME, taxa[i])
-  if(!dir.exists(taxon.dir.name)) {
+for (i in 1:length(taxa)) {
+  taxon.dir.name <- sprintf("%s/results/per_species/%s/", REPO_HOME, taxa[i])
+  if (!dir.exists(taxon.dir.name)) {
     dir.create(taxon.dir.name, recursive = T)
   }
 }
-rm(i,taxon.dir.name)
+rm(i, taxon.dir.name)
 ```
 
 Below, the raw occurrence data are plotted on a map, which goes to `/results/per_species/<taxon>/occurrences.png`:
 
 ```{r plot_points}
 data(wrld_simpl)
-for ( i in 1:length(taxa) ) {
+for (i in 1:length(taxa)) {
 
   # construct the name of the occurrences file for the current taxon
   taxon <- taxa[i]
-  occ.map.file <- sprintf('%s/results/per_species/%s/occurrences.png', REPO_HOME, taxon)
-  
+  occ.map.file <- sprintf("%s/results/per_species/%s/occurrences.png", REPO_HOME, taxon)
+
   # generate the map
-  if(!file.exists(occ.map.file)) {
-  
+  if (!file.exists(occ.map.file)) {
+
     # create the path for the file whose occurrences you want to plot, then load occurrences as CSV
-    csv.file <- sprintf('%s/data/filtered/%s.csv', REPO_HOME, taxon)
+    csv.file <- sprintf("%s/data/filtered/%s.csv", REPO_HOME, taxon)
     occ <- read.csv(csv.file, header = T)
     lon <- occ$decimal_longitude
     lat <- occ$decimal_latitude
@@ -170,38 +174,35 @@ for ( i in 1:length(taxa) ) {
     # plot a simple world map
     png(file = occ.map.file)
     plot(
-      wrld_simpl, 
-      axes=TRUE, 
-      xlim=c(min(lon)-5,max(lon)+5), 
-      ylim=c(min(lat)-5,max(lat)+5), 
-      col="grey", 
-      main=sprintf('Raw occurrences for %s',taxon)
+      wrld_simpl,
+      axes = TRUE,
+      xlim = c(min(lon) - 5, max(lon) + 5),
+      ylim = c(min(lat) - 5, max(lat) + 5),
+      col = "grey",
+      main = sprintf("Raw occurrences for %s", taxon)
     )
-    points(lon, lat, col="orange", pch=20, cex=0.75)
+    points(lon, lat, col = "orange", pch = 20, cex = 0.75)
     box()
     dev.off()
   }
 }
-rm(i,occ.map.file,taxon,wrld_simpl)
+rm(i, occ.map.file, taxon, wrld_simpl)
 ```
 
 download phylopic 
 
 ```{r download_phylopic}
-for ( i in 1:length(taxa) ) {
-taxon <- taxa[i]
-image.name <- sprintf('%s/results/per_species/%s/image_taxa.png', REPO_HOME, taxon)
+for (i in 1:length(taxa)) {
+  taxon <- taxa[i]
+  image.name <- sprintf("%s/results/per_species/%s/image_taxa.png", REPO_HOME, taxon)
 
-if(!file.exists(image.name)){
-taxon_name <- gsub("_", " ", taxa[i])
-ubio_name<-name_search(text = taxon_name, options="namebankID")[[1]]
-image_search<- name_images(ubio_name$uid[1])
-
-image<- image_data(image_search$same[1] , size="128")
-
-save_png(image[[1]], image.name) 
-}
-
+  if (!file.exists(image.name)) {
+    taxon_name <- gsub("_", " ", taxa[i])
+    ubio_name <- rphylopic::name_search(text = taxon_name, options = "namebankID")[[1]]
+    image_search <- rphylopic::name_images(ubio_name$uid[1])
+    image <- rphylopic::image_data(image_search$same[1], size = "128")
+    rphylopic::save_png(image[[1]], image.name)
+  }
 }
 ```
 
@@ -256,7 +257,7 @@ The Maxent function used in this loop can be viewed and adapted in our Github re
 
 ```{r maxent1}
 
-# first we created two empty lists, one list for models with a low accuracy (AUC below 0.7) and one 
+# first we created two empty lists, one list for models with a low accuracy (AUC below 0.7) and one
 # list for models with a high accuracy (AUC above 0.7)
 list_species_model_low_accuracy <- list()
 list_species_model_high_accuracy <- list()
@@ -264,17 +265,18 @@ list_species_model_high_accuracy <- list()
 # iterate over n species
 for (i in 1:length(taxa)) {
   name <- taxa[i]
-  valid.model.file <- sprintf('%s/results/per_species/%s/valid_maxent_model.rda', REPO_HOME, name)
-  invalid.model.file <- sprintf('%s/results/per_species/%s/invalid_maxent_model.rda', REPO_HOME, name)
-  
+  valid.model.file <- sprintf("%s/results/per_species/%s/valid_maxent_model.rda", REPO_HOME, name)
+  invalid.model.file <- sprintf("%s/results/per_species/%s/invalid_maxent_model.rda", REPO_HOME, name)
+
   # check if we have the model cached
-  if(!file.exists(valid.model.file) && !file.exists(invalid.model.file)) {
+  i <- 1
+  if (!file.exists(valid.model.file) && !file.exists(invalid.model.file)) {
     message(name)
 
     # read occurrences
-    csv.file <- sprintf('%s/data/filtered/%s.csv', REPO_HOME, name)
+    csv.file <- sprintf("%s/data/filtered/%s.csv", REPO_HOME, name)
     species_occurence <- read.csv(csv.file, header = T)
-    
+
     # Run maxent:
     # - clip environment to ± 5 degrees lat/long relative to the occurrences
     # - remove colinear layers
@@ -286,9 +288,9 @@ for (i in 1:length(taxa)) {
     # to construct an AUC model we need random points drawn from the clipped, variable-selected, environment
     random <- randomPoints(species_model[[2]], 1000)
     Validation_species <- dismo::evaluate(
-      p = species_model[[3]],    # 25% sample of input occurrences
-      a = random,                # random absences
-      x = species_model[[2]],    # the clipped, variable-selected environment
+      p = species_model[[3]], # 25% sample of input occurrences
+      a = random, # random absences
+      x = species_model[[2]], # the clipped, variable-selected environment
       model = species_model[[1]] # the maxent model
     )
 
@@ -297,20 +299,20 @@ for (i in 1:length(taxa)) {
       model <- species_model[[1]]
       list_species_model_high_accuracy[[name]] <- model
       save(model, file = valid.model.file)
-    } 
-    else { 
+    }
+    else {
       model <- species_model[[1]]
       list_species_model_low_accuracy[[name]] <- model
       save(model, file = invalid.model.file)
     }
-    
-  # valid model was previously constructed, load it
+
+    # valid model was previously constructed, load it
   } else if (file.exists(valid.model.file)) {
     env <- new.env()
     nm <- load(valid.model.file, env)[[1]]
     list_species_model_high_accuracy[[name]] <- env[[nm]]
-  
-  # invalid model was previously constructed, load it  
+
+    # invalid model was previously constructed, load it
   } else if (file.exists(invalid.model.file)) {
     env <- new.env()
     nm <- load(invalid.model.file)[[1]]
@@ -336,31 +338,29 @@ plot(open_species_model, main = name)
 # plot the response curve to see what the range of important values is per abiotic dataset
 response(open_species_model)
 
-# the model views can be saved in a loop 
-valid.model.variable.importance <- sprintf('%s/results/per_species/%s/valid_maxent_variable_importance.png', REPO_HOME, name)
-valid.model.response.curve <- sprintf('%s/results/per_species/%s/valid_maxent_response_curve.png', REPO_HOME, name)
+# the model views can be saved in a loop
+valid.model.variable.importance <- sprintf("%s/results/per_species/%s/valid_maxent_variable_importance.png", REPO_HOME, name)
+valid.model.response.curve <- sprintf("%s/results/per_species/%s/valid_maxent_response_curve.png", REPO_HOME, name)
 
-for ( i in 1:length(list_species_model_high_accuracy) ) {
-  open_model<- list_species_model_high_accuracy[[i]]
-  name<- names(list_species_model_high_accuracy[i])
-  name2<- paste("Variable importance")
+for (i in 1:length(list_species_model_high_accuracy)) {
+  open_model <- list_species_model_high_accuracy[[i]]
+  name <- names(list_species_model_high_accuracy[i])
+  name2 <- paste("Variable importance")
 
-  variable.map.file <- sprintf('%s/results/per_species/%s/valid_maxent_variable_importance.png', REPO_HOME, name)
-  if ( !file.exists(variable.map.file) ) {
+  variable.map.file <- sprintf("%s/results/per_species/%s/valid_maxent_variable_importance.png", REPO_HOME, name)
+  if (!file.exists(variable.map.file)) {
     png(file = variable.map.file)
     plot(open_model, main = name2)
     dev.off()
   }
-  
-  response.map.file <- sprintf('%s/results/per_species/%s/valid_maxent_response_curve.png', REPO_HOME, name)
-  if ( !file.exists(response.map.file) ) {
-    png(file = response.map.file, res=80, units = "px")
+
+  response.map.file <- sprintf("%s/results/per_species/%s/valid_maxent_response_curve.png", REPO_HOME, name)
+  if (!file.exists(response.map.file)) {
+    png(file = response.map.file, res = 80, units = "px")
     response(open_model)
     dev.off()
   }
 }
-
-
 ```
 
 The outcome of the species distribution models can be used to create a prediction of the areas 
@@ -371,12 +371,12 @@ files for the models with a high prediction accuracy.
 # combine all prediction rasters, either by doing the projection or by reading from a file
 prediction_rasters <- stack()
 taxon.names <- names(list_species_model_high_accuracy)
-for (i in 1:length(list_species_model_high_accuracy) ) {
-  
+for (i in 1:length(list_species_model_high_accuracy)) {
+
   # file name: load if exists, create otherwise
-  valid.model.prediction <- sprintf('%s/results/per_species/%s/valid_maxent_prediction.rda', REPO_HOME, taxon.names[i])
-  if( file.exists(valid.model.prediction) ) {
-    
+  valid.model.prediction <- sprintf("%s/results/per_species/%s/valid_maxent_prediction.rda", REPO_HOME, taxon.names[i])
+  if (file.exists(valid.model.prediction)) {
+
     # load file
     message(sprintf("loading prediction for taxon %s from file %s", taxon.names[i], valid.model.prediction))
     env <- new.env()
@@ -386,14 +386,14 @@ for (i in 1:length(list_species_model_high_accuracy) ) {
   else {
     message(sprintf("computing prediction for taxon %s, will write to file %s", taxon.names[i], valid.model.prediction))
     open_species_model <- list_species_model_high_accuracy[[i]]
-    
+
     # select non correlated layers from model environment in the world environment
     noncorrelated <- names(open_species_model@presence)
-    subsetworldEnv <- subset(currentEnv,noncorrelated)
-  
+    subsetworldEnv <- subset(currentEnv, noncorrelated)
+
     # make prediction of the whole earth based on the maxent SDM
     species.pred <- predict(open_species_model, subsetworldEnv)
-    
+
     # save file, stack prediction contents
     save(species.pred, file = valid.model.prediction)
     prediction_rasters <- stack(prediction_rasters, species.pred)
@@ -406,20 +406,20 @@ names(prediction_rasters) <- names(list_species_model_high_accuracy)
 Now that we have the prediction rasters we can write them to files:
 
 ```{r write_predictions}
-for ( i in 1:length(names(prediction_rasters)) ) {
+for (i in 1:length(names(prediction_rasters))) {
   taxon.name <- names(prediction_rasters)[[i]]
-  prediction.map.file <- sprintf('%s/results/per_species/%s/prediction_map.png', REPO_HOME, taxon.name)
-  if ( !file.exists(prediction.map.file) ) {
+  prediction.map.file <- sprintf("%s/results/per_species/%s/prediction_map.png", REPO_HOME, taxon.name)
+  if (!file.exists(prediction.map.file)) {
     png(file = prediction.map.file)
     plot(prediction_rasters[[i]])
     dev.off()
   }
-  
-  prediction.occurence.map.file <- sprintf('%s/results/per_species/%s/prediction_occurence_map.png', REPO_HOME, taxon.name)
 
-  if ( !file.exists(prediction.occurence.map.file) ) {
+  prediction.occurence.map.file <- sprintf("%s/results/per_species/%s/prediction_occurence_map.png", REPO_HOME, taxon.name)
+
+  if (!file.exists(prediction.occurence.map.file)) {
     # select correct occurence datasets
-    csv.file <- sprintf('%s/data/filtered/%s.csv', REPO_HOME, taxon.name)
+    csv.file <- sprintf("%s/data/filtered/%s.csv", REPO_HOME, taxon.name)
     occ <- read.csv(csv.file, header = T)
     lon <- occ$decimal_longitude
     lat <- occ$decimal_latitude
@@ -427,15 +427,54 @@ for ( i in 1:length(names(prediction_rasters)) ) {
 
     png(file = prediction.occurence.map.file)
     plot(prediction_rasters[[i]])
-    points(lon, lat, col="red", pch=20, cex=0.2)
+    points(lon, lat, col = "red", pch = 20, cex = 0.2)
     box()
     dev.off()
   }
-  
 }
 ```
 
+Write readme files to the github. 
 
+```{r readme_files}
+# location of a triangular, inverse distance matrix file
+for ( i in 1:length(taxa)) {
+  name <- taxa[i]
+  readme.file <- sprintf('%s/results/per_species/%s/README.md', REPO_HOME, taxa[i])
+  
+  if(!file.exists(readme.file)) {
+    taxa_remove<- gsub( "_", " ", name)
+    
+    template<- 
+      '# {{taxa_name}} 
+    ![](image_taxa.png) 
+    ## Distribution of occurence points 
+    The following map shows the distribution of the filtered occurence points used in the Maxent model. 
+    ![](occurrences.png)
+    
+    ## Variable importance 
+    The variable importance graph shows the relative importance of the abiotic raster layers in the Maxent model. 
+    ![](valid_maxent_variable_importance.png)
+    
+    ## Response curve 
+    The response curve graphs show the response of the Maxent model to different values in the abiotic raster layers. 
+    ![](valid_maxent_response_curve.png)
+    
+    ## prediction map 
+    The first map shows the predicted suitable areas on earth based on the niche preferences calculated in the Maxent model. The second map shows the suitable area map with the original occurence points. 
+    ![](prediction_map.png)
+    ![](prediction_occurence_map.png)
+    '
+    data <- list( taxa_name = taxa_remove)
+    
+    text <- whisker.render(template, data)
+    
+    
+    writeLines(text, readme.file)
+  }
+}
+
+```
 To assess whether the predicted suitable niche spaces differ per species we calculate their niche 
 overlap. We use Schoener’s D to calculate niche overlap since it has been suggested to be the best 
 suited index for maxent SDM outputs (Rödder & Engler, 2011). The index ranges from 0 which is no 
@@ -443,14 +482,14 @@ overlap to 1 which is a complete overlap and is based on the model prediction ma
 
 ```{r calc_dist}
 # location of a triangular, inverse distance matrix file
-overlap.file <- paste(REPO_HOME, '/results/maxent/overlap.csv', sep = '')
-if ( !file.exists(overlap.file) ) {
-  
+overlap.file <- paste(REPO_HOME, "/results/maxent/overlap.csv", sep = "")
+if (!file.exists(overlap.file)) {
+
   # file doesn't exist, calculate Schoener's Distance and store file
-  overlap <- calc.niche.overlap(prediction_rasters, stat="D", maxent.args )
+  overlap <- calc.niche.overlap(prediction_rasters, stat = "D", maxent.args)
   write.table(overlap, file = overlap.file, sep = ",", quote = F)
 } else {
-  
+
   # file exists, read it
   overlap <- read.table(overlap.file, sep = ",")
 }
@@ -460,11 +499,11 @@ Having calculated the Schoener's D distances, we can now use these to make a sym
 matrix, and perform a neighbor joining clustering to visualize the distances in niche space.
 
 ```{r cluster_dist}
-dendrogram.file <- paste(REPO_HOME, '/results/maxent/dendrogram.tree', sep = '')
-if ( !file.exists(dendrogram.file) ) {
+dendrogram.file <- paste(REPO_HOME, "/results/maxent/dendrogram.tree", sep = "")
+if (!file.exists(dendrogram.file)) {
 
   # create a distance matrix, i.e. the inverse of the overlap
-  dmatrix <- as.dist(1-overlap)
+  dmatrix <- as.dist(1 - overlap)
 
   # plot an unrooted dendrogram
   tree <- nj(dmatrix)
@@ -481,9 +520,9 @@ Now we can assess whether domesticated Ungulates come from specific areas in nic
 # vector of all tips
 dom.taxa <- c(
   "Bos_frontalis_gaurus", "Bos_grunniens_mutus", "Bos_javanicus", "Bos_taurus_primigenius",
- 	"Bubalus_bubalis_arnee", "Camelus_bactrianus", "Camelus_dromedarius", "Capra_hircus_aegagrus",
- 	"Equus_przewalskii", "Equus_africanus", "Lama_glama_guanicoe", "Ovis_aries_orientalis",
- 	"Rangifer_tarandus", "Sus_scrofa", "Vicagna_vicugna"
+  "Bubalus_bubalis_arnee", "Camelus_bactrianus", "Camelus_dromedarius", "Capra_hircus_aegagrus",
+  "Equus_przewalskii", "Equus_africanus", "Lama_glama_guanicoe", "Ovis_aries_orientalis",
+  "Rangifer_tarandus", "Sus_scrofa", "Vicagna_vicugna"
 )
 
 # tips in tree
@@ -495,15 +534,15 @@ mean_pw_distance <- function(tree, tip.vector) {
 
   # calculate size of distance matrix, instantiate vector
   nt <- length(tip.vector)
-  nd <- ( ( nt * nt ) - nt ) / 2
-  dist.vector <- vector( mode = "numeric", length = nd )
-  
+  nd <- ((nt * nt) - nt) / 2
+  dist.vector <- vector(mode = "numeric", length = nd)
+
   # do all pairwise comparisons
   k <- 1
   max <- nt - 1
-  for ( i in 1:max ) {
+  for (i in 1:max) {
     min <- i + 1
-    for ( j in min:nt ) {
+    for (j in min:nt) {
       dist.vector[k] <- phytools::fastDist(tree, tip.vector[i], tip.vector[j])
       k <- k + 1
     }
@@ -515,36 +554,36 @@ mean_pw_distance <- function(tree, tip.vector) {
 dom.dist <- mean_pw_distance(tree, dom.tips)
 
 # take random tip samples, compute APD among these many time
-sam.num  <- 1000
-sam.dist <- vector( mode = "numeric", length = sam.num )
-for ( i in 1:sam.num ) {
+sam.num <- 1000
+sam.dist <- vector(mode = "numeric", length = sam.num)
+for (i in 1:sam.num) {
   sam.tips <- sample(tree$tip.label, length(dom.tips), replace = F)
   sam.dist[i] <- mean_pw_distance(tree, sam.tips)
 }
 
 
 {
-  clustering.pdf.file <- sprintf('%s/results/maxent/clustering.pdf',REPO_HOME)
-  pdf( file = clustering.pdf.file )
+  clustering.pdf.file <- sprintf("%s/results/maxent/clustering.pdf", REPO_HOME)
+  pdf(file = clustering.pdf.file)
   h <- hist(
-    sam.dist, 
-    xlab = sprintf("Mean pairwise patristic distance in random sample of %i tips (n=%i)", length(dom.tips), sam.num ),
-    col = "lightblue", 
+    sam.dist,
+    xlab = sprintf("Mean pairwise patristic distance in random sample of %i tips (n=%i)", length(dom.tips), sam.num),
+    col = "lightblue",
     main = "Domesticated Ungulates cluster in niche space"
   )
-  
+
   # fit normal distribution
-  xfit <- seq(min(sam.dist), max(sam.dist), length = length(sam.dist)) 
-  yfit <- dnorm(xfit, mean = mean(sam.dist), sd = sd(sam.dist)) 
+  xfit <- seq(min(sam.dist), max(sam.dist), length = length(sam.dist))
+  yfit <- dnorm(xfit, mean = mean(sam.dist), sd = sd(sam.dist))
   yfit <- yfit * diff(h$mids[1:2]) * length(sam.dist)
   lines(xfit, yfit, col = "black", lwd = 2)
-  
+
   # draw ± 2 * standard deviation
-  abline(v=mean(sam.dist)+2*sd(sam.dist), col = "green")
-  abline(v=mean(sam.dist)-2*sd(sam.dist), col = "green")
-  
+  abline(v = mean(sam.dist) + 2 * sd(sam.dist), col = "green")
+  abline(v = mean(sam.dist) - 2 * sd(sam.dist), col = "green")
+
   # indicate domesticated APD
-  abline(v=dom.dist, col = "red")
+  abline(v = dom.dist, col = "red")
   dev.off()
 }
 ```
