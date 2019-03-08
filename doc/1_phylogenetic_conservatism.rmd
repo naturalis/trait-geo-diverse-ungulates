@@ -60,7 +60,7 @@ Artiodactyla and Perissodactyla, hence there are more tips in this tree then we
 have niche data for. We will reconcile these data sets later on.
 
 ```{r supertree}
-tree.file <- sprintf('%s/data/ungulates.tree',REPO_HOME)
+tree.file <- sprintf('%s/data/phylogeny/ungulates.tree',REPO_HOME)
 #tree.file <- sprintf('%s/data/phylogeny/S21191.tree',REPO_HOME)
 tree <- ape::collapse.singles(ape::read.tree(file = tree.file), root.edge = T)
 
