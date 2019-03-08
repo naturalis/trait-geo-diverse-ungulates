@@ -1,4 +1,5 @@
-# Alcelaphus buselaphus ![](image_taxa.png) 
+# Alcelaphus buselaphus 
+![](image_taxa.png) 
 ## Distribution of occurence points 
 The following map shows the distribution of the filtered occurence points used in the Maxent model. 
 ![](occurrences.png)
@@ -15,3 +16,4 @@ The response curve graphs show the response of the Maxent model to different val
 The first map shows the predicted suitable areas on earth based on the niche preferences calculated in the Maxent model. The second map shows the suitable area map with the original occurence points. 
 ![](prediction_map.png)
 ![](prediction_occurence_map.png)
+  
