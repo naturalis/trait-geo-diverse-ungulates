@@ -72,7 +72,7 @@ possible to adjust the spatial resolution res=2.5 to 30 seconds, 5 minutes and 1
 currentEnv1 = raster::getData(
   "worldclim", 
   var="bio", 
-  res=10, 
+  res=5, 
   path=paste(REPO_HOME, '/data/GIS', sep=''), 
   download=T
 )
@@ -91,39 +91,40 @@ dropbox folder at a spatial resolution of 5 and 10 minutes.
 
 ```{r add_layers}
 # The location of the TIFF file with the stacked layers described directly above
-files_list <- list.files(paste(REPO_HOME,'/data/GIS/10_deg', sep=''))
+files_list <- list.files(paste(REPO_HOME,'/data/GIS/5_deg', sep=''))
 
 additional_datasets<- stack()
 for (i in 1:length(files_list) ){
 # Open the raster file in the list
-directorypath<- paste(REPO_HOME,'/data/GIS/10_deg/', files_list[i], sep='')
+# open files for 5 degrees or 10 degrees 
+directorypath<- paste(REPO_HOME,'/data/GIS/5_deg/', files_list[i], sep='')
 name<- files_list[i]
 dataset<- raster(directorypath)
 additional_datasets<-stack(additional_datasets,dataset)
 }
 
-names(additional_datasets)<- c("Aspect_10deg", 
-                               "BulkDensity_10min", 
-                               "ClayPercentage_10min", 
-                               "current_10arcmin_annualPET", 
-                               "current_10arcmin_aridityIndexThornthwaite", 
-                              "current_10arcmin_climaticMoistureIndex",
-                               "current_10arcmin_continentality",
-                               "current_10arcmin_embergerQ",
-                               "current_10arcmin_growingDegDays0", 
-                               "current_10arcmin_growingDegDays5", 
-                               "current_10arcmin_maxTempColdest", 
-                               "current_10arcmin_minTempWarmest",
-                               "current_10arcmin_monthCountByTemp10",
-                               "current_10arcmin_PETColdestQuarter",
-                               "current_10arcmin_PETDriestQuarter",
-                               "current_10arcmin_PETseasonality",
-                               "current_10arcmin_PETWarmestQuarter",
-                               "current_10arcmin_PETWettestQuarter",
-                              "current_10arcmin_thermicityIndex",          
-                                "OrganicCarbon_10min",
-                                "PhCaCL_10min", 
-                                "slope_10deg")
+names(additional_datasets)<- c("Aspect", 
+                               "BulkDensity", 
+                               "ClayPercentage", 
+                               "annualPET", 
+                               "aridityIndexThornthwaite", 
+                              "climaticMoistureIndex",
+                               "continentality",
+                               "embergerQ",
+                               "growingDegDays0", 
+                               "growingDegDays5", 
+                               "maxTempColdest", 
+                               "minTempWarmest",
+                               "monthCountByTemp10",
+                               "PETColdestQuarter",
+                               "PETDriestQuarter",
+                               "PETseasonality",
+                               "PETWarmestQuarter",
+                               "PETWettestQuarter",
+                              "thermicityIndex",          
+                                "OrganicCarbon",
+                                "PhCaCL", 
+                                "slope")
 
 currentEnv <- stack(additional_datasets, currentEnv1)
 ```
@@ -268,6 +269,7 @@ for (i in 1:length(taxa)) {
   invalid.model.file <- sprintf('%s/results/per_species/%s/invalid_maxent_model.rda', REPO_HOME, name)
   
   # check if we have the model cached
+  i=1
   if(!file.exists(valid.model.file) && !file.exists(invalid.model.file)) {
     message(name)
 
