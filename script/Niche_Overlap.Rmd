@@ -38,6 +38,7 @@ library(factoextra, quietly = T)
 library(ecospat, quietly = T)
 library(phytools, quietly = T)
 library(rphylopic, quietly = T)
+library(whisker, quietly = T)
 
 # our local code. the goal is that this will eventually be properly portable code that lives
 # inside the ./R folder of the repository
@@ -433,7 +434,47 @@ for (i in 1:length(names(prediction_rasters))) {
 }
 ```
 
+Write readme files to the github. 
 
+```{r readme_files}
+# location of a triangular, inverse distance matrix file
+for ( i in 1:length(taxa)) {
+  name <- taxa[i]
+  readme.file <- sprintf('%s/results/per_species/%s/README.md', REPO_HOME, taxa[i])
+  
+  if(!file.exists(readme.file)) {
+    taxa_remove<- gsub( "_", " ", name)
+    
+    template<- 
+      '# {{taxa_name}} 
+    ![](image_taxa.png) 
+    ## Distribution of occurence points 
+    The following map shows the distribution of the filtered occurence points used in the Maxent model. 
+    ![](occurrences.png)
+    
+    ## Variable importance 
+    The variable importance graph shows the relative importance of the abiotic raster layers in the Maxent model. 
+    ![](valid_maxent_variable_importance.png)
+    
+    ## Response curve 
+    The response curve graphs show the response of the Maxent model to different values in the abiotic raster layers. 
+    ![](valid_maxent_response_curve.png)
+    
+    ## prediction map 
+    The first map shows the predicted suitable areas on earth based on the niche preferences calculated in the Maxent model. The second map shows the suitable area map with the original occurence points. 
+    ![](prediction_map.png)
+    ![](prediction_occurence_map.png)
+    '
+    data <- list( taxa_name = taxa_remove)
+    
+    text <- whisker.render(template, data)
+    
+    
+    writeLines(text, readme.file)
+  }
+}
+
+```
 To assess whether the predicted suitable niche spaces differ per species we calculate their niche 
 overlap. We use Schoener’s D to calculate niche overlap since it has been suggested to be the best 
 suited index for maxent SDM outputs (Rödder & Engler, 2011). The index ranges from 0 which is no 
