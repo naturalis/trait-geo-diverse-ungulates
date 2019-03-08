@@ -10,6 +10,7 @@ Load the required libraries:
 ```{r load_libs}
 library(phytools, quietly = T)
 library(phylolm, quietly = T)
+library(dplyr, quietly = T)
 source('Data.R')
 ```
 
@@ -32,9 +33,12 @@ data.layers <- get_layers(REPO_HOME, data.res = 10)
 layers.names <- names(data.layers)
 
 # coerce layers to SpatialPixelsDataFrame with WGS84 coordinate reference system
-data.layers.spdf <- as(data.layers, "SpatialPixelsDataFrame")
-proj4string(data.layers.spdf) <- CRS("+proj=longlat +datum=WGS84")
+#data.layers.spdf <- as(data.layers, "SpatialPixelsDataFrame")
+#proj4string(data.layers.spdf) <- CRS("+proj=longlat +datum=WGS84")
 ```
+
+Maxent models for variable contributions
+----------------------------------------
 
 Populate a data.frame of taxa x traits and record the contribution of each of these traits:
 
@@ -87,11 +91,14 @@ for ( i in 1:length(traits.contributions.summary$names) ) {
 }
 ```
 
+Phylogenetic generalized linear modeling
+----------------------------------------
+
 We are going to look at the trait means as predictor variables for domestication, so 
 we create a data frame with domestication as a state:
 
 ```{r domestication}
-traits.means.file <- sprintf('%s/results/OMI/Average_Species_Sites_Raw.csv', REPO_HOME)
+traits.means.file <- sprintf('%s/results/OMI/standardized.averages.csv', REPO_HOME)
 
 # do the averaging if we haven't already
 if (!file.exists(traits.means.file) ) {
@@ -156,6 +163,55 @@ if (!file.exists(traits.means.file) ) {
 }
 ```
 
+And load a phylogenetic tree:
+
+```{r phylo}
+# reconcile tree and traits
+tree.file <- sprintf('%s/data/ungulates.tree',REPO_HOME)
+tree <- read.tree(file = tree.file)
+tip.idx <- match(row.names(traits.means),tree$tip.label)
+tip.idx <- tip.idx[!is.na(tip.idx)]
+tree <- keep.tip(tree,tip.idx)
+traits.means.tree <- traits.means[tree$tip.label,]
+
+# run variable selection
+pglm.formula.tmpl <- 'IsDomesticated ~ bio3 + bio14 + current_10arcmin_embergerQ + bio15 + bio2 + %s'
+aic <- vector(mode = "numeric", length = length(layers.names))
+lnl <- vector(mode = "numeric", length = length(layers.names))
+results <- data.frame( aic = aic, lnl = lnl, row.names = layers.names)
+
+for ( i in 1:length(layers.names) ) {
+  l <- layers.names[i]
+  f <- sprintf(pglm.formula.tmpl, l)
+  message(l)
+  r <- phyloglm(f, traits.means.tree, tree, method = "logistic_MPLE", btol = 30)
+  results[l,'lnl'] <- r$logLik
+  results[l,'aic'] <- r$aic
+}
+
+```
+
+After iterating over all layers, we find the layer that produces the lowest AIC
+in the results df. We add that layer to the formula, and then iterate again to
+find the layer that minimizes the AIC in combination. If we keep doing this we
+find the combination that overall minimizes the AIC:
+
+- bio3  72.21593
+- bio3 + bio14 72.89198
+- *bio3 + bio14 + current_10arcmin_embergerQ 70.63874*
+- bio3 + bio14 + current_10arcmin_embergerQ + bio15 70.74186
+- bio3 + bio14 + current_10arcmin_embergerQ + bio15 + bio2  71.68594
+
+```{r plot3d}
+f <- IsDomesticated ~ bio3 + bio14 + current_10arcmin_embergerQ
+r <- phyloglm(f, traits.means.tree, tree, method = "logistic_MPLE", btol = 30)
+summary(r)
+
+
+p3d <- as.matrix(dplyr::select(traits.means.tree,bio3,bio14,current_10arcmin_embergerQ))
+phylomorphospace3d(tree,p3d)
+```
+
 Let's plot some of these values on the niche clustering dendrogram:
 
 ```{r trace}
@@ -204,4 +260,37 @@ for ( i in 1:length(layers.names) ) {
   }
 
 }
+```
+
+
+Filtering on trait values
+-------------------------
+
+Let's see which other ungulates fall inside the value range of the domesticated ones for
+all traits. We are both going to consider all the domesticates as well as the set that
+leaves out the reindeer (which are often considered semi-domesticated).
+
+```{r filter}
+# split data in domesticated and non, extract trait names vector
+traits.means$taxon.name <- row.names(traits.means)
+dom.df <- filter(traits.means,IsDomesticated)
+undom.df <- filter(traits.means,!IsDomesticated)
+layers.names <- names(dplyr::select(dom.df,-IsDomesticated,-taxon.name))
+
+# to exclude the reindeer from the value ranges:
+#dom.df <- filter(dom.df, taxon.name != 'Rangifer_tarandus')
+
+# iterate over layers
+for ( i in 1:length(layers.names) ) {
+  layer <- layers.names[i]
+  dom.values <- dom.df[,layer]
+  min <- min(dom.values)
+  max <- max(dom.values)
+  undom.df <- filter(undom.df, UQ(as.name(layer)) >= min & UQ(as.name(layer)) <= max)
+}
+
+# clean up result
+row.names(undom.df) <- undom.df$taxon.name
+undom.df <- dplyr::select(undom.df, -IsDomesticated, -taxon.name)
+row.names(undom.df)
 ```
