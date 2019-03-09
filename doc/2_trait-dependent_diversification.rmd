@@ -1,0 +1,193 @@
+---
+title: "Trait-dependent diversification"
+author: "Rutger Vos (@rvosa)"
+date: "8-3-2019"
+output: html_document
+---
+
+Diversification rate shifts associated with grazing
+===================================================
+
+Several studies have proposed a link between the evolution of C4 grasslands, 
+and the evolution and/or radiation of grazing Ungulates [@Toljagic18], 
+[@BouchenakKhelladi09]. If such a link exists to the effect that shifts to 
+grasslands promoted diversification we should be able to demonstrate this using
+a BiSSE analysis.
+
+We will do this by taking the occurrence data for our species, check these 
+against the locations of grasslands, and code our species thusly. This gives us
+a binary trait, which we can then use as the switch that might coincide with
+diversification.
+
+### Analysis pre-amble
+
+We begin by loading the required packages and defining the global variables that
+allow us to locate and reconcile our data:
+
+```{r preamble}
+library(ape)
+library(strap)
+library(phytools)
+library(diversitree)
+library(phangorn)
+source('../script/traitDependent_functions.R')
+
+# this should define the root folder of the local copy of the git repository at:
+# https://github.com/naturalis/trait-geo-diverse-ungulates, which is
+# automatically defined correctly if we run the present code from within a
+# local clone of the repo and have set the working directory to the script
+# source (in RStudio: Session > Set working directory > To source file location)
+REPO_HOME <- paste(getwd(), "/../", sep = "")
+```
+
+### Biome data
+
+Using the [Ecoregions2017](https://www.dropbox.com/s/lip9pmxwpkzbk3p/Ecoregions2017.shp?dl=0)
+shape file and the cleaned occurrences, a [perl script](../script/make_ecoregions_states.pl)
+was run to generate a tab-separated table that summarizes the number of occurrences
+in each of the different biome types. We load this table here:
+
+```{r biomes}
+biome.file <- sprintf('%s/results/biomes.tsv', REPO_HOME)
+biome.df <- read.table(
+  biome.file, 
+  header = T, 
+  sep = "\t",
+  row.names = "taxon_name"
+)
+biome.open <- c(
+  3,  # Deserts & Xeric Shrublands
+  4,  # Flooded Grasslands & Savannas
+  7,  # Montane Grasslands & Shrublands
+  10, # Temperate Grasslands, Savannas & Shrublands
+  13, # Tropical & Subtropical Grasslands, Savannas & Shrublands
+  15  # Tundra
+)
+biome.grass <- c(
+  4,  # Flooded Grasslands & Savannas
+  7,  # Montane Grasslands & Shrublands
+  10, # Temperate Grasslands, Savannas & Shrublands
+  13  # Tropical & Subtropical Grasslands, Savannas & Shrublands
+)
+```
+
+### Grassland coding
+
+Here we summarize the ratio of grassland over other biomes for each species:
+
+```{r recode}
+taxa <- row.names(biome.df)
+chars <- vector(mode = 'numeric', length = length(taxa))
+for ( i in 1:length(taxa) ) {
+  taxon.name <- taxa[i]
+  total <- sum(biome.df[taxon.name,2:15])
+  grass <- sum(biome.df[taxon.name,biome.grass])
+  chars[i] <- grass / total
+}
+names(chars) <- row.names(biome.df)
+hist(chars)
+```
+
+The histogram shows a clear bimodal distribution: most species occur either not
+at all in grasslands, or at a ratio of 90% or above.
+
+### Load phylogeny
+
+We now load the phylogeny:
+
+```{r supertree}
+tree.file <- sprintf('%s/data/phylogeny/ungulates.tree',REPO_HOME)
+#tree.file <- sprintf('%s/data/phylogeny/S21191.tree',REPO_HOME)
+tree <- ape::collapse.singles(ape::read.tree(file = tree.file), root.edge = T)
+
+# set the age of the root to absolute time
+tree$root.time <- max(node.depth.edgelength(tree))
+strap::geoscalePhylo(
+    tree, 
+    units = "Epoch", 
+    cex.age = 1, 
+    cex.ts = 0.5, 
+    boxes = T, 
+    show.tip.label = F
+)
+```
+
+There appears to have been a fairly rapid radiation during the Oligocene.
+
+### Plot traits
+
+```{r plotcont}
+# prune the tree
+tip.idx <- match(gsub(' ','_',taxa),tree$tip.label)
+tip.idx <- tip.idx[!is.na(tip.idx)]
+tree.pruned <- ape::keep.tip(tree,tip.idx)
+tree.pruned$tip.label <- gsub('_',' ',tree.pruned$tip.label)
+
+# prune the table
+chars.pruned <- chars[tree.pruned$tip.label]
+
+# plot result
+contMap(tree.pruned, chars.pruned)
+```
+
+### Discretize
+
+Let's discretize the data so that any occurrence in grassland counts as grazing:
+
+```{r discrete}
+chars.discrete <- vector(mode = 'integer', length = length(chars.pruned))
+for ( i in 1:length(chars.pruned) ) {
+  if ( chars.pruned[i] > 0.3 ) {
+    chars.discrete[i] <- 1
+  } else {
+    chars.discrete[i] <- 0
+  }
+}
+names(chars.discrete) <- names(chars.pruned)
+dotTree(tree.pruned, chars.discrete)
+```
+
+The state of having any occurrences on grasslands appears scattered throughout
+the tree. Let's see if we can run a BiSSE analysis.
+
+### BiSSE
+
+```{r bisse}
+# randomly resolve tree
+tree.pruned.resolved <- multi2di(tree.pruned)
+
+# set up the BiSSE model
+# This is the full model with 6 parameters
+# Each state (grass and other) has a separate speciation and extinction rate
+# There are also parameters for the rate of transition from grass to other and 
+# vice versa
+bisse6 <- make.bisse(tree.pruned.resolved, chars.discrete)
+
+# get some starting parameters
+start <- starting.point.bisse(tree.pruned.resolved)
+
+# do the maximum likelihood estimation
+ml6 <- find.mle(bisse6, start)
+
+# constrain the BiSSE model
+# first a 5 parameter model with equal extinction rates for the two characters
+bisse5 <- constrain(bisse6, mu1 ~ mu0)
+
+# next a 4 parameter model with equal speciation and extinction rates
+bisse4 <- constrain(bisse6, lambda1 ~ lambda0, mu1 ~ mu0)
+
+# run the constrained models 
+ml6$par -> start
+ml5 <- find.mle(bisse5, start)
+ml4 <- find.mle(bisse4, start)
+
+# check log likelihood values
+ml6$lnLik
+ml5$lnLik
+ml4$lnLik
+
+# Now calculate AIC for each model
+2*6 - 2*ml6$lnLik
+2*5 - 2*ml5$lnLik # smallest
+2*4 - 2*ml4$lnLik
+```
