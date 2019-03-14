@@ -1,0 +1,220 @@
+---
+title: "Niche clusters"
+author: "Rutger Vos (@rvosa)"
+date: "11-3-2019"
+output: html_document
+---
+
+### Set up environment, global variables, load libraries
+
+```{r preamble}
+library(dplyr)
+library(ape)
+library(phangorn)
+library(RColorBrewer)
+library(phytools)
+
+# XXX set working directory to script source first
+REPO_HOME <- paste(getwd(), "/../", sep = "")
+
+# names of domesticated taxa
+dom.taxa <- c(
+  "Bos_frontalis_gaurus", "Bos_grunniens_mutus", "Bos_javanicus", "Bos_taurus_primigenius",
+  "Bubalus_bubalis_arnee", "Camelus_bactrianus", "Camelus_dromedarius", "Capra_hircus_aegagrus",
+  "Equus_przewalskii", "Equus_africanus", "Lama_glama_guanicoe", "Ovis_aries_orientalis",
+  "Rangifer_tarandus", "Sus_scrofa", "Vicagna_vicugna"
+)
+```
+
+### Cluster by inverse niche overlap
+
+```{r cluster}
+# CSV file location of all pairwise comparisons of niche overlap in Schoener's D
+overlap.file <- paste(REPO_HOME, '/results/maxent/overlap.csv', sep = '')
+
+# load data
+overlap <- read.table(overlap.file, sep = ",")
+
+# compute distances, i.e. inverse of overlap
+distances <- as.dist(1-overlap)
+
+# hierarchical clustering
+hclust.tree <- hclust(distances)
+```
+
+### Partition the clustering
+
+```{r partition}
+# instantiate results vector and transform function
+specificity <- vector(length = 31, mode = "numeric")
+make_df <- function(partitions) {
+  partitions.df <- as.data.frame(partitions)
+  taxa.names <- names(partitions)
+  for ( j in 1:length(taxa.names) ) {
+    taxon.name <- taxa.names[j]
+    if ( taxon.name %in% dom.taxa ) {
+      partitions.df[j,2] <- T
+    } else {
+      partitions.df[j,2] <- F
+    }
+  }  
+  names(partitions.df) <- c("cluster","domesticated")
+  return(partitions.df)
+}
+
+# do the partition from one for all taxa to one for each taxon
+for ( i in 1:31 ) {
+  partitions <- cutree( hclust.tree, k = i )
+  partitions.df <- make_df(partitions)
+  
+  # count distinct clusters for domesticated taxa
+  nclusters <- as.vector(unique(select(filter(partitions.df,domesticated),cluster)))
+  spec <- length(nclusters$cluster) / i
+  specificity[i] <- spec
+}
+
+# partition the tree to the optimal number of clusters
+optimum.nclusters <- which.min(specificity)
+partitions <- cutree( hclust.tree, k = optimum.nclusters )
+partitions.df <- make_df(partitions)
+
+# consecutive plot commands seem to work better when wrapped inside curly braces
+{
+  plot(specificity, type = "b")
+  abline(v = optimum.nclusters)
+}
+```
+
+### Select niche traits of greatest magnitude
+
+```{r omi}
+omi.file <- sprintf('%s/results/OMI/standardized.averages.csv',REPO_HOME)
+omi.data <- read.table(omi.file, header = T, sep = ',', row.names = 1)
+trait.names <- names(omi.data)[2:length(omi.data)]
+trait.taxa <- row.names(omi.data)
+dom.taxa.clusters <- as.vector(unique(select(filter(partitions.df,domesticated),cluster)))$cluster
+magnitude.matrix <- matrix(nrow = length(trait.names), ncol = length(dom.taxa.clusters))
+partitions.df$taxon.name <- row.names(partitions.df)
+
+for ( i in 1:length(trait.names) ) {
+  trait <- trait.names[i]
+  for ( j in 1:length(dom.taxa.clusters) ) {
+    c <- dom.taxa.clusters[j]
+    ingroup <- select(filter(partitions.df, cluster == c),taxon.name)
+    outgroup <- select(filter(partitions.df, cluster != c),taxon.name)
+    ingroup.mean <- mean(omi.data[ingroup$taxon.name,trait])
+    outgroup.mean <- mean(omi.data[outgroup$taxon.name,trait])
+    magnitude <- abs(ingroup.mean-outgroup.mean)
+    magnitude.matrix[i,j] <- magnitude
+  }  
+}
+magnitude.df <- data.frame(magnitude.matrix)
+names(magnitude.df) <- dom.taxa.clusters
+row.names(magnitude.df) <- trait.names
+```
+
+### Find cluster MRCAs
+```{r mrcas}
+hclust.phylo <- as.phylo(hclust.tree)
+mrcas <- list()
+mrcas.labels <- c('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z')
+for ( i in 1:optimum.nclusters ) {
+  tips <- select(filter(partitions.df,cluster==i),taxon.name)$taxon.name
+  l <- mrcas.labels[i]
+  mrcas[[l]] <- mrca.phylo(hclust.phylo, match(tips,hclust.phylo$tip.label))
+}
+```
+
+### Plot the optimal partitioning
+
+```{r edgecolors}
+colors <- c(
+  '#5c5c7d',
+  '#0868b4',
+  '#0878a4',
+  '#65858e',
+  '#0a8ba3',
+  '#398796',
+  '#9ea09d',
+  '#828379',
+  '#545522',
+  '#8e8e15',
+  '#746113',
+  '#ac9331',
+  '#c9c6bc',
+  '#91700e',
+  '#956f31',
+  '#b69667',
+  '#362e25',
+  '#bb6314',
+  '#9b7551',
+  '#7c6653',
+  '#73411f',
+  '#c2734b',
+  '#8f5438',
+  '#bc4313',
+  '#99310f',
+  '#681c10',
+  '#220d0f'
+)
+
+# prepare: coerce dendrogram to phylo; generate palette; instantiate edge color vector
+#colors <- rainbow(optimum.nclusters)
+edge.colors <- vector( mode = "character", length = length(hclust.phylo$edge.length) )
+
+# calculate "ancestral states", for coloring the clades
+anc.acctran <- ancestral.pars( hclust.phylo, as.phyDat(as.factor(partitions)), "ACCTRAN" )
+
+for ( i in 1:length(anc.acctran) ) {
+  
+  # i is node ID in the ancestral states table
+  states <- anc.acctran[[i]][1,]
+
+  # $edge is a 2-column adjacency list, 2nd column is child, values are node IDs
+  k <- match(i, hclust.phylo$edge[,2])
+  if ( max(states) == 1 ) {
+    j <- which.max(states)
+    edge.colors[k] <- colors[j]
+  } else {
+    edge.colors[k] <- '#000000'
+  }
+}
+```
+
+### Plot clusters
+
+```{r plotclust}
+# plot the tree
+{
+  for ( i in 1:length(hclust.phylo$tip.label) ) {
+    index <- match(hclust.phylo$tip.label[i], dom.taxa)
+    if ( is.na(index) ) {
+      hclust.phylo$tip.label[i] <- ''
+    } else {
+      hclust.phylo$tip.label[i] <- index
+    }
+  }
+  plot.coord <- plot.phylo(
+    hclust.phylo, 
+    edge.color = edge.colors, 
+    type = "fan", 
+    show.tip.label = T,
+    edge.width = 3,
+    font = 1,
+    label.offset = 0.01,
+    x.lim = c(-0.6, 0.6),
+    y.lim = c(-0.6, 0.6),
+    align.tip.label = T
+  )
+  for ( name in names(mrcas) ) {
+    arc.cladelabels(
+      hclust.phylo, 
+      name, 
+      node = mrcas[[name]], 
+      ln.offset = 1.12, 
+      lab.offset = 1.19,
+      font = 1
+    )
+  }
+}
+```
