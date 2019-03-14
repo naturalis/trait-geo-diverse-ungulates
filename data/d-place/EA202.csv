@@ -1,0 +1,954 @@
+society_id,society_name,society_xd_id,language_glottocode,language_name,language_family,variable_id,code,code_label,focal_year,sub_case,comment
+Nb30,Takelma,xd1091,take1257,Takelma,,EA202,27.0,,1884,,in 1884; note focal year for cultural data is 1860
+Nc11,Yana,xd1109,yana1271,Yana,,EA202,35.0,,1884,,in 1884; note focal year for cultural data is 1860
+Nc34,Kiliwa,xd1134,kili1268,Kiliwa,Cochimi-Yuman,EA202,36.0,,1929,,in 1929; note focal year for cultural data is 1880
+Na27,Tahltan,xd1043,tahl1239,Tahltan,Athabaskan-Eyak-Tlingit,EA202,50.0,,1885,,in 1885; note focal year for cultural data is 1870
+Ie36,Samarokena,xd814,sama1240,Samarokena,Greater Kwerba,EA202,68.0,,1955,,
+Nd50,Panguitch,xd1186,utee1244,Ute,Uto-Aztecan,EA202,68.0,,1870,,
+Nd33,Beatty,xd1167,pana1305,Panamint,Uto-Aztecan,EA202,70.0,,1875,including the Belted Range group,
+Na38,Katikitegon,xd1054,uppe1274,Upper Michigan-Wisconsin Chippewa,Algic,EA202,76.0,,1940,with special reference to the Lac Vieux Desert band,in 1940; note focal year for cultural data is 1800
+Sf9,Uru,xd1382,uruu1244,Uru,Uru-Chipaya,EA202,99.0,,1931,with special reference to those just south of Lake Titicaca in Bolivia across the Desaguadero River from Peru,"Data source gives population number as ""fewer than 100"""
+Ec9,Nanai,xd637,nana1257,Nanai,Tungusic,EA202,100.0,,1930,,
+Ej2,Mnong Gar,xd724,east2333,Eastern Mnong,Austroasiatic,EA202,100.0,,1948,with special reference to the village of Sar Luk,
+Nb10,Alkatcho,xd1069,sout2958,Southern Carrier,Athabaskan-Eyak-Tlingit,EA202,100.0,,1936,,in 1936; note focal year for cultural data is 1865
+Nb19,Lower Chinook,xd1078,chin1286,Chinook,Chinookan,EA202,100.0,,1853,,
+Nc10,Achumawi,xd1108,achu1247,Achumawi,Palaihnihan,EA202,100.0,,1936,,in 1936; note focal year for cultural data is 1860
+Nc30,Serrano,xd1130,serr1255,Serrano,Uto-Aztecan,EA202,100.0,,1910,,"in 1910; Data source gives population number as ""slightly more than 100""; note focal year for cultural data is 1870"
+Nd32,Tümpisa Shoshone (Saline and Panamint),xd1166,pana1305,Panamint,Uto-Aztecan,EA202,100.0,,1870,with special reference to those of Saline Valley,in 1870; Only 65 people in 1870; note focal year for cultural data is 1850
+Nh9,Picuris,xd1285,picu1248,Picuris Northern Tiwa,Kiowa-Tanoan,EA202,100.0,,,,"Date for population estimate missing; Data source gives population data as ""slightly more than 100"""
+Se11,Chácobo,xd1364,chac1251,Chácobo,Pano-Tacanan,EA202,100.0,,1960,,The actual population figure was 145 as of the date cited.
+Si6,Guató,xd1403,guat1253,Guató,,EA202,100.0,,1901,,
+Si8,Umotina,xd1405,umot1240,Umotína,Bororoan,EA202,100.0,,1949,,The actual figure was 65 as of the date cited.
+Sj3,Aweikoma,xd1411,xokl1240,Xokleng,Nuclear-Macro-Je,EA202,100.0,,1934,Duque de Caxias Reservation,in 1934; The actual figure is 106; note focal year for cultural data is 1910
+Ij5,Raroians,xd894,tuam1242,Tuamotuan,Austronesian,EA202,109.0,,1950,,in 1950; note focal year for cultural data is 1900
+Si5,Kamayurá,xd1402,kama1373,Kamayurá,Tupian,EA202,110.0,,1948,,
+Ng9,Catawba,xd1258,cata1286,Catawba,Siouan,EA202,124.0,,1910,,
+Nd29,Tunava (Deep Springs and Fish Lake),xd1162,mono1275,Mono (USA),Uto-Aztecan,EA202,125.0,,1870,including the Deep Springs Valley and Fish Lake Valley groups,
+Nd57,Pahvant,xd1193,utee1244,Ute,Uto-Aztecan,EA202,134.0,,1870,,
+Nd23,Atsakudokwa,xd1156,nort1551,North Northern Paiute,Uto-Aztecan,EA202,140.0,,1870,,
+Si10,Kuikuru,xd1398,kuik1246,Kuikúro-Kalapálo,Cariban,EA202,145.0,,1954,,
+Sd2,Tapirapé,xd1354,tapi1254,Tapirapé,Tupian,EA202,147.0,,1939,,recently extinct
+Id6,Wikmunkan,xd781,wikm1247,Wik-Mungkan,Pama-Nyungan,EA202,150.0,,1929,with special reference to the Archer River group,"1,500 aboriginally"
+Na39,Eastern Ojibwa,xd1055,east2542,Eastern Ojibwa,Algic,EA202,150.0,,1929,with special reference to the Kitchibuan of Parry Island,in 1929; note focal year for cultural data is 1870
+Nc22,Patwin,xd1121,patw1250,Patwin,Wintuan,EA202,150.0,,1924,with special reference to the Hill Patwin,in 1924; note focal year for cultural data is 1850
+Nd24,Kidutokado,xd1157,nort1551,North Northern Paiute,Uto-Aztecan,EA202,150.0,,1873,,
+Sh4,Kadiwéu,xd1391,kadi1248,Kadiwéu,Guaicuruan,EA202,150.0,,1937,,
+Na1,Nabesna,xd1026,uppe1437,Upper Tanana,Athabaskan-Eyak-Tlingit,EA202,152.0,,1930,,
+Sb7,Yupa,xd1332,yukp1241,Yukpa,Cariban,EA202,156.0,,1954,with special reference to the Pariri,
+Na28,Sekani,xd1044,seka1250,Sekani,Athabaskan-Eyak-Tlingit,EA202,160.0,,1923,,in 1923; note focal year for cultural data is 1880
+Sj7,Apinaye,xd1415,apin1244,Apinayé,Nuclear-Macro-Je,EA202,160.0,,1937,,in 1937; note focal year for cultural data is 1920
+If12,Bikinians,xd827,rali1241,Rälik,Austronesian,EA202,170.0,,1935,,
+Ng2,Seminole,xd1251,mika1239,Mikasuki,Muskogean,EA202,175.0,,1939,with special reference to the Cow Creek band,
+Id7,Murriny Patha,xd782,murr1258,Murriny Patha,Southern Daly,EA202,176.0,,1950,,
+Sd7,Wai-wai,xd1359,waiw1244,Waiwai,Cariban,EA202,180.0,,1954,,
+Na45,Mistissini Cree,xd1062,sout2978,Southern East Cree,Algic,EA202,187.0,,1914,,in 1914; note focal year for cultural data is 1900
+Cf3,Tristan da Cunha,xd538,stan1293,English,Indo-European,EA202,188.0,,1938,,population evacuated in 1961 because of a volcanic eruption.
+Cg4,Sami,xd544,nort2671,North Saami,Uralic,EA202,200.0,,1951,Konkama District,The actual figure is 191 (EA-Summary).
+Ed1,Koreans,xd638,kore1280,Korean,Koreanic,EA202,200.0,,1947,Kanghwa Island,The actual population of Sondup'o is 169 persons.
+Eh4,Vedda,xd690,vedd1240,Veddah,Indo-European,EA202,200.0,,1882,with special reference to the Rock Vedda,in 1882; See HRAF reference 1:42; note focal year for cultural data is 1900
+Ie1,Mee,xd785,ekar1243,Ekari,Nuclear Trans New Guinea,EA202,200.0,,1954,"Botukebo village, Kamu Valley,  Ijaaj-Pigome confederacy",The total population of Botukebo was 181 in +1954.
+If16,Lamotrek,xd831,lamo1243,Lamotrek,Austronesian,EA202,200.0,,1962,,See HRAF reference EA.
+Ig14,Dahuni,xd846,suau1242,Suau,Austronesian,EA202,200.0,,1951,,in 1951; note focal year for cultural data is 1900
+Ig4,Lesu,xd856,nots1237,Notsi,Austronesian,EA202,200.0,,1929,Lesu Village,The actual figure is 232 (1:15).
+Na10,Chugach,xd1027,chug1254,Chugach,Eskimo-Aleut,EA202,200.0,,1933,,
+Na12,Nunamiut,xd1029,nort2944,North Slope Inupiatun,Eskimo-Aleut,EA202,200.0,,1953,,
+Nb25,Quinault,xd1085,quin1251,Quinault,Salishan,EA202,200.0,,1925,,in 1925; note focal year for cultural data is 1860
+Nc32,Cupeño,xd1132,cupe1243,Cupeño,Uto-Aztecan,EA202,200.0,,1910,,in 1910; note focal year for cultural data is 1870
+Nd21,Tagotoka,xd1154,nort1551,North Northern Paiute,Uto-Aztecan,EA202,200.0,,1890,,in 1890; note focal year for cultural data is 1870
+Nd26,Wadatkuht,xd992,sout2967,South Northern Paiute,Uto-Aztecan,EA202,200.0,,1850,,in 1850; note focal year for cultural data is 1870
+Nd3,Havasupai,xd1163,hava1249,Havasupai,Cochimi-Yuman,EA202,200.0,,1919,Havasupai Tribe,in 1919; Source is HRAF 1:Spier p. 98; note focal year for cultural data is 1870
+Nd40,Tubaduka,xd1175,west2622,Western Shoshoni,Uto-Aztecan,EA202,200.0,,1875,,
+Ne16,Karankawa,xd1215,kara1289,Karankawa,,EA202,200.0,,1814,,"in 1814; Data source gives population number as ""fewer than 200""; note focal year for cultural data is 1800"
+Ne2,Kiowa Apache,xd1219,kiow1264,Kiowa Apache,Athabaskan-Eyak-Tlingit,EA202,200.0,,1934,,in 1934; note focal year for cultural data is 1870
+Ni4,Seri,xd1289,seri1257,Seri,,EA202,200.0,,1960,,"in 1960; 2,000 aboriginally; note focal year for cultural data is 1900"
+Sg5,Alacaluf,xd1387,qawa1238,Qawasqar,Kawesqar,EA202,200.0,,1900,with special reference to the southern bands,
+Sd3,Palikur,xd1355,pali1279,Palikúr,Arawakan,EA202,240.0,,,,Date for population estimate missing
+Nh12,Santa Ana,xd1262,sant1426,Santa Ana,Keresan,EA202,242.0,,1934,,in 1934; note focal year for cultural data is 1920
+Na37,Rainy River Ojibwe,xd1053,rain1239,Rainy River Ojibwa,Algic,EA202,244.0,,1917,,in 1917; note focal year for cultural data is 1880
+If4,Ifaluk,xd835,nucl1479,Nuclear Woleaian,Austronesian,EA202,250.0,,1948,with special reference to the inhabitants of Ifaluk atoll,
+Nb33,Chimariko,xd1094,chim1301,Chimariko,,EA202,250.0,,1849,,in 1849; note focal year for cultural data is 1860
+Nc12,Maidu,xd1110,nort2952,Northeast Maidu,Maiduan,EA202,250.0,,1905,with special reference to the Northeastern Mountain Maidu,in 1905; Northern Maidu; note focal year for cultural data is 1850
+Nd37,Railroad Valley Shoshoni,xd1171,west2622,Western Shoshoni,Uto-Aztecan,EA202,250.0,,1875,,
+Nh20,Kamia,xd1271,kumi1248,Tipai,Cochimi-Yuman,EA202,250.0,,1849,,in 1849; note focal year for cultural data is 1860
+Si3,Bacairi,xd1400,baka1277,Bakairí,Cariban,EA202,250.0,,1947,Simao Lopes,
+Na43,Netsilik,xd1060,nets1241,Natsilingmiutut,Eskimo-Aleut,EA202,260.0,,1923,,
+Na14,Inughuit (Northern Greenland),xd1031,pola1254,Polar Eskimo,Eskimo-Aleut,EA202,271.0,,1926,,in 1926; note focal year for cultural data is 1880
+Nb18,Quileute,xd1077,quil1240,Quileute,Chimakuan,EA202,285.0,,1945,,in 1945; note focal year for cultural data is 1880
+Na11,Sivokakmeit,xd1028,cent2128,Central Siberian Yupik,Eskimo-Aleut,EA202,293.0,,1955,,in 1955; note focal year for cultural data is 1920
+Id11,Gidjingali,xd774,gunn1248,Gun-narda,Maningrida,EA202,294.0,,1960,,
+Aa7,Naron,xd7,naro1249,Naro,Khoe-Kwadi,EA202,300.0,,,,Date for population estimate missing
+Ea13,Punjabi,xd600,west2386,Western Panjabi,Indo-European,EA202,300.0,,1950,Mohla Village,The actual figure is 350 (EA).
+Ei6,Purum,xd712,puru1266,Purum,Sino-Tibetan,EA202,300.0,,1936,,
+Id13,Anindilyagwa,xd776,anin1240,Anindilyakwa,Gunwinyguan,EA202,300.0,,1941,,in 1941; note focal year for cultural data is 1930
+Ie12,Kwoma,xd788,kwom1262,Kwoma,Sepik,EA202,300.0,,1936,Hongwam subtribe; Rumbima,See HRAF reference 1:5
+Na19,Dakelh,xd1035,carr1249,Carrier,Athabaskan-Eyak-Tlingit,EA202,300.0,,1925,with special reference to the Hwitsowitenne,"in 1925; Data source gives population number as ""more than 300""; note focal year for cultural data is 1880"
+Na4,Kaska,xd1056,kask1239,Kaska,Athabaskan-Eyak-Tlingit,EA202,300.0,,,Upper Liard and Dease River Group,Date for population estimate missing; Source is HRAF:1 p. 37.
+Na41,Mi'kmaq,xd1058,mikm1235,Mi'kmaq,Algic,EA202,300.0,,1630,Mainland division,in 1630; Source is Handbook of North American Indians vol. 15 p. 117; note focal year for cultural data is 1700
+Nc1,Nomlaki,xd1107,noml1242,Nomlaki,Wintuan,EA202,300.0,,1954,,in 1954; note focal year for cultural data is 1850
+Nc2,Tübalulabal,xd1118,tuba1278,Tübatulabal,Uto-Aztecan,EA202,300.0,,,,Aboriginally; 145 in 1932; Note focal year for cultural data is 1850
+Nc9,Modoc,xd1140,klam1254,Klamath-Modoc,,EA202,300.0,,1910,,in 1910; note focal year for cultural data is 1860
+Nd13,Kalispel,xd1145,kali1309,Kalispel,Salishan,EA202,300.0,,1905,,in 1905; note focal year for cultural data is 1860
+Nd15,Sinkaitk,xd1147,sout2963,Southern Okanogan,Salishan,EA202,300.0,,1930,,in 1930; note focal year for cultural data is 1880
+Nd52,Shivwits,xd1188,sout2969,Southern Paiute,Uto-Aztecan,EA202,300.0,,1873,"including the Suwuntsu (St. George), Gunlock, and Uinkaret groups of Southern Paiute",in 1873; note focal year for cultural data is 1860
+Ne6,Mandan,xd1225,mand1446,Mandan,Siouan,EA202,300.0,,1870,,"in 1870; Source is HRAF 2:Bowers, p. 1; note focal year for cultural data is 1830"
+Ng4,Penobscot,xd1253,peno1243,Penobscot,Algic,EA202,300.0,,1930,,in 1930; note focal year for cultural data is 1900
+Sc17,Piapoco,xd1343,piap1246,Piapoco,Arawakan,EA202,300.0,,,,"Date for population estimate missing; Data source gives population number as ""a few thousand"""
+Sj4,Canela,xd1412,cane1242,Canela-Krahô,Nuclear-Macro-Je,EA202,300.0,,1930,Ramcocamecra or Canella,See EA-Summary
+Nh25,Sia,xd1276,ziaa1251,Zia (United States),Keresan,EA202,327.0,,1957,,in 1957; note focal year for cultural data is 1920
+Nb23,Heiltsuk,xd1083,bell1263,Bella Bella,Wakashan,EA202,330.0,,1901,,in 1901; note focal year for cultural data is 1880
+Nd55,Southern Paiute (Las Vegas),xd1189,sout2969,Southern Paiute,Uto-Aztecan,EA202,330.0,,1874,"including the Pahrump, Ash Medows, and Tule Springs groups",in 1874; note focal year for cultural data is 1860
+Si7,Paresi,xd1404,pare1272,Parecís,Arawakan,EA202,340.0,,1908,with special reference to the Cozarimi,
+Na34,Pekangekum,xd1050,lacs1238,Lac Seul Ojibwa,Algic,EA202,342.0,,1949,a band of Northern Saulteaux very closely akin to Na33 (Berens River band) but described as of a much more recent date,
+Nd54,Chemehuevi,xd1190,chem1251,Chemehuevi,Uto-Aztecan,EA202,350.0,,1920,Colorado River Reservation,in 1920; note focal year for cultural data is 1860
+Nh26,Santa Clara,xd1277,sant1421,Santa Clara,Kiowa-Tanoan,EA202,350.0,,1926,,in 1926; note focal year for cultural data is 1910
+Na29,Beaver,xd1045,beav1236,Beaver,Athabaskan-Eyak-Tlingit,EA202,380.0,,1914,,in 1914; note focal year for cultural data is 1850
+Ie16,Kutubu,xd792,foii1241,Foi,East Kutubu,EA202,400.0,,1940,,
+Ii6,Tokelau,xd885,toke1240,Tokelau,Austronesian,EA202,400.0,,,with special reference to Atafu,Date for population estimate missing
+Ij10,Tongarevans,xd890,penr1237,Māngarongaro,Austronesian,EA202,400.0,,1926,,"in 1926; Data source gives population number as ""under 400""; note focal year for cultural data is 1900"
+Ij4,Manihikians,xd893,raka1237,Rakahanga-Manihiki,Austronesian,EA202,400.0,,1926,,in 1926; note focal year for cultural data is 1850
+Na24,Tasiilaq,xd1040,tunu1234,Tunumiisiut,Eskimo-Aleut,EA202,400.0,,1884,,
+Na44,Taqagmiut,xd1061,queb1248,Nunavik,Eskimo-Aleut,EA202,400.0,,1916,,
+Nb8,Haisla,xd1105,hais1244,Haisla,Wakashan,EA202,400.0,,1930,,in 1930; note focal year for cultural data is 1880
+Nb9,Nuxalk,xd1106,bell1243,Bella Coola,Salishan,EA202,400.0,,,"Central group, lower B.C. River",Date for population estimate missing; Source is HRAF:1 p. v.
+Nd36,Wiyambituka,xd1170,west2622,Western Shoshoni,Uto-Aztecan,EA202,400.0,,1870,,
+Nh2,Hano,xd1270,ariz1237,Arizona Tewa,Kiowa-Tanoan,EA202,400.0,,1950,,
+ec17,Negidal,xd625,negi1245,Negidal,Tungusic,EA202,420.0,,1890,Upper Amgun' River group,Upper Amgun River group
+If9,Ulithians,xd840,ulit1238,Ulithian,Austronesian,EA202,421.0,,1949,,in 1949; note focal year for cultural data is 1900
+If7,Gilbert Onotoa,xd838,nuii1237,Nui,Austronesian,EA202,450.0,,,with special reference to the inhabitants of Onotoa,Date for population estimate missing; on Onotoa
+Ij9,Easter Islanders,xd898,rapa1244,Rapanui,Austronesian,EA202,450.0,,1936,,in 1936; note focal year for cultural data is 1860
+Nd39,Spring Valley Shoshoni,xd995,west2622,Western Shoshoni,Uto-Aztecan,EA202,450.0,,1885,including the Shoshoni of Snake and Antelope Valleys,in 1885; note focal year for cultural data is 1870
+Sf8,Piro,xd1381,yine1238,Yine,Arawakan,EA202,450.0,,1952,,
+Ie34,Bgu,xd812,bong1287,Bonggo,Austronesian,EA202,480.0,,1864,,in 1864; note focal year for cultural data is 1960
+Ii7,Kapingamarangi,xd886,kapi1249,Kapingamarangi,Austronesian,EA202,482.0,,1950,,in 1950; note focal year for cultural data is 1910
+Nb16,Klallam,xd1075,clal1241,Clallam,Salishan,EA202,485.0,,1881,,in 1881; note focal year for cultural data is 1860
+Ei11,Aimol,xd698,aimo1244,Aimol,Sino-Tibetan,EA202,500.0,,1931,,in 1931; note focal year for cultural data is 1910
+If11,Kosraeans,xd826,kosr1238,Kosraean,Austronesian,EA202,500.0,,1905,,in 1905; note focal year for cultural data is 1860
+Ii3,Pukapukans,xd882,puka1242,Pukapuka,Austronesian,EA202,500.0,,,,Date for population estimate missing
+Na21,Caribou Inuit,xd1038,cari1277,Kivalliq,Eskimo-Aleut,EA202,500.0,,1923,,in 1923; note focal year for cultural data is 1900
+Na22,Iglulik Inuit,xd1025,west2618,Western Canadian Inuktitut,Eskimo-Aleut,EA202,500.0,,1920,with special reference to the Aivilingmiut and Iglulingmiut,
+Nc15,Coast Yuki,xd1113,yuki1243,Yuki,Yuki-Wappo,EA202,500.0,,1950,,in 1950; 15 in 1910; note focal year for cultural data is 1860
+Nc16,Huchnom,xd1114,yuki1243,Yuki,Yuki-Wappo,EA202,500.0,,,,Aboriginally; 8 in 1910; Note focal year for cultural data is 1860
+Nc21,Lake Miwok,xd1120,lake1258,Lake Miwok,Miwok-Costanoan,EA202,500.0,,,,Aboriginally; 8 in 1910; Note focal year for cultural data is 1860
+Nc23,Western Mono,xd1122,mono1275,Mono (USA),Uto-Aztecan,EA202,500.0,,1920,,"in 1920; Data source gives population number as ""more than 500""; note focal year for cultural data is 1870"
+Nd14,Coeur d’Alene,xd1146,coeu1236,Coeur d'Alene,Salishan,EA202,500.0,,1905,,in 1905; note focal year for cultural data is 1860
+Nd47,Tukudika,xd1181,nort2955,Northern Shoshoni,Uto-Aztecan,EA202,500.0,,1860,,
+Nd66,Yavapai,xd1203,yava1252,Yavapai,Cochimi-Yuman,EA202,500.0,,1870,with exdlusive reference to the Northeastern Yavapai,
+Nd67,Tolkepaya,xd1204,yava1252,Yavapai,Cochimi-Yuman,EA202,500.0,,1870,,
+Nf5,Wichita,xd1239,wich1260,Wichita,Caddoan,EA202,500.0,,1950,,in 1950; note focal year for cultural data is 1860
+Sc2,Pumé,xd1345,pume1238,Pumé,,EA202,500.0,,1947,,The actual figure is 519.
+ec12,Nganasan,xd620,ngan1291,Nganasan,Uralic,EA202,500.0,,1930,Avam (Western) group,Avam group
+ec19,Orok,xd627,orok1265,Orok,Tungusic,EA202,500.0,,1890,Northern group,
+Nd35,Mahaguaduka,xd1169,west2622,Western Shoshoni,Uto-Aztecan,EA202,530.0,,1874,,
+Aa9,Hadza,xd9,hadz1240,Hadza,,EA202,600.0,,,Hatsa Kindiga Tribe,Date for population estimate missing; This population figure is taken from EA-Summary
+Cj8,Druze,xd594,sunn1238,Sunni Beiruti Arabic,Afro-Asiatic,EA202,600.0,,1930,with special reference to those of Mount Carmel in Israel,in the Mount Carmel region
+Ed6,Min Chinese,xd649,minn1241,Min Nan Chinese,Sino-Tibetan,EA202,600.0,,1919,with special reference to those in the hinterland of Swatow,See HRAF reference 1:29.
+Ie26,Ngarawapum,xd803,adze1240,Adzera,Austronesian,EA202,600.0,,1945,,
+Nb34,Karuk,xd1095,karo1304,Karok,,EA202,600.0,,1905,,in 1905; note focal year for cultural data is 1860
+Nd12,Bitterroot Salish,xd1144,kali1309,Kalispel,Salishan,EA202,600.0,,1906,,in 1906; Source is HRAF 7:Teit p. 315; note focal year for cultural data is 1860
+Nd42,Elko Shoshoni,xd1177,west2622,Western Shoshoni,Uto-Aztecan,EA202,600.0,,1872,"including the Carlin, Halleck, and Wells groups",
+Nd46,Agaiduka,xd1182,nort2955,Northern Shoshoni,Uto-Aztecan,EA202,600.0,,1860,,
+Nd53,Southern Paiute (Kaibab),xd1189,sout2969,Southern Paiute,Uto-Aztecan,EA202,600.0,,1850,,
+Nd63,Bannock,xd1200,bann1248,Bannock,Uto-Aztecan,EA202,600.0,,1869,with special reference to the Eastern Bannock,
+Nd8,Chilcotin,xd1206,chil1280,Chilcotin,Athabaskan-Eyak-Tlingit,EA202,600.0,,1840,with special reference to the Alexis Creek and Redstone bands,in 1840; note focal year for cultural data is 1880
+Nh7,Cochiti,xd1283,coch1273,Cochiti,Keresan,EA202,600.0,,,,Date for population estimate missing
+Sc3,Barama River Carib,xd1346,mura1272,Murato,Cariban,EA202,600.0,,1932,Barama River,See HRAF reference 1:13.
+Nb35,Hupa,xd1096,hupa1239,Hupa,Athabaskan-Eyak-Tlingit,EA202,640.0,,1870,,
+Id5,Kariyarra,xd780,kari1304,Kariyarra,Pama-Nyungan,EA202,650.0,,1865,,in 1865; note focal year for cultural data is 1910
+Na26,Dena'ina,xd1042,tana1289,Tanaina,Athabaskan-Eyak-Tlingit,EA202,650.0,,1932,with special reference to the Iliamna,in 1932; note focal year for cultural data is 1870
+Nh8,Jemez,xd1284,jeme1245,Towa,Kiowa-Tanoan,EA202,650.0,,1937,,in 1937; note focal year for cultural data is 1920
+Nb24,Makah,xd1084,maka1318,Makah,Wakashan,EA202,654.0,,1861,,
+Nd4,Sanpoil,xd1174,sanp1257,Sanpoil,Salishan,EA202,660.0,,1860,,
+Eg4,Toda,xd680,toda1252,Toda,Dravidian,EA202,700.0,,1901,Toda Tribe,The actual figure is 736 (1:469).
+Ie5,Keraki,xd819,namb1293,Nambo,Morehead-Wasur,EA202,700.0,,1926,,
+Ii5,Ontong Java,xd884,onto1237,Luangiua,Austronesian,EA202,700.0,,1928,"Leuenuwa, Lord Howe's Islanders",
+Na32,Montagnais,xd1048,mont1268,Montagnais,Algic,EA202,700.0,,1929,Lake St. John & Mistassini Band,in 1929; Source is EA-Summary; note focal year for cultural data is 1880
+Nb4,Yurok,xd1101,yuro1248,Yurok,Algic,EA202,700.0,,1910,,"in 1910; HRAF 9:Kroeber, p. 19; note focal year for cultural data is 1850"
+Nc6,Kumeyaay,xd1137,kumi1248,Tipai,Cochimi-Yuman,EA202,700.0,,,with special reference to the Southern Diegueno,Date for population estimate missing
+Nd27,Kuyuidokado,xd1160,sout2967,South Northern Paiute,Uto-Aztecan,EA202,700.0,,1866,,
+Nh5,Maricopa,xd1281,mari1440,Maricopa,Cochimi-Yuman,EA202,700.0,,1850,,
+Nh6,Taos,xd1282,taos1236,Taos,Kiowa-Tanoan,EA202,700.0,,1930,,in 1930; note focal year for cultural data is 1890
+Ae47,Puku,xd168,bata1285,Batanga,Atlantic-Congo,EA202,713.0,,1949,,in 1949; note focal year for cultural data is 1900
+Nc31,Cahuilla (Desert),xd1131,cahu1264,Cahuilla,Uto-Aztecan,EA202,750.0,,1920,with special reference to the Desert Cahuilla,in 1920; note focal year for cultural data is 1870
+Sc13,Panare,xd1339,enap1235,Panare,Cariban,EA202,750.0,,1954,,
+Ig8,Simboese,xd860,simb1256,Simbo,Austronesian,EA202,800.0,,1960,,in 1960; note focal year for cultural data is 1910
+Na3,Copper Inuit,xd1022,copp1244,Inuinnaqtun,Eskimo-Aleut,EA202,800.0,,1915,Coronation Gulf,
+Nb36,Wiyot,xd1097,wiyo1248,Wiyot,Algic,EA202,800.0,,1853,,
+Nd28,Toedokado,xd1161,sout2967,South Northern Paiute,Uto-Aztecan,EA202,800.0,,1866,,
+Nd43,White Knife Shoshoni,xd1178,west2622,Western Shoshoni,Uto-Aztecan,EA202,800.0,,,,Aboriginally; Note focal year for cultural data is 1860
+Ne13,Kainai,xd1212,bloo1239,Blood,Algic,EA202,800.0,,1809,,in 1809; note focal year for cultural data is 1850
+Nh16,Jicarilla,xd1266,jica1244,Jicarilla Apache,Athabaskan-Eyak-Tlingit,EA202,800.0,,1805,"Jicarilla Reservation, Dulce, New Mexico",in 1805; note focal year for cultural data is 1870
+Sj1,Carajá,xd1407,kara1500,Karajá,Nuclear-Macro-Je,EA202,800.0,,1939,,in 1939; note focal year for cultural data is 1950
+ch22,Lithuanian Karaim,xd560,kara1464,Karaim,Turkic,EA202,800.0,,1987,with special reference to those of the Trakaj area,in 1987; note focal year for cultural data is 1895
+ec20,Oroch,xd629,oroc1248,Oroch,Tungusic,EA202,800.0,,1890,Oroch people as a whole,
+Na35,Nipigon,xd1051,cent2136,Central Ojibwa,Algic,EA202,820.0,,1880,,in 1880; note focal year for cultural data is 1800
+Nf12,Ponca,xd1232,ponc1241,Ponca,Siouan,EA202,825.0,,1880,,in 1880; note focal year for cultural data is 1850
+If10,Nomoians,xd825,mort1237,Mortlockese,Austronesian,EA202,900.0,,1935,,
+If3,Majuro,xd834,rata1243,Ratak,Austronesian,EA202,900.0,,1947,With special reference to the inhabitants of Majuro,See EA-Summary
+Na15,Tlicho,xd1032,dogr1252,Dogrib,Athabaskan-Eyak-Tlingit,EA202,900.0,,1959,,in 1959; note focal year for cultural data is 1860
+Na33,Northern Saulteaux,xd1049,alba1270,Albany River Ojibwa,Algic,EA202,900.0,,1930,Berens River band,"in 1930; Berens River band only, source is SCCS-186; note focal year for cultural data is 1870"
+Nh27,Kewa,xd1278,sant1425,Santo Domingo,Keresan,EA202,900.0,,1931,,
+Ag43,Vagala,xd281,vagl1239,Vagla,Atlantic-Congo,EA202,1000.0,,1930,,
+Ah27,Zuande,xd317,bita1251,Bitare,Atlantic-Congo,EA202,1000.0,,1947,,in 1947; note focal year for cultural data is 1920
+Ca17,Tsamai,xd423,tsam1247,Tsamai,Afro-Asiatic,EA202,1000.0,,1951,,
+Id3,Tiwi,xd778,tiwi1244,Tiwi,,EA202,1000.0,,1928,Tiwi Tribe: Melville Island,
+Ie4,Wogeo,xd818,woge1237,Wogeo,Austronesian,EA202,1000.0,,,"Dap, Wonevaro district",Date for population estimate missing
+Ii10,Rennell Islanders,xd877,renn1242,Rennell-Bellona,Austronesian,EA202,1000.0,,1950,,
+Na2,Tareumiut,xd1036,nort2944,North Slope Inupiatun,Eskimo-Aleut,EA202,1000.0,,1880,,
+Nb3,Kwakwaka'wakw,xd1090,kwak1269,Kwak'wala,Wakashan,EA202,1000.0,,1920,,in 1920; note focal year for cultural data is 1890
+Nc17,Northern Pomo,xd1115,nort2966,Northern Pomo,Pomoan,EA202,1000.0,,1850,with special reference to those of Kalekau,"Source is HRAF 1:Kroeber, p. 237 (Northern Pomo)."
+Nc18,Eastern Pomo,xd1116,east2545,Eastern Pomo,Pomoan,EA202,1000.0,,1840,"Clear Lake, Village of Cignon",in 1840; Source is HRAF 1:Kroeber p. 237 (Clear Lake Pomo only); note focal year for cultural data is 1860
+Nc19,Southern Pomo,xd1117,sout2984,Southern Pomo,Pomoan,EA202,1000.0,,1850,with special reference to those near Santa Rosa,"Source is HRAF 1:Kroeber, p. 237 (Southern Pomo)."
+Nd18,Wishram,xd1150,wasc1239,Wasco-Wishram,Chinookan,EA202,1000.0,,1800,,in 1800; note focal year for cultural data is 1860
+Nd2,Southern Ute,xd1152,utee1244,Ute,Uto-Aztecan,EA202,1000.0,,,,Date for population estimate missing
+Nd30,Eastern Mono,xd1164,mono1275,Mono (USA),Uto-Aztecan,EA202,1000.0,,1870,,
+Nd6,Washo,xd1196,wash1253,Washo,,EA202,1000.0,,1845,,850 in 1960
+Nd65,Hualapai,xd1202,wala1270,Walapai,Cochimi-Yuman,EA202,1000.0,,1870,,
+Nh1,Chiricahua,xd1259,mesc1238,Mescalero-Chiricahua Apache,Athabaskan-Eyak-Tlingit,EA202,1000.0,,1870,Central band,Source is HRAF 1:Opler p. 4.
+Se4,Yagua,xd1368,yagu1244,Yagua,Peba-Yagua,EA202,1000.0,,1940,,
+Si1,Bororo,xd1397,boro1282,Bororo,Bororoan,EA202,1000.0,,1936,Kejara,in 1936; note focal year for cultural data is 1920
+ch28,Votes,xd566,voti1245,Votic,Uralic,EA202,1000.0,,1917,with special reference to those of the Yamburg Uezd,"in 1917; 5,148 in 1848; note focal year for cultural data is 1900"
+ec14,Ungazikmit,xd622,cent2128,Central Siberian Yupik,Eskimo-Aleut,EA202,1000.0,,1880,those of South-Eastern Chukotka,
+ec16,Evenk,xd624,even1259,Evenki,Tungusic,EA202,1000.0,,1890,Barguzin group,Barguzin group
+Nh10,Isleta,xd1260,sout2961,Southern Tiwa,Kiowa-Tanoan,EA202,1036.0,,1930,,
+Aa2,Dorobo,xd2,okie1245,Okiek,Nilotic,EA202,1100.0,,1925,with special reference to Central Dorobo,221 Central Dorobo in 1942
+If15,Carolinians,xd830,caro1242,Carolinian,Austronesian,EA202,1100.0,,1950,,in 1950; note focal year for cultural data is 1930
+Na23,Labrador Inuit,xd1039,labr1244,North Labrador Eskimo,Eskimo-Aleut,EA202,1100.0,,1890,with special reference to the Koksoagmiu,
+Nc24,Southern Valley Yokuts,xd1123,vall1251,Valley Yokuts,Yokutsan,EA202,1100.0,,1850,Tulare Lake,"Source is HRAF 12:Cook, p. 44B. Number refers to population of Tulare Lake region only."
+Nd41,Wadaduka,xd1176,west2622,Western Shoshoni,Uto-Aztecan,EA202,1100.0,,1875,,
+Nf13,Shawnee,xd1233,shaw1249,Shawnee,Algic,EA202,1100.0,,1930,with special reference to the Kiskopotha band,in 1930; note focal year for cultural data is 1820
+Ng11,Yuchi,xd1246,yuch1247,Yuchi,,EA202,1139.0,,1832,,in 1832; note focal year for cultural data is 1750
+Ne17,Kiowa,xd1216,kiow1266,Kiowa,Kiowa-Tanoan,EA202,1165.0,,1905,,in 1905; note focal year for cultural data is 1860
+Ig21,Tangu,xd854,tang1355,Tanggu,Lower Sepik-Ramu,EA202,1200.0,,1932,with special reference to Boieng Island,
+Ig6,Ulawans,xd858,saaa1240,Sa'a,Austronesian,EA202,1200.0,,1909,,
+Nd1,Tenino,xd1141,teni1238,Tenino,Sahaptian,EA202,1200.0,,1850,,
+Sd1,Munduruku,xd1353,mund1330,Mundurukú,Tupian,EA202,1200.0,,1952,Cabrura village,
+Se9,Shipibo-Conibo,xd1373,ship1254,Shipibo-Conibo,Pano-Tacanan,EA202,1200.0,,1940,,in 1940; note focal year for cultural data is 1920
+Ij1,Mangaians,xd889,raro1241,Southern Cook Island Maori,Austronesian,EA202,1250.0,,1926,,in 1926; note focal year for cultural data is 1820
+Nh13,Acoma,xd1263,acom1246,Acoma,Keresan,EA202,1250.0,,1941,,in 1941; note focal year for cultural data is 1920
+Na20,Kutchin,xd1037,gwic1235,Gwich'in,Athabaskan-Eyak-Tlingit,EA202,1274.0,,1858,with special reference to the Tatlit of Peel River Kutchin,in 1858; 337 Tatlit; note focal year for cultural data is 1880
+Ec8,Ket,xd636,kett1243,Ket,Yeniseian,EA202,1300.0,,,,Date for population estimate missing
+Ie28,Busama,xd805,buga1250,Bugawac,Austronesian,EA202,1300.0,,1946,,
+Ii2,Tikopia,xd881,tiko1237,Tikopia,Austronesian,EA202,1300.0,,1929,Ravenga District,See EA-Summary
+Nc33,Luiseño,xd1133,luis1253,Luiseno,Uto-Aztecan,EA202,1300.0,,1870,,
+Sa8,Mam,xd1324,mamm1241,Mam,Mayan,EA202,1300.0,,1937,with special reference to the village of Santiago Chimaltenango,Source is HRAF 2: Wagley p. 11.
+Sb4,Cariña,xd1329,taba1267,Tabajari,Cariban,EA202,1300.0,,,with special reference to the Cachama group,Date for population estimate missing; 1300 or 3700? (2 total population numbers given for 1962). 400 Cachama
+ec15,Mansi,xd623,mans1258,Northern Mansi,Uralic,EA202,1300.0,,1880,Middle Northern Sos'va group,the Middle Northern Sos'va group.
+ec21,Udihe,xd630,udih1248,Udihe,Tungusic,EA202,1300.0,,1890,Hor River group,
+Sb5,Paraujano,xd1330,para1316,Paraujano,Arawakan,EA202,1350.0,,1958,,
+Ef11,Uttar Pradesh,xd663,bhoj1244,Bhojpuri,Indo-European,EA202,1400.0,,1941,Village and environs of Senapur,See HRAF reference 5:465a.
+Id10,Walbiri,xd773,warl1254,Warlpiri,Pama-Nyungan,EA202,1400.0,,1954,,in 1954; note focal year for cultural data is 1930
+Ig19,Molima,xd851,moli1248,Molima,Austronesian,EA202,1400.0,,1950,,
+Nc8,Klamath,xd1139,klam1254,Klamath-Modoc,,EA202,1400.0,,1850,Klamath Tribe,"Reconstructions cover the Klamath from 1826 to ""the present."" Population is estimated as between 800 and 1,400 ""aboriginally."" Population count thus has no specific time focus."
+Nf3,Omaha,xd1237,omah1248,Omaha,Siouan,EA202,1400.0,,1851,Omaha Tribe,"Source is HRAF 33:Steffens, p.2"
+Nh11,San Ildefonso,xd1261,sani1273,San Ildefonso,Kiowa-Tanoan,EA202,1400.0,,1937,with special reference to the pueblo of San Ildefonso,in 1937; 126 in San lldefonso; note focal year for cultural data is 1900
+Sd5,Sateré Mawé,xd1357,sate1243,Sateré-Mawé,Tupian,EA202,1400.0,,1958,,
+Sg4,Tehuelche,xd1386,tehu1242,Tehuelche,Chonan,EA202,1400.0,,1869,Equestrian,
+Af37,Buem,xd216,siwu1238,Siwu,Atlantic-Congo,EA202,1500.0,,1950,with special reference to the Akpafu,in 1950; Akpafu; note focal year for cultural data is 1900
+Ca18,Arbore,xd424,arbo1245,Arbore,Afro-Asiatic,EA202,1500.0,,1950,,
+Ie32,Sio,xd810,sioo1240,Sio,Austronesian,EA202,1500.0,,1964,,
+Ig11,Rossel Islanders,xd843,yele1255,Yele,,EA202,1500.0,,1925,,
+Ii8,Futunans,xd887,east2447,East Futuna,Austronesian,EA202,1500.0,,1923,,in 1923; note focal year for cultural data is 1840
+Na40,Ottawa,xd1057,otta1242,Ottawa,Algic,EA202,1500.0,,1670,,in 1670; note focal year for cultural data is 1650
+Nd45,Bohogue,xd1180,nort2955,Northern Shoshoni,Uto-Aztecan,EA202,1500.0,,1867,,
+Sf3,Chachi,xd1376,chac1249,Cha'palaa,Barbacoan,EA202,1500.0,,1908,Rio Cayapas Basin,"The population figure is between 1,500 and 2,000 (3:1)."
+Ia14,Tao,xd737,yami1254,Yami,Austronesian,EA202,1560.0,,1960,,in 1960; note focal year for cultural data is 1930
+Na25,Kalaallit (West Greenland),xd1041,kala1399,Kalaallisut,Eskimo-Aleut,EA202,1600.0,,1918,with special reference to the inhabitants of the Egesminde District,Egesminde District
+Nd64,Wind River Eastern Shoshone,xd1201,nort2955,Northern Shoshoni,Uto-Aztecan,EA202,1600.0,,1869,with special reference to the Kucundika,
+Ne12,Blackfoot,xd1211,pieg1239,Piegan,Algic,EA202,1600.0,,1809,,in 1809; note focal year for cultural data is 1850
+Nf9,Menominee,xd1243,meno1252,Menominee,Algic,EA202,1600.0,,1900,,in 1900; note focal year for cultural data is 1870
+Ne10,Arikara,xd1209,arik1262,Arikara,Caddoan,EA202,1650.0,,1871,,in 1871; note focal year for cultural data is 1860
+Ah26,Ndoro,xd316,ndoo1241,Ndoola,Atlantic-Congo,EA202,1700.0,,1921,,
+Ch5,Bulgarians,xd569,bulg1262,Bulgarian,Indo-European,EA202,1700.0,,1934,with special reference to the village of Dragelevtsy,"The actual figure is 1,669 (2:6)."
+Nb27,Stó:lō,xd1087,chil1281,Chiliwack,Salishan,EA202,1700.0,,1951,with special reference to the Tait,in 1951; note focal year for cultural data is 1880
+Nh4,Zuni,xd1280,zuni1245,Zuni,,EA202,1700.0,,1880,Pueblo,"in 1880; Source is HRAF 7:Cushing, p. 126; note focal year for cultural data is 1910"
+Ij3,Marquesans,xd892,nort2845,North Marquesan,Austronesian,EA202,1800.0,,1921,,in 1921; note focal year for cultural data is 1900
+Nc28,Chumash,xd1127,cruz1243,Cruzeño,Chumashan,EA202,1800.0,,,,Aboriginally; Note focal year for cultural data is 1800
+Ne4,Crow,xd1223,crow1244,Crow,Siouan,EA202,1800.0,,1935,,in 1935; note focal year for cultural data is 1870
+Ad1,Bajuni,xd76,baju1245,Bajuni,Atlantic-Congo,EA202,2000.0,,1950,,
+Af40,Assini,xd220,abur1243,Abure,Atlantic-Congo,EA202,2000.0,,1950,"with special reference to the Abure (Akapless, Asoko, Esuma)",in 1950; Abure in; note focal year for cultural data is 1890
+Ai2,Nyaro,xd348,kooo1244,Ko,Heibanic,EA202,2000.0,,,,Date for population estimate missing
+Ca24,Dime,xd431,dime1235,Dime,South Omotic,EA202,2000.0,,1951,,
+Cc11,Azjer,xd489,ghat1242,Ghat,Afro-Asiatic,EA202,2000.0,,1944,,in 1944; note focal year for cultural data is 1860
+Ej3,Semang,xd725,kens1248,Kensiu,Austroasiatic,EA202,2000.0,,1920,Jehai Group or subtribe,
+Id1,Northern Aranda,xd772,east2379,Eastern Arrernte,Pama-Nyungan,EA202,2000.0,,1900,Alice Springs and environs,The population in +1927 was roughly 300 to 400 (1:1).
+Id2,"Yolngu, Dhuwal",xd777,dhuw1249,Dhuwal,Pama-Nyungan,EA202,2000.0,,1950,,in 1950; note focal year for cultural data is 1930
+Id8,Tasmanians (northwestern),xd783,port1278,Port Sorell,Western Tasmanian,EA202,2000.0,,1830,,See EA-Summary
+Ie20,Koita,xd797,koit1244,Koitabu,Koiarian,EA202,2000.0,,1909,,
+If14,Makin,xd829,bana1287,Banaban,Austronesian,EA202,2000.0,,1890,Makin and Butiritari Islands (N),
+Ig9,Manus,xd861,tita1241,Titan,Austronesian,EA202,2000.0,,1928,Peri Village,See HRAF reference 2:21.
+Na42,Potawatomi,xd1059,pota1247,Potawatomi,Algic,EA202,2000.0,,1760,Prairie Potawatomi,
+Nb32,Shasta,xd1093,shas1239,Shasta,Shastan,EA202,2000.0,,1850,with special reference to the Shastika or eastern Shasta,
+Nc26,Salinan,xd1125,sali1253,Salinan,,EA202,2000.0,,1771,,40 in 1910
+Nc7,Yuki,xd1138,yuki1243,Yuki,Yuki-Wappo,EA202,2000.0,,,,Aboriginally; Note focal year for cultural data is 1850
+Ne1,Gros Ventre,xd1208,gros1243,Gros Ventre,Algic,EA202,2000.0,,1880,Gros Ventre Tribe,Population is estimated as between 800 and 2000 in 1880 (see HRAF:4 p. 411 and SCCS-186 print-out).
+Nf7,Fox,xd1241,mesk1242,Meskwaki,Algic,EA202,2000.0,,1820,Tama Reservation,
+Sb2,Cágaba,xd1327,cogu1240,Cogui,Chibchan,EA202,2000.0,,1941,,
+Se1,Sirionó,xd1362,siri1273,Sirionó,Tupian,EA202,2000.0,,1940,Vicinity of the Rio Blanco,See EA-Summary
+Sf4,U'wa,xd1377,cent2150,Central Tunebo,Chibchan,EA202,2000.0,,,,Date for population estimate missing
+Sg3,Ona,xd1385,onaa1245,Selk'nam,Chonan,EA202,2000.0,,1880,with special reference to the Shelknam,300 in 1910
+Sj10,Cayua,xd1408,mbya1239,Mbyá Guaraní,Tupian,EA202,2000.0,,1943,Taquapiri,"The population totals between 2,000 and 4,000 (PSF-A:147)."
+Sj6,Tenetehara,xd1414,temb1276,Tenetehara,Tupian,EA202,2000.0,,,with special reference to the Guajajara subgroup,Date for population estimate missing
+Sj2,Sherente,xd1410,xere1240,Xerénte,Nuclear-Macro-Je,EA202,2139.0,,1951,,in 1951; note focal year for cultural data is 1850
+Ch1,Serbs,xd546,serb1264,Serbian,Indo-European,EA202,2200.0,,1953,with special reference to the village of Orasac,"The actual number is 2,182 (3:41)."
+Na9,Aleut,xd1067,east2533,Eastern Aleut,Eskimo-Aleut,EA202,2200.0,,1840,Unalaska Branch (Eastern Aleut),Source is SCCS-186.
+Eb7,Chahar,xd615,peri1253,Peripheral Mongolian,Mongolic,EA202,2300.0,,1943,,in 1943; note focal year for cultural data is 1930
+Ne9,Arapaho,xd1228,arap1274,Arapaho,Algic,EA202,2300.0,,1904,,in 1904; note focal year for cultural data is 1860
+Aa3,Nama,xd3,nama1265,Nama,Khoe-Kwadi,EA202,2500.0,,1876,Gei/Khauan tribe,in 1876; See HRAF reference 4:7; note focal year for cultural data is 1840
+Ca20,Galab,xd427,daas1238,Daasanach,Afro-Asiatic,EA202,2500.0,,1890,,
+Eg10,Telugu,xd673,telu1262,Telugu,Dravidian,EA202,2500.0,,1951,with special reference to the village of Shamirpet,See HRAF reference 1:19.
+Eg12,Khond,xd675,kuii1252,Kui (India),Dravidian,EA202,2500.0,,1941,with special reference to the Bondo,Bondo
+Ih9,Santa Cruz Islanders,xd875,natu1246,Natügu,Austronesian,EA202,2500.0,,1958,Graciosa Bay,in 1958; See EA-Summary for the figure above. Note also that in 1912 the population was between 1000 and 1500 (2:155); note focal year for cultural data is 1930
+Sc11,Camaracoto,xd1337,cama1252,Camaracoto,Cariban,EA202,2500.0,,1933,,
+Sd8,Sanema,xd1360,sanu1240,Sanumá,Yanomamic,EA202,2500.0,,,,Date for population estimate missing
+Se5,Cubeo,xd1369,cube1242,Cubeo,Tucanoan,EA202,2500.0,,1939,Village on Caduiari River,See HRAF reference 5:25.
+Sg1,Yahgan,xd1383,yama1264,Yámana,,EA202,2500.0,,1866,Eastern and central,
+Sh5,Choroti,xd1392,iyow1239,Iyo'wujwa Chorote,Matacoan,EA202,2500.0,,1915,,
+Aj18,Bodi,xd393,meen1242,Me'en,Surmic,EA202,2600.0,,,,Date for population estimate missing
+Nh14,Laguna,xd1264,acom1246,Acoma,Keresan,EA202,2600.0,,1941,,in 1941; note focal year for cultural data is 1920
+Cf4,Brazilians,xd539,braz1246,Brazilian Portuguese,Indo-European,EA202,2700.0,,1940,with special reference to the village of Cruz das Almas near Sao Paulo,
+Ne18,Piegan,xd1217,pieg1239,Piegan,Algic,EA202,2800.0,,1809,,in 1809; note focal year for cultural data is 1850
+Ai46,Koma,xd377,komo1258,Komo (Sudan),Koman,EA202,3000.0,,1938,,
+Ea7,Moghol,xd606,mogh1245,Mogholi,Mongolic,EA202,3000.0,,,,"Date for population estimate missing; Data source gives population number as ""a few thousand"""
+Ee8,Magar,xd660,west2418,Western Magar,Sino-Tibetan,EA202,3000.0,,1960,with special reference to the sedentary inhabitants of Banyan Hill,inhabitants of Banyan Hill
+Ih6,Rotumans,xd872,rotu1241,Rotuman,Austronesian,EA202,3000.0,,1960,,in 1960; note focal year for cultural data is 1890
+Ij7,Mangarevans,xd896,mang1401,Mangareva,Austronesian,EA202,3000.0,,,,"Date for population estimate missing; Data source gives population number as ""never more than a few thousand"""
+Ne11,Assiniboine,xd1210,assi1247,Assiniboine,Siouan,EA202,3000.0,,1890,,in 1890; note focal year for cultural data is 1870
+Sb3,Barí (Motilon),xd1328,yukp1241,Yukpa,Cariban,EA202,3000.0,,,with special reference to the Iroka,Date for population estimate missing
+Se2,Ticuna,xd1366,ticu1245,Ticuna,Ticuna-Yuri,EA202,3000.0,,1940,,
+Sh2,Terena,xd1389,tere1279,Terena-Kinikinao-Chane,Arawakan,EA202,3000.0,,1946,,in 1946; note focal year for cultural data is 1850
+ch24,Livs,xd562,livv1244,Liv,Uralic,EA202,3000.0,,1860,with special reference to the Northwest Courland,in 1860; note focal year for cultural data is 1847
+ec18,Ulch,xd626,ulch1241,Ulch,Tungusic,EA202,3000.0,,1890,Ulch people as a whole,
+Ie22,Mekeo,xd799,meke1243,Mekeo,Austronesian,EA202,3100.0,,1897,,
+If13,Nauruans,xd828,naur1243,Nauru,Austronesian,EA202,3300.0,,,,Date for population estimate missing
+Nf6,Pawnee,xd1240,pawn1254,Pawnee,Caddoan,EA202,3400.0,,1859,Skidi Band or subtribe,Source is SCCS-186 print-out.
+Aa1,!Kung,xd1,juho1239,South-Eastern Ju,Kxa,EA202,3500.0,,1953,Nyai Nyae region,"Of this total, 1,000 were located in the Nyae Nyae region."
+Ai42,Tullishi,xd373,tuli1249,Tulishi,Kadugli-Krongo,EA202,3500.0,,1947,,
+Ca25,Shangama,xd432,aari1239,Aari,South Omotic,EA202,3500.0,,1951,,
+Ci2,Khevsur,xd578,xevs1238,Xevsur,Kartvelian,EA202,3500.0,,1927,,
+Ie29,Manam,xd806,mana1295,Manam,Austronesian,EA202,3500.0,,1933,principally Tsogari,
+Nh18,Hopi,xd1268,hopi1249,Hopi,Uto-Aztecan,EA202,3500.0,,1950,Old Oraiibi,in 1950; note focal year for cultural data is 1920
+Nj6,Huave,xd1305,sanm1287,San Mateo del Mar Huave,Huavean,EA202,3500.0,,1950,with special reference to San Mateo,San Mateo
+Ii9,Niueans,xd888,niue1239,Niuean,Austronesian,EA202,3720.0,,1921,,in 1921; note focal year for cultural data is 1840
+Ca22,Male,xd429,male1284,Male (Ethiopia),Ta-Ne-Omotic,EA202,3800.0,,1950,,
+Cc3,Siwans,xd500,siwi1239,Siwi,Afro-Asiatic,EA202,3800.0,,1937,inhabitants of the oasis of Siwa,in 1937; note focal year for cultural data is 1920
+Eg1,Chenchu,xd672,chen1255,Chenchu,Dravidian,EA202,3820.0,,1941,with special reference to the forest group,
+If8,Chamorro,xd839,cham1312,Chamorro,Austronesian,EA202,3850.0,,1950,with special reference to those of Saipa,on Saipan
+Ah25,Tigon,xd315,tigo1236,Tigon Mbembe,Atlantic-Congo,EA202,4000.0,,1950,,in 1950; note focal year for cultural data is 1920
+Ah6,Gure,xd333,gbir1241,Gbiri-Niragu,Atlantic-Congo,EA202,4000.0,,1948,,in 1948; note focal year for cultural data is 1920
+Aj20,Suri,xd396,suri1267,Tirma-Chai,Surmic,EA202,4000.0,,1947,,
+Nc3,Northern Foothill Yokuts,xd1129,nort2937,Northern Hill/Valley Yokuts,Yokutsan,EA202,4000.0,,1806,with special reference to those of the Northern Foothills,in 1806; 550 in 1910; note focal year for cultural data is 1850
+Nd9,Lillooet,xd1207,lill1248,Lillooet,Salishan,EA202,4000.0,,1850,,
+Ng15,Chitimacha,xd1250,chit1248,Chitimacha,,EA202,4000.0,,1750,,18th century
+Nh21,Mojave,xd1272,moha1256,Mohave,Cochimi-Yuman,EA202,4000.0,,1834,Fort Mohave and Colorado River Reservation,"in 1834; See HRAF 10 Slip, #3; note focal year for cultural data is 1850"
+Sc8,Piaroa,xd1351,piar1243,Piaroa,Jodi-Saliban,EA202,4000.0,,,,Date for population estimate missing
+Cc12,Ifora,xd490,tadh1242,Tadhaq,Afro-Asiatic,EA202,4200.0,,1944,,
+Ii13,Uveans,xd879,wall1257,East Uvean,Austronesian,EA202,4400.0,,1919,,in 1919; note focal year for cultural data is 1830
+ch23,Lithuanian Tatar,xd561,west2405,Western Tatar,Turkic,EA202,4499.0,,1897,with special reference to those of the Vilenskaja Gubernija,"Source says <4,500"
+Ad39,Sonjo,xd108,temi1247,Temi,Atlantic-Congo,EA202,4500.0,,1957,,
+Ah37,Hwana,xd328,hwan1240,Hwana,Afro-Asiatic,EA202,4500.0,,1921,,
+Ne3,Comanche,xd1222,coma1245,Comanche,Uto-Aztecan,EA202,4700.0,,1866,Comanche Tribe,Source is SCCS-186 print-out
+Ne5,Cheyenne,xd1224,chey1247,Cheyenne,Algic,EA202,4700.0,,1870,,
+Nh17,Western Apache,xd1267,west2615,Western Apache,Athabaskan-Eyak-Tlingit,EA202,4700.0,,1940,,in 1940; note focal year for cultural data is 1870
+Af44,Alagya,xd224,alla1248,Alladian,Atlantic-Congo,EA202,5000.0,,1950,,in 1950; note focal year for cultural data is 1900
+Af45,Avikam,xd225,avik1243,Avikam,Atlantic-Congo,EA202,5000.0,,1950,,in 1950; note focal year for cultural data is 1900
+Ah23,Jibu,xd313,jibu1239,Jibu,Atlantic-Congo,EA202,5000.0,,1930,,
+Ah24,Kentu,xd314,etky1238,Etkywan,Atlantic-Congo,EA202,5000.0,,1921,,
+Ah29,Daka,xd319,samb1311,Samba Daka,Atlantic-Congo,EA202,5000.0,,,,Date for population estimate missing
+Ai35,Bongo,xd365,bong1285,Bongo,Central Sudanic,EA202,5000.0,,1929,,in 1929; note focal year for cultural data is 1870
+Ca19,Banna,xd425,hame1242,Hamer-Banna,South Omotic,EA202,5000.0,,1959,,"Data source gives population data as ""more than 5,000"""
+Ca28,Basketo,xd435,bask1236,Basketo,Ta-Ne-Omotic,EA202,5000.0,,1951,,
+Nc29,Tongva,xd1128,tong1329,Tongva,Uto-Aztecan,EA202,5000.0,,1770,,
+Ni2,Tohono O'odham,xd1287,toho1246,Tohono O'odam,Uto-Aztecan,EA202,5000.0,,1935,,Source is HRAF 2:Underhill p. v.
+Nj14,Tequistlatec,xd1300,high1242,Highland Oaxaca Chontal,Tequistlatecan,EA202,5000.0,,1960,,
+Sa4,Emberá,xd1320,nort2972,Northern Emberá,Chocoan,EA202,5000.0,,,with special reference to those of Panama,Date for population estimate missing
+Sc4,Guahibo,xd1347,guah1255,Guahibo,Guahiboan,EA202,5000.0,,1950,with special reference to the non-agricultural groups,
+Sd6,Shiriana,xd1358,nina1238,Ninam,Yanomamic,EA202,5000.0,,1960,,
+Sf7,Asháninka,xd1380,ajyi1238,Ajyíninka Apurucayali,Arawakan,EA202,5000.0,,1930,,"in 1930; 10,000 in 1958; note focal year for cultural data is 1900"
+Sh3,Abipón,xd1390,abip1241,Abipon,Guaicuruan,EA202,5000.0,,1760,Those in contact with mission,in 1760; See HRAF reference 1:96; note focal year for cultural data is 1800
+Sj5,Aimoré,xd1413,kren1239,Krenak,Nuclear-Macro-Je,EA202,5000.0,,1880,Naknenuk subtribe,
+Ie2,Wantoat,xd796,want1252,Wantoat,Nuclear Trans New Guinea,EA202,5157.0,,1954,,in 1954; note focal year for cultural data is 1920
+Aj22,Labwor,xd398,labw1238,Labwor,Nilotic,EA202,5200.0,,1948,,in 1948; note focal year for cultural data is 1930
+Ia11,Puyuma,xd734,puyu1239,Puyuma,Austronesian,EA202,5300.0,,1931,,
+Ai28,Popoi,xd357,popo1291,Popoi,Central Sudanic,EA202,5500.0,,1912,,
+Ig12,Choiseulese,xd844,vagh1249,Vaghua,Austronesian,EA202,5700.0,,1956,with special reference to the Varisi,"in 1956; 1,000 Varisi; note focal year for cultural data is 1900"
+Ah9,Anaguta,xd336,igut1238,Iguta,Atlantic-Congo,EA202,5730.0,,1934,,in 1934; note focal year for cultural data is 1920
+Ae40,Dzem,xd161,njye1238,Njyem,Atlantic-Congo,EA202,6000.0,,1949,,in 1949; note focal year for cultural data is 1910
+Ai39,Mesakin,xd369,ngil1242,Ngile,Narrow Talodi,EA202,6000.0,,1947,,
+Cc17,Delim,xd495,hass1238,Hassaniyya,Afro-Asiatic,EA202,6000.0,,1915,,in 1915; note focal year for cultural data is 1930
+Ec11,Selkup,xd619,selk1253,Selkup,Uralic,EA202,6000.0,,,,Date for population estimate missing
+Ia5,Hanunoo,xd745,hanu1241,Hanunoo,Austronesian,EA202,6000.0,,1950,,
+Ie6,Waropen,xd820,waro1242,Waropen,Austronesian,EA202,6000.0,,1937,,
+If1,Palauans,xd824,pala1344,Palauan,Austronesian,EA202,6000.0,,1960,"Ulimang, Badeldaob Island",in 1960; note focal year for cultural data is 1940
+Ig18,Kwaio,xd850,kwai1243,Kwaio,Austronesian,EA202,6000.0,,1965,,
+Nb11,Nuu chah nulth,xd1070,nuuc1236,Nuu-chah-nulth,Wakashan,EA202,6000.0,,,with special reference to the Central Nootka,Aboriginally; Note focal year for cultural data is 1880
+Nd20,Nez Perce,xd1153,nezp1238,Nez Perce,Sahaptian,EA202,6000.0,,1800,,in 1800; note focal year for cultural data is 1850
+Nf4,Myaamia,xd1238,miam1252,Miami,Algic,EA202,6000.0,,1718,,
+Nb22,Tlingit,xd1082,tlin1245,Tlingit,Athabaskan-Eyak-Tlingit,EA202,6750.0,,1880,with special reference to the Chilkat,
+Aj31,Pari,xd408,pari1256,Päri,Nilotic,EA202,7000.0,,,,Date for population estimate missing
+Ca26,Ubamer,xd433,aari1239,Aari,South Omotic,EA202,7000.0,,,,Date for population estimate missing
+Cc8,Aulliminden,xd505,ioul1238,Ioullemmeden,Afro-Asiatic,EA202,7000.0,,1909,,in 1909; note focal year for cultural data is 1890
+Ia7,Tagbanua,xd747,tagb1258,Tagbanwa,Austronesian,EA202,7000.0,,,,Date for population estimate missing
+Ib8,Anak Dalam,xd757,kubu1239,Kubu,Austronesian,EA202,7000.0,,1925,with special reference to the Ridan group,"in 1925; Data source gives population data as ""7,000 Ridan in 1925""; note focal year for cultural data is 1900"
+Ie10,Motu,xd786,motu1246,Motu,Austronesian,EA202,7000.0,,1954,with special reference to the Western Motu,
+If6,Yapese,xd837,yape1248,Yapese,Austronesian,EA202,7000.0,,1900,Island,The actual estimate of the population was between 7000 and 8000 (2:129).
+Ad5,Mbugwe,xd120,mbug1242,Mbugwe,Atlantic-Congo,EA202,7500.0,,1948,,
+Ag16,Banyun,xd251,bain1259,Bainounk-Gujaher,Atlantic-Congo,EA202,7500.0,,1950,,in 1950; note focal year for cultural data is 1930
+Ec5,Koryak,xd633,kory1246,Koryak,Chukotko-Kamchatkan,EA202,7500.0,,,with special reference to the Maritime Koryak,Date for population estimate missing
+Af27,Eloyi,xd205,eloy1241,Eloyi,Atlantic-Congo,EA202,7600.0,,1955,,
+Ag21,Bassari,xd257,bass1258,Bassari-Tanda,Atlantic-Congo,EA202,7600.0,,1945,,in 1945; note focal year for cultural data is 1910
+Ag34,Dorosie,xd271,dogo1295,Dogosé,Atlantic-Congo,EA202,8000.0,,1950,,in 1950; note focal year for cultural data is 1930
+Ai41,Tira,xd372,tira1254,Tira,Heibanic,EA202,8000.0,,1947,,in 1947; note focal year for cultural data is 1930
+Ai8,Dilling,xd382,dill1242,Dilling,Nubian,EA202,8000.0,,,,Date for population estimate missing
+Cb28,Dera,xd478,dera1248,Dera (Nigeria),Afro-Asiatic,EA202,8000.0,,1922,,
+Ie8,Purari,xd822,pura1257,Purari,,EA202,8000.0,,,with special reference to the Koriki,Date for population estimate missing
+If5,Ponapeans,xd836,pohn1238,Pohnpeian,Austronesian,EA202,8000.0,,1935,,in 1935; note focal year for cultural data is 1910
+Ng14,Chickasaw,xd1249,chic1270,Chickasaw,Muskogean,EA202,8000.0,,,,"Aboriginally; Note that data source gives population number as ""nearly 8000""; Note focal year for cultural data is NA"
+Ng6,Delaware,xd1255,unam1242,Unami,Algic,EA202,8000.0,,1600,with special reference to the Munsee,in 1600; note focal year for cultural data is 1700
+Sc1,Warao,xd1335,wara1303,Warao,,EA202,8000.0,,1941,,See HRAF reference 6:6.
+Ae35,Rumbi,xd155,lomb1254,Lombi,Central Sudanic,EA202,8350.0,,1949,,in 1949; note focal year for cultural data is 1900
+Af55,Gola,xd236,gola1255,Gola,Atlantic-Congo,EA202,8500.0,,1948,,
+Ah10,Chawai,xd299,atsa1241,Atsam,Atlantic-Congo,EA202,8500.0,,1948,,in 1948; note focal year for cultural data is 1920
+Ie30,Mimika,xd808,kamo1255,Kamoro,Nuclear Trans New Guinea,EA202,8500.0,,,,Date for population estimate missing
+Nc25,Wukchumni,xd1124,tule1245,Tule-Kaweah Yokuts,Yokutsan,EA202,8600.0,,1851,,"Source is HRAF 12:Cook, p. 34B, for Yokuts as a whole."
+Ae42,Ngumba,xd163,kwas1243,Kwasio,Atlantic-Congo,EA202,9000.0,,1949,,in 1949; note focal year for cultural data is 1900
+Ah33,Yungur,xd324,bena1260,Bena (Nigeria),Atlantic-Congo,EA202,9000.0,,1921,,
+Ca21,Hamar,xd428,hame1242,Hamer-Banna,South Omotic,EA202,9000.0,,1950,,
+Ec3,Chukchi,xd631,chuk1273,Chukchi,Chukotko-Kamchatkan,EA202,9000.0,,1900,Reindeer Division,
+Ej12,Lawa,xd719,west2396,Western Lawa,Austroasiatic,EA202,9000.0,,1961,,
+Ie25,Mafulu,xd802,fuyu1242,Fuyug,Goilalan,EA202,9000.0,,,,Date for population estimate missing
+Ie9,Orokaiva,xd823,orok1269,Orokaiva,Nuclear Trans New Guinea,EA202,9000.0,,1923,,See HRAF reference 1:7
+Ig2,Trobriands,xd852,kili1267,Kilivila,Austronesian,EA202,9000.0,,1920,Kiriwina Island,See HRAF reference 16:139
+Ae44,Bubi,xd165,bube1242,Bube,Atlantic-Congo,EA202,9350.0,,1945,,in 1945; note focal year for cultural data is 1920
+Ca32,Nara,xd440,nara1262,Nara,,EA202,9500.0,,1937,,in 1937; note focal year for cultural data is 1860
+Ab21a,Kisama,xd23,sama1300,Sama,Atlantic-Congo,EA202,10000.0,,1930,,
+Ac23,Lele,xd48,lele1265,Lele (Democratic Republic of Congo),Atlantic-Congo,EA202,10000.0,,1947,with special reference to the western Lele,
+Ae58,Tikar,xd180,tige1238,Tige,Atlantic-Congo,EA202,10000.0,,1949,,in 1949; note focal year for cultural data is 1910
+Ag17,Biafada,xd252,biaf1240,Biafada,Atlantic-Congo,EA202,10000.0,,1950,,
+Ah19,Adara,xd308,kada1284,Kadara,Atlantic-Congo,EA202,10000.0,,1921,,
+Ah32,Vere,xd323,momj1237,Mom Jango,Atlantic-Congo,EA202,10000.0,,1921,,
+Ah39,Podokwo,xd330,park1239,Parkwa,Afro-Asiatic,EA202,10000.0,,1950,,
+Cc2,Teda,xd498,teda1241,Tedaga,Saharan,EA202,10000.0,,1950,Nomads of Tibesti,The population figure is taken from EA-Summary
+Cc5,Kel Antessar,xd502,timb1263,Timbuktu,Afro-Asiatic,EA202,10000.0,,1941,,in 1941; note focal year for cultural data is 1910
+Ia2,Sagada,xd742,nort2877,Northern Kankanay,Austronesian,EA202,10000.0,,,,"Date for population estimate missing; 3,000 in Sagada"
+Ib7,Mentaweians,xd756,ment1249,Mentawai,Austronesian,EA202,10000.0,,,with special reference to those of North Pageh,Date for population estimate missing
+Ic2,Alorese,xd764,abui1241,Abui,Timor-Alor-Pantar,EA202,10000.0,,1940,Abui of Atimelang Village,
+Ie31,Fore,xd809,fore1270,Fore,Nuclear Trans New Guinea,EA202,10000.0,,1955,,
+Ie37,Star Mountain,xd815,ngal1298,Ngalum,Nuclear Trans New Guinea,EA202,10000.0,,1960,,
+If17,Marshallese,xd832,rata1243,Ratak,Austronesian,EA202,10000.0,,1947,with special reference to the island of Jaluit,in 1947; 900 on Majuro; note focal year for cultural data is 1900
+If2,Trukese,xd833,chuu1238,Chuukese,Austronesian,EA202,10000.0,,1947,Romonum Island,This total reflects the population on the island of Romonum.
+Ng10,Seneca,xd1245,sene1264,Seneca,Iroquoian,EA202,10000.0,,1650,with special reference to the Seneca tribe,in 1650; See HRAF reference 1:25; note focal year for cultural data is 1750
+Sh8,Toba,xd1395,toba1269,Toba,Guaicuruan,EA202,10000.0,,1964,with special reference to those of the Argentine Chaco,
+ch13,Besermyan,xd550,nort2676,North Udmurt,Uralic,EA202,10034.0,,1926,with special reference to the Glazovskij Uezd Besermyan,in 1926; note focal year for cultural data is 1894
+Ag33,Dyan,xd270,dyan1251,Dyan,Atlantic-Congo,EA202,10500.0,,1950,,in 1950; note focal year for cultural data is 1920
+Ah20,Kagoro,xd310,kago1246,Kagoro (Nigeria),Atlantic-Congo,EA202,10500.0,,1950,,in 1950; note focal year for cultural data is 1920
+Af53,Tura,xd234,tour1242,Toura (Côte d'Ivoire),Mande,EA202,10600.0,,1950,,
+Ad21,Pimbwe,xd89,pimb1238,Pimbwe,Atlantic-Congo,EA202,11000.0,,1957,,in 1957; note focal year for cultural data is 1930
+Cb27,Bachama,xd477,baca1246,Bacama,Afro-Asiatic,EA202,11000.0,,1930,,
+Eg3,Madia,xd679,mari1414,Maria (India),Dravidian,EA202,11500.0,,1927,Hill Maria,in 1927; See HRAF reference 1:28; note focal year for cultural data is 1938
+Ib1,Iban,xd750,iban1264,Iban,Austronesian,EA202,11500.0,,1949,"Ulu Ai Group, Baleh",
+Cc13,Udalan Tuareg,xd491,timb1263,Timbuktu,Afro-Asiatic,EA202,11600.0,,1939,,in 1939; note focal year for cultural data is 1920
+Ae48,Bafia,xd169,bafi1243,Bafia,Atlantic-Congo,EA202,12000.0,,1949,,in 1949; note focal year for cultural data is 1930
+Ah30,Longuda,xd321,long1389,Longuda,Atlantic-Congo,EA202,12000.0,,1921,,
+Ai4,Ingassana,xd370,gaam1241,Gaam,Eastern Jebel,EA202,12000.0,,1927,,
+Ej14,Senoi,xd721,sema1266,Semai,Austroasiatic,EA202,12000.0,,1961,with special reference to the eastern Semai,
+ec13,Itelmen,xd621,itel1242,Itelmen,Chukotko-Kamchatkan,EA202,12000.0,,1710,those of Eastern Kamchatka,
+Ad15,Iwa,xd82,nyam1275,Nyamwanga,Atlantic-Congo,EA202,12250.0,,1953,,in 1953; note focal year for cultural data is 1900
+Ah12,Basakomo,xd301,basa1282,Basa (Nigeria),Atlantic-Congo,EA202,12300.0,,1921,,
+Aj2,Maasi,xd395,masa1300,Masai,Nilotic,EA202,12500.0,,1894,Kisonko or Southern Masai of Tanzania,See HRAF reference 1:xiv.
+Ne19,Plains Cree,xd1218,plai1258,Plains Cree,Algic,EA202,12500.0,,1860,,
+Se3,Shuar,xd1367,shua1257,Shuar,Chicham,EA202,12600.0,,1930,,"The actual figure is 12,586 (2:36-38)."
+Af51,Gagu,xd232,gagu1242,Gban,Mande,EA202,13000.0,,1950,,in 1950; note focal year for cultural data is 1920
+Ca34,Ababda,xd442,abab1239,Ababda,Afro-Asiatic,EA202,13000.0,,1927,,
+Ie19,Marind-Amin,xd795,nucl1622,Marind,Anim,EA202,13000.0,,1910,with special reference to the coastal inhabitants,
+Ai38,Korongo,xd368,kron1241,Krongo,Kadugli-Krongo,EA202,14000.0,,1947,,in 1947; note focal year for cultural data is 1930
+Sc6,Saramaccan ,xd1349,sara1340,Saramaccan,Indo-European,EA202,14000.0,,1922,Upper Suriname River; Akwa on Morini River,See HRAF reference 2:92.
+Ad19,Fipa,xd86,fipa1238,Fipa,Atlantic-Congo,EA202,15000.0,,1910,,
+Af47,Krahn,xd227,west2488,Western Krahn,Atlantic-Congo,EA202,15000.0,,1940,,
+Ai16,Namshi,xd344,doya1240,Doyayo,Atlantic-Congo,EA202,15000.0,,1926,,in 1926; note focal year for cultural data is 1910
+Ca42,Shako,xd451,shek1245,Sheko,Dizoid,EA202,15000.0,,1951,,
+Ca5,Bisharin,xd453,bish1251,Bisharin,Afro-Asiatic,EA202,15000.0,,1933,,
+Cc7,Barabish,xd504,hass1238,Hassaniyya,Afro-Asiatic,EA202,15000.0,,1912,Timbuctoo,in 1912; note focal year for cultural data is 1950
+Ea4,Kohistani,xd603,indu1241,Indus Kohistani,Indo-European,EA202,15000.0,,,,Date for population estimate missing
+Ie17,Siane,xd793,sian1257,Siane,Nuclear Trans New Guinea,EA202,15000.0,,1953,,in 1953; note focal year for cultural data is 1940
+Ng12,Choctaw,xd1247,choc1276,Choctaw,Muskogean,EA202,15000.0,,,,Date for population estimate missing
+Sa9,Miskito,xd1325,misk1235,Mískito,Misumalpan,EA202,15000.0,,1921,Vicinity: Cape Gracias a Dios,See HRAF reference 1:13.
+Sc18,Ndyuka,xd1344,ndyu1242,Aukan,Indo-European,EA202,15000.0,,1960,,
+Se6,Witoto,xd1370,muru1274,Murui Huitoto,Huitotoan,EA202,15000.0,,,,Date for population estimate missing
+Ec7,Ainu,xd635,ainu1240,Hokkaido Ainu,Ainu,EA202,15500.0,,1923,Saru Basin in Hokkaido,"in 1923; The actual figure is 15,461 (2:5); note focal year for cultural data is 1900"
+Ad11,Bena,xd78,bena1262,Bena (Tanzania),Atlantic-Congo,EA202,16000.0,,1931,,
+Ae7,Baboa,xd183,bwaa1238,Bwa,Atlantic-Congo,EA202,16000.0,,1924,,in 1924; note focal year for cultural data is 1910
+Af46,Bakwe,xd226,bakw1243,Bakwé,Atlantic-Congo,EA202,16000.0,,1920,,in 1920; note focal year for cultural data is 1900
+Cb5,Buduma,xd482,budu1265,Buduma,Afro-Asiatic,EA202,16000.0,,1937,,in 1937; note focal year for cultural data is 1910
+Eb8,Uzbek,xd616,nort2690,Northern Uzbek,Turkic,EA202,16750.0,,1924,with special reference to the Kongrat tribe,in 1924; note focal year for cultural data is 1800
+Ca33,Kunama,xd441,kuna1268,Kunama,,EA202,17000.0,,1937,,in 1937; note focal year for cultural data is 1860
+Cd10,Zekara,xd508,chen1266,Western Algerian Berber,Afro-Asiatic,EA202,17000.0,,1905,,
+Ec10,Ob Ostyak,xd618,khan1273,Kazym-Berezover-Suryskarer Khanty,Uralic,EA202,17000.0,,1897,with special reference to those on the Ob River,in 1897; note focal year for cultural data is 1880
+Ne14,Bungi,xd1213,west1510,Western Ojibwa,Algic,EA202,17000.0,,1958,,in 1958; Source is HRAF 24:Howard p 174a; note focal year for cultural data is 1850
+Ca9,Goroa,xd457,goro1270,Gorowa,Afro-Asiatic,EA202,17500.0,,1948,,in 1948; note focal year for cultural data is 1890
+Ae1,Amba,xd127,amba1263,Amba (Uganda),Atlantic-Congo,EA202,18000.0,,1948,with special reference to those of Bwamba in Uganda,in Bwamba
+Ag8,Coniagui,xd296,wame1240,Wamey,Atlantic-Congo,EA202,18000.0,,1945,with special reference to the Coniagui,"in 1945; 11,000 Coniagui; note focal year for cultural data is 1910"
+Ah1,Katab,xd298,kata1265,Katab,Atlantic-Congo,EA202,18000.0,,1949,Zaria Province,in 1949; note focal year for cultural data is 1930
+Ah4,Mambila,xd331,came1252,Donga Mambila,Atlantic-Congo,EA202,18000.0,,1931,,in 1931; note focal year for cultural data is 1920
+Aj21,Jie,xd397,jiee1239,Jie,Nilotic,EA202,18000.0,,1948,,in 1948; note focal year for cultural data is 1930
+Ia10,Bunun,xd733,bunu1267,Bunun,Austronesian,EA202,18000.0,,1931,,
+Sa14,Ngäbe,xd1314,ngab1239,Ngäbere,Chibchan,EA202,18000.0,,1950,,"in 1950, note that focal year for cultural data is missing"
+Ai30,Lese,xd360,lese1243,Lese,Central Sudanic,EA202,19000.0,,1949,,in 1949; note focal year for cultural data is 1920
+Ng3,Muscogee,xd1252,cree1270,Creek,Muskogean,EA202,19000.0,,1750,Upper division in Alabama,Source is EA-Summary
+Ac37,Kunda,xd63,kund1255,Chikunda,Atlantic-Congo,EA202,20000.0,,1950,,
+Ad33,Pokomo,xd102,poko1261,Pokomo,Atlantic-Congo,EA202,20000.0,,1948,,in 1948; note focal year for cultural data is 1900
+Ad38,Kara,xd107,kara1481,Kara (Tanzania),Atlantic-Congo,EA202,20000.0,,,,Date for population estimate missing
+Ae52,Fungom,xd174,mmen1238,Mmen,Atlantic-Congo,EA202,20000.0,,1953,,
+Af4,Yako,xd219,loka1252,Lokaa,Atlantic-Congo,EA202,20000.0,,,,Date for population estimate missing
+Ag18,Bijogo,xd253,bidy1244,Kangaki-Kagbaaga-Kajoko Bidyogo,Atlantic-Congo,EA202,20000.0,,1945,,in 1945; note focal year for cultural data is 1930
+Ah15,Reshe,xd304,resh1242,Reshe,Atlantic-Congo,EA202,20000.0,,1931,,in 1931; note focal year for cultural data is 1920
+Ah28,Chamba,xd318,samb1305,Samba Leko,Atlantic-Congo,EA202,20000.0,,1921,with special reference to the Lekon subtribe,
+Ai12,Fali,xd340,sout2782,South Fali,Atlantic-Congo,EA202,20000.0,,1952,,
+Ai34,Moru,xd364,moru1253,Moru,Central Sudanic,EA202,20000.0,,1940,,in 1940; note focal year for cultural data is 1880
+Ai37,Koalib,xd367,koal1240,Koalib-Rere,Heibanic,EA202,20000.0,,1940,,
+Ai40,Moro,xd371,moro1285,Moro,Heibanic,EA202,20000.0,,1947,,
+Aj26,Hill Suk,xd402,west2492,West Pokot,Nilotic,EA202,20000.0,,1948,,in 1948; note focal year for cultural data is 1910
+Aj28,Tatoga,xd404,dato1239,Barabayiiga-Gisamjanga,Nilotic,EA202,20000.0,,1948,,
+Ca31,Beta Israel,xd439,qima1242,Qimant,Afro-Asiatic,EA202,20000.0,,,,Date for population estimate missing
+Cc14,Daza,xd492,daza1242,Dazaga,Saharan,EA202,20000.0,,,,Date for population estimate missing
+Cc16,Chaambra,xd494,algi1247,Algiers,Afro-Asiatic,EA202,20000.0,,1936,,
+Ei2,Lhota,xd707,loth1237,Lotha Naga,Sino-Tibetan,EA202,20000.0,,1922,,
+Ng5,Cherokee,xd1254,cher1273,Cherokee,Iroquoian,EA202,20000.0,,1729,,in 1729; note focal year for cultural data is 1750
+Ni6,Pima,xd1291,akim1239,Akimel O'odham,Uto-Aztecan,EA202,20000.0,,,,Date for population estimate missing
+Sh1,Wichí,xd1388,wich1264,Wichí Lhamtés Güisnay,Matacoan,EA202,20000.0,,1900,,in 1900; note focal year for cultural data is 1860
+Ae32,Kumu,xd152,komo1260,Komo (Democratic Republic of Congo),Atlantic-Congo,EA202,21000.0,,1927,,
+Cb29,Ngizim,xd479,ngiz1242,Ngizim,Afro-Asiatic,EA202,21000.0,,1921,,
+Ed13,Ishigakians,xd640,yaey1239,Yaeyama,Japonic,EA202,21000.0,,1940,with special reference to the town of Kabira,
+Ac1,Ila,xd33,ilaa1246,Ila,Atlantic-Congo,EA202,22000.0,,1957,,in 1957; note focal year for cultural data is 1920
+Ah14,Kamuku,xd303,cind1241,Yara,Atlantic-Congo,EA202,22000.0,,1949,,in 1949; note focal year for cultural data is 1920
+Aj16,Mondari,xd391,mand1425,Mandari,Nilotic,EA202,22000.0,,1962,with special reference to the Riverain Mondari,in 1962; note focal year for cultural data is 1930
+Ca7,Amhara,xd455,amha1245,Amharic,Afro-Asiatic,EA202,22000.0,,1953,Gondar district,
+Ae49,Bali Nyonga,xd170,mung1266,Mungaka,Atlantic-Congo,EA202,23000.0,,1953,,in 1953; note focal year for cultural data is 1900
+Ah18,Burmawa,xd307,bogh1241,Boghom,Afro-Asiatic,EA202,23000.0,,1934,,
+Ci9,Svan,xd585,svan1243,Svan,Kartvelian,EA202,23000.0,,1944,,in 1944; note focal year for cultural data is 1910
+Aa6,Sandawe,xd6,sand1273,Sandawe,,EA202,23400.0,,1948,,in 1948; note focal year for cultural data is 1920
+Ae21,Kela,xd140,yela1238,Yela-Kela,Atlantic-Congo,EA202,24000.0,,1920,,
+Ai24,Mandja,xd353,manz1243,Manza,Atlantic-Congo,EA202,24000.0,,1904,,
+Aj27,Sapei,xd403,kups1238,Kupsabiny,Nilotic,EA202,24000.0,,1948,,in 1948; note focal year for cultural data is 1920
+Ib2,Javanese,xd751,java1254,Javanese,Austronesian,EA202,24000.0,,1952,Town and environs of Pare; Modjokuto,
+Ii12,Tongans,xd878,tong1325,Tonga (Tonga Islands),Austronesian,EA202,24000.0,,1921,Pangai,
+Ac43,Mambwe,xd70,mamb1296,Mambwe-Lungu,Atlantic-Congo,EA202,25000.0,,1958,,in 1958; note focal year for cultural data is 1910
+Ae27,Lokele,xd146,kele1255,Kele-Foma,Atlantic-Congo,EA202,25000.0,,,"The Smith reference describes a Protestant Mission near Stanley Falls, Upper Congo",Date for population estimate missing
+Ae51,Banen,xd173,tune1261,Tunen,Atlantic-Congo,EA202,25000.0,,1949,Ndiki subtribe,
+Af16,Banyang,xd193,keny1279,Kenyang,Atlantic-Congo,EA202,25000.0,,1956,,in 1956; note focal year for cultural data is 1910
+Af54,Gbande,xd235,band1352,Bandi,Mande,EA202,25000.0,,1930,,
+Ag35,Kulango,xd272,boun1243,Bouna Kulango,Atlantic-Congo,EA202,25000.0,,1948,,in 1948; note focal year for cultural data is 1910
+Ah2,Jukun,xd309,juku1254,Jukun Takum,Atlantic-Congo,EA202,25000.0,,1931,,in 1931; note focal year for cultural data is 1920
+Ah21,Kurama,xd311,kura1249,Kurama,Atlantic-Congo,EA202,25000.0,,1949,,in 1949; note focal year for cultural data is 1920
+Ah38,Kapsiki,xd329,psik1239,Psikye,Afro-Asiatic,EA202,25000.0,,1950,,in 1950; note focal year for cultural data is 1930
+Ai14,Mbum,xd342,mbum1254,Mbum,Atlantic-Congo,EA202,25000.0,,1960,,in 1960; note focal year for cultural data is 1920
+Aj13,Pojulu,xd388,poju1239,Pöjulu,Nilotic,EA202,25000.0,,1952,,in 1952; note focal year for cultural data is 1930
+Aj19,Didinga,xd394,didi1258,Didinga,Surmic,EA202,25000.0,,1920,,
+Ca38,Tigre,xd446,mans1267,Mansa',Afro-Asiatic,EA202,25000.0,,1940,"with special reference to the Maria (Marea, Marya) subtribe in the north",in 1940; Maria; note focal year for cultural data is 1860
+Ic5,Toradja,xd767,pamo1252,Pamona,Austronesian,EA202,25000.0,,,Bare'e subgroup,Date for population estimate missing
+Ic6,Tanimbarese,xd768,sela1259,Selaru,Austronesian,EA202,25000.0,,,,Date for population estimate missing
+Ee3,Lepcha,xd655,lepc1244,Lepcha,Sino-Tibetan,EA202,25800.0,,1931,Lingthem and vicinity,"The actual figure is 25,780."
+Ai21,Bagirmi,xd350,bagi1246,Bagirmi,Central Sudanic,EA202,26000.0,,1954,,in 1954; note focal year for cultural data is 1880
+Aj15,Kuku,xd390,kuku1285,Kuku,Nilotic,EA202,26000.0,,1952,,in 1952; note focal year for cultural data is 1900
+ch18,Ingrians,xd555,ingr1248,Ingrian,Uralic,EA202,26137.0,,1926,"with special reference to those of the Kingisepp Rajon, the Leningrad Region",
+Ac2,Pende,xd44,phen1239,Phende,Atlantic-Congo,EA202,27000.0,,1955,,in 1955; note focal year for cultural data is 1920
+Ae54,Kom,xd176,komc1235,Kom (Cameroon),Atlantic-Congo,EA202,27000.0,,1953,,
+Cc10,Asben,xd488,taya1257,Tayart Tamajeq,Afro-Asiatic,EA202,28000.0,,1944,,in 1944; note focal year for cultural data is 1900
+Aa4,Bergdama,xd4,dama1270,Damara,Khoe-Kwadi,EA202,29000.0,,1946,,in 1946; note focal year for cultural data is 1920
+Ag7,Bozo,xd295,tiey1235,Tiéyaxo Bozo,Mande,EA202,29000.0,,1942,,in 1942; note focal year for cultural data is 1930
+Af19,Efik,xd196,efik1245,Efik,Atlantic-Congo,EA202,30000.0,,1945,,
+Af31,Koro,xd210,ashe1269,Ashe,Atlantic-Congo,EA202,30000.0,,1960,with special reference to the Lafia,
+Ah22,Yergum,xd312,taro1263,Tarok,Atlantic-Congo,EA202,30000.0,,1930,,in 1930; note focal year for cultural data is 1900
+Ah34,Bata,xd325,bata1314,Bata,Afro-Asiatic,EA202,30000.0,,1921,with special reference to the Malabu,"including 2,000 Malabu"
+Ah36,Gude,xd327,gude1246,Gude,Afro-Asiatic,EA202,30000.0,,1958,,in 1958; note focal year for cultural data is 1920
+Ah8,Bafute,xd335,vute1244,Vute,Atlantic-Congo,EA202,30000.0,,,,Date for population estimate missing
+Ai18,Kotoko,xd346,lagw1237,Lagwan,Afro-Asiatic,EA202,30000.0,,1950,,in 1950; note focal year for cultural data is 1880
+Aj29,Samburu,xd405,samb1315,Samburu,Nilotic,EA202,30000.0,,1965,,in 1965; note focal year for cultural data is 1950
+Cb18,Kanembu,xd467,kane1243,Kanembu,Saharan,EA202,30000.0,,1937,,
+Ei14,Ao,xd701,aona1235,Ao Naga,Sino-Tibetan,EA202,30000.0,,1921,with special reference to the Chongli,
+Ic8,Kei,xd770,keii1239,Kei,Austronesian,EA202,30000.0,,1930,,in 1930; note focal year for cultural data is 1890
+Sa7,Garifuna,xd1323,gari1256,Garifuna,Arawakan,EA202,30000.0,,,,Date for population estimate missing
+Cc4,Mzab,xd501,tumz1238,Tumzabt,Afro-Asiatic,EA202,32000.0,,1939,,in 1939; note focal year for cultural data is 1920
+ch27,Veps,xd565,veps1250,Veps,Uralic,EA202,32773.0,,1926,with special reference to the Petrozavodskij Uezd Veps,in 1926; note focal year for cultural data is 1900
+Af22,Itsekiri,xd200,isek1239,Isekiri,Atlantic-Congo,EA202,33000.0,,1952,,in 1952; note focal year for cultural data is 1940
+Ai5,Mamvu,xd379,mamv1243,Mamvu,Central Sudanic,EA202,33000.0,,1949,,in 1949; note focal year for cultural data is 1920
+Cb7,Bolewa,xd484,nucl1695,Bole,Afro-Asiatic,EA202,33000.0,,1933,,in 1933; note focal year for cultural data is 1920
+Ae9,Fut,xd185,bafu1246,Bafut,Atlantic-Congo,EA202,34000.0,,1953,,
+Ag42,Nunuma,xd280,sout2795,Southern Nuni,Atlantic-Congo,EA202,34000.0,,1950,,in 1950; note focal year for cultural data is 1910
+Aj24,Toposa,xd400,topo1242,Toposa,Nilotic,EA202,34000.0,,1948,,in 1948; note focal year for cultural data is 1930
+Ae45,Kundu,xd166,orok1266,Oroko,Atlantic-Congo,EA202,35000.0,,,,Date for population estimate missing
+Af23,Afikpo,xd201,afik1238,Afikpo,Atlantic-Congo,EA202,35000.0,,,with special reference to the village of Mgbom,Date for population estimate missing
+Ag4,Tallensi,xd277,taln1239,Talni,Atlantic-Congo,EA202,35000.0,,1931,Tallensi Tribe,See EA-Summary
+Ai44,Anuak,xd375,anua1242,Anuak,Nilotic,EA202,35000.0,,1957,,in 1957; note focal year for cultural data is 1920
+Aj8,Bari,xd413,ligo1238,Ligo,Nilotic,EA202,35000.0,,1952,,in 1952; note focal year for cultural data is 1920
+Cc1,Regeibat,xd487,hass1238,Hassaniyya,Afro-Asiatic,EA202,35000.0,,,,Date for population estimate missing
+Cj2,Rwala,xd588,east2690,Eastern Egyptian Bedawi Arabic,Afro-Asiatic,EA202,35000.0,,1920,Unspecified,See EA-Summary
+Ia6,Paiwan,xd746,paiw1248,Paiwan,Austronesian,EA202,35000.0,,1960,Su-Paiwan Village,in 1960; note focal year for cultural data is 1930
+Na36,Minnesota Ojibwa,xd1052,redl1238,Red Lake Chippewa,Algic,EA202,35000.0,,1750,with special reference to the Red Lake and White Earth bands,"in 1750; Population estimate is very rough, source is HRAF 14: Kinietz, p. 14; note focal year for cultural data is 1860"
+Ae57,Nsungli,xd179,limb1268,Limbum,Atlantic-Congo,EA202,36000.0,,1952,,in 1952; note focal year for cultural data is 1930
+Ag20,Papel,xd256,pape1239,Papel,Atlantic-Congo,EA202,36000.0,,1950,,in 1950; note focal year for cultural data is 1930
+ch17,Gagauz,xd554,gaga1249,Gagauz,Turkic,EA202,36127.0,,1897,with special reference to those of the Benderskij Uezd,
+Ad31,Duruma,xd100,duru1249,Duruma,Atlantic-Congo,EA202,37000.0,,1948,,in 1948; note focal year for cultural data is 1910
+Ai43,Nyimang,xd374,amas1236,Ama (Sudan),Nyimang,EA202,37000.0,,1947,,in 1947; note focal year for cultural data is 1930
+Cb10,Karekare,xd459,kare1348,Karekare,Afro-Asiatic,EA202,37000.0,,1931,,in 1931; note focal year for cultural data is 1920
+Ac32,Kaonde,xd58,kaon1241,Kaonde,Atlantic-Congo,EA202,38000.0,,1934,,in 1934; note focal year for cultural data is 1920
+Ae2,Kpe,xd138,mokp1239,Mokpwe,Atlantic-Congo,EA202,38000.0,,1953,,
+Cb6,Tera,xd483,tera1251,Tera,Afro-Asiatic,EA202,38000.0,,1948,,in 1948; note focal year for cultural data is 1920
+Cd18,Saadi,xd516,said1239,Saidi Arabic,Afro-Asiatic,EA202,38000.0,,1927,,"Total-38,928 (HRAF 9:277)"
+Aa5,Mbuti,xd5,bila1255,Bila,Atlantic-Congo,EA202,40000.0,,1951,"Epulu net-hunters, Ituri forest",in 1951; See HRAF reference 2:26; note focal year for cultural data is 1930
+Ab14,Lovedu,xd15,lobe1242,Lobedu,Atlantic-Congo,EA202,40000.0,,,,Date for population estimate missing
+Ab7,Nyaneka,xd30,nyan1305,Nyaneka,Atlantic-Congo,EA202,40000.0,,1920,"Banianeka, Munyaneka, Ovanyaneka, Vanyaneka",
+Ac28,Luimbe,xd53,luim1238,Luimbi,Atlantic-Congo,EA202,40000.0,,1950,,in 1950; note focal year for cultural data is 1930
+Ad27,Kwere,xd95,kwer1261,Kwere,Atlantic-Congo,EA202,40000.0,,1957,,in 1957; note focal year for cultural data is 1880
+Ad40,Tiriki,xd110,idak1243,Idakho-Isukha-Tiriki,Atlantic-Congo,EA202,40000.0,,1955,,
+Ad43,Kerewe,xd113,kere1283,Kerewe,Atlantic-Congo,EA202,40000.0,,,,Date for population estimate missing
+Ae12,Duala,xd130,dual1243,Duala,Atlantic-Congo,EA202,40000.0,,1947,,
+Ae53,Koko,xd175,bako1249,Bakoko,Atlantic-Congo,EA202,40000.0,,1929,,
+Af58,Vai,xd239,vaii1241,Vai,Mande,EA202,40000.0,,1948,,in 1948; note focal year for cultural data is 1900
+Ag13,Kasena,xd248,kase1253,Kasem,Atlantic-Congo,EA202,40000.0,,1948,,in 1948; note focal year for cultural data is 1910
+Ag48,Basari,xd286,ntch1242,Ntcham,Atlantic-Congo,EA202,40000.0,,1950,,in 1950; note focal year for cultural data is 1890
+Aj25,Keyu,xd401,keiy1238,Keiyo,Nilotic,EA202,40000.0,,1948,,in 1948; note focal year for cultural data is 1920
+Ca35,Amarar,xd443,amar1281,Amara (Beja),Afro-Asiatic,EA202,40000.0,,1935,,
+Eg5,Kodavas,xd681,koda1255,Kodava,Dravidian,EA202,40000.0,,1936,,
+Ej11,Cham,xd718,east2563,Eastern Cham,Austronesian,EA202,40000.0,,,with special reference to the non-Muslim Cham of Vietnam,"Date for population estimate missing; in Vietnam, 60,000 others in Cambodia"
+Ej7,Akha,xd729,akha1245,Akha,Sino-Tibetan,EA202,40000.0,,,,"Date for population estimate missing; Two pop numbers given: ""40,000 in Burma, others in China and Laos"" and ""65,000 in Burma and Thailand, others in China"""
+Ia16,Kalinga,xd739,lubu1243,Lubuagan Kalinga,Austronesian,EA202,40000.0,,1919,with special reference to the northern Kalinga,
+Ia8,Bontok,xd748,cent2292,Central Bontoc,Austronesian,EA202,40000.0,,,,Date for population estimate missing
+Ni1,Tarahumara,xd1286,cent2131,Central Tarahumara,Uto-Aztecan,EA202,40000.0,,1927,,"Source is HRAF 1:Bennett, p. vii."
+Nj1,Chinantec,xd1295,ojit1237,Ojitlán Chinantec,Otomanguean,EA202,40000.0,,,Ojitlan,Date for population estimate missing
+Nj11,Huastec,xd1297,huas1242,Huastec,Mayan,EA202,40000.0,,,,Date for population estimate missing
+Sa2,Tzeltal,xd1318,tzel1254,Tzeltal,Mayan,EA202,40000.0,,1947,with special reference to the town of Canuc; some data apply to the group more generally,
+Aj23,Plains Suk,xd399,east2420,East Pokot,Nilotic,EA202,42000.0,,1948,,
+Ij2,Māori,xd891,maor1246,Maori,Austronesian,EA202,42100.0,,1896,Nga Puhi Tribe,"in 1896; The actual figure is 42,113 (3:414); note focal year for cultural data is 1820"
+Ag14,Baga,xd249,mbul1258,Mbulungish,Atlantic-Congo,EA202,43000.0,,1950,,
+Ae55,Ndob,xd177,band1349,Bandobo,Atlantic-Congo,EA202,44000.0,,1953,,
+Ai17,Gisiga,xd345,sout3051,South Giziga,Afro-Asiatic,EA202,44000.0,,1960,,in 1960; note focal year for cultural data is 1930
+Ad17,Safwa,xd84,safw1238,Safwa,Atlantic-Congo,EA202,45000.0,,1950,,in 1950; note focal year for cultural data is 1920
+Ag40,Isala,xd278,tumu1242,Tumulung Sisaala,Atlantic-Congo,EA202,45000.0,,1948,,in 1948; note focal year for cultural data is 1910
+Aj14,Kakwa,xd389,kakw1240,Kakwa,Nilotic,EA202,45000.0,,1952,,in 1952; note focal year for cultural data is 1931
+Ii1,American Samoans,xd876,samo1305,Samoan,Austronesian,EA202,45000.0,,1926,with special reference to American Samoa,"8,000 in American Samoa"
+Ah13,Dakakari,xd302,clel1238,C'lela,Atlantic-Congo,EA202,47000.0,,1949,with special reference to the Liliwa,in 1949; note focal year for cultural data is 1930
+Ag50,Moba,xd289,moba1244,Moba,Atlantic-Congo,EA202,48000.0,,1950,,in 1950; note focal year for cultural data is 1910
+Ac13,Tonga,xd37,tong1321,Tonga (Nyasa),Atlantic-Congo,EA202,50000.0,,1953,,
+Ad41,Vugusu,xd111,buku1249,Bukusu,Atlantic-Congo,EA202,50000.0,,1937,,
+Ag46,Manprusi,xd284,mamp1244,Mampruli,Atlantic-Congo,EA202,50000.0,,1948,,in 1948; note focal year for cultural data is 1920
+Ag51,Somba,xd290,dita1238,Ditammari,Atlantic-Congo,EA202,50000.0,,1950,,
+Ah5,Margi,xd332,marg1265,Marghi Central,Afro-Asiatic,EA202,50000.0,,1931,,
+Ai27,Abarambo,xd356,bara1361,Barambu,Atlantic-Congo,EA202,50000.0,,,,Date for population estimate missing
+Ai31,Logo,xd361,logo1259,Logo,Central Sudanic,EA202,50000.0,,1947,,in 1947; note focal year for cultural data is 1920
+Cb25,Tazarawa,xd475,haus1257,Hausa,Afro-Asiatic,EA202,50000.0,,1940,,
+Cg2,Icelanders,xd542,icel1247,Icelandic,Indo-European,EA202,50000.0,,1950,,in 1950; note focal year for cultural data is 1100
+Ei12,Thado,xd699,thad1238,Thado Chin,Sino-Tibetan,EA202,50000.0,,1921,,in 1921; note focal year for cultural data is 1910
+Ie38,Dani,xd816,midg1235,Mid Grand Valley Dani,Nuclear Trans New Guinea,EA202,50000.0,,1960,with special reference to the Dugum group of the Grand Valley of the Balim River,
+Nh3,Navajo,xd1279,nava1243,Navajo,Athabaskan-Eyak-Tlingit,EA202,50000.0,,1950,,in 1950; note focal year for cultural data is 1930
+Sd4,Guaica,xd1356,yano1262,Yanomámi,Yanomamic,EA202,50000.0,,1954,,See HRAF reference 1:114.
+Ed15a,Miyakans,xd642,miya1259,Miyako,Japonic,EA202,52000.0,,1940,with special reference to the village of Karimata,
+Ad51,Ngulu,xd122,ngul1246,Ngulu,Atlantic-Congo,EA202,53000.0,,1957,,in 1957; note focal year for cultural data is 1930
+Ic4,Rotinese,xd766,term1237,Termanu,Austronesian,EA202,53000.0,,1885,,in 1885; note focal year for cultural data is 1920
+Ad49,Zinza,xd119,zinz1238,Zinza,Atlantic-Congo,EA202,55000.0,,1957,,
+Ag38,Builsa,xd275,buli1254,Buli (Ghana),Atlantic-Congo,EA202,55000.0,,1948,,in 1948; note focal year for cultural data is 1910
+Ah16,Angas,xd305,ngas1240,Ngas,Afro-Asiatic,EA202,55000.0,,1930,,in 1930; note focal year for cultural data is 1900
+Eb2,Tu,xd610,tuuu1240,Tu,Mongolic,EA202,55000.0,,1909,,in 1909; note focal year for cultural data is 1920
+Ia9,Ami,xd749,amis1246,Amis,Austronesian,EA202,55000.0,,1960,with special reference to the southern Ami,in 1960; note focal year for cultural data is 1930
+Nj5,Mazateco,xd1304,huau1238,Huautla Mazatec,Otomanguean,EA202,55000.0,,1946,,
+Ab19,Ambo,xd20,ndon1254,Ndonga,Atlantic-Congo,EA202,60000.0,,1948,with special reference to the Kuanyama,in 1948; Kuanyama; note focal year for cultural data is 1910
+Ac33,Lala,xd59,lala1264,Lala-Bisa,Atlantic-Congo,EA202,60000.0,,1946,,
+Ad37,Teita,xd106,tait1250,Taita,Atlantic-Congo,EA202,60000.0,,1948,,
+Ae56,Nsaw,xd178,lamn1239,Lamnso',Atlantic-Congo,EA202,60000.0,,1953,,
+Af41,Attie,xd221,atti1239,Attié,Atlantic-Congo,EA202,60000.0,,1955,,in 1955; note focal year for cultural data is 1890
+Ag10,Konkomba,xd245,konk1269,Konkomba,Atlantic-Congo,EA202,60000.0,,1948,,
+Ah17,Birom,xd306,bero1242,Berom,Atlantic-Congo,EA202,60000.0,,1950,,in 1950; note focal year for cultural data is 1930
+Aj12,Lotuko,xd387,otuh1238,Otuho,Nilotic,EA202,60000.0,,1940,,in 1940; note focal year for cultural data is 1920
+Aj30,Karamojong,xd407,nucl1430,Nuclear Karamojong,Nilotic,EA202,60000.0,,1960,,
+Ch2,Hutsuls,xd557,sout2604,Southwest Ukrainian,Indo-European,EA202,60000.0,,1890,,
+Ea10,Marri,xd597,east2304,Eastern Balochi,Indo-European,EA202,60000.0,,1955,with special reference to the more nomadic groups,
+Ea5,Nuristani,xd604,kamv1242,Kamviri,Indo-European,EA202,60000.0,,,,Date for population estimate missing
+Ni8,Opata,xd1293,opat1246,Teguima,Uto-Aztecan,EA202,60000.0,,1550,,16th century
+Ad16,Ngonde,xd83,ngon1268,Ngonde,Atlantic-Congo,EA202,62000.0,,1945,,in 1945; note focal year for cultural data is 1920
+Ac6,Ndembu,xd72,lund1266,Lunda,Atlantic-Congo,EA202,63000.0,,,,Date for population estimate missing
+Ac18,Sundi,xd42,koon1244,South-Central Kikongo,Atlantic-Congo,EA202,65000.0,,1953,,in 1953; note focal year for cultural data is 1910
+Af12,Akyem,xd189,akye1239,Akyem Bosome,Atlantic-Congo,EA202,65000.0,,1948,with special reference to the Kwahu,in 1948; note focal year for cultural data is 1930
+Ah31,Mumuye,xd322,nucl1240,Mumuye,Atlantic-Congo,EA202,65000.0,,1932,,in 1932; note focal year for cultural data is 1910
+Ai20,Tupuri,xd349,tupu1244,Tupuri,Atlantic-Congo,EA202,65000.0,,1950,,in 1950; note focal year for cultural data is 1910
+Ai33,Madi,xd363,madi1260,Ma'di,Central Sudanic,EA202,66000.0,,1948,,
+Ei9,Mogh,xd715,rakh1245,Rakhine,Sino-Tibetan,EA202,66000.0,,1951,,in 1951; note focal year for cultural data is 1880
+Ab3,Lozi,xd26,lozi1239,Lozi,Atlantic-Congo,EA202,67200.0,,1934,Ruling Luyana,in 1934; See HRAF reference 2:87; note focal year for cultural data is 1890
+Ac5,Lamba,xd71,lamb1271,Lamba,Atlantic-Congo,EA202,70000.0,,,,Date for population estimate missing
+Ag12,Nankanse,xd247,nank1249,Nankana,Atlantic-Congo,EA202,70000.0,,1948,,in 1948; note focal year for cultural data is 1910
+Ah11,Basa,xd300,basa1282,Basa (Nigeria),Atlantic-Congo,EA202,70000.0,,1960,,
+Ca10,Esa,xd416,nort3051,Northern Somali,Afro-Asiatic,EA202,70000.0,,1950,,in 1950; note focal year for cultural data is 1880
+Ca43,Hadendowa,xd452,hade1248,Hadendoa,Afro-Asiatic,EA202,70000.0,,1935,,
+Cb22,Liptako,xd472,west2454,Western Niger Fulfulde,Atlantic-Congo,EA202,70000.0,,1939,,in 1939; note focal year for cultural data is 1920
+Ia4,Subanun,xd744,cent2089,Central Subanen,Austronesian,EA202,70000.0,,1950,with special reference to the Eastern Subanun,"55,550 Eastern Subanun"
+Af56,Ngere,xd237,dann1241,Dan,Mande,EA202,72000.0,,1950,with special reference to the Gio of the Ivory Coast,in 1950; note focal year for cultural data is 1930
+Ac4,Kuba,xd66,bush1247,Bushoong,Atlantic-Congo,EA202,73000.0,,1947,"with special reference to the Bushoong, the central subtribe",in 1947; note focal year for cultural data is 1910
+Af38,Abron,xd217,abro1238,Abron,Atlantic-Congo,EA202,75000.0,,1950,,in 1950; note focal year for cultural data is 1900
+Ag23,Kasonke,xd259,xaas1235,Xaasongaxango,Mande,EA202,75000.0,,1950,,in 1950; note focal year for cultural data is 1910
+Cc19,Trarza,xd497,hass1238,Hassaniyya,Afro-Asiatic,EA202,75000.0,,1938,,in 1938; note focal year for cultural data is 1950
+Eg11,Koya,xd674,koya1251,Koya,Dravidian,EA202,75000.0,,1960,with special reference to the Gommu Koya,
+Ad47,Sumbwa,xd117,sumb1240,Sumbwa,Atlantic-Congo,EA202,76000.0,,1957,,in 1957; note focal year for cultural data is 1900
+Ab20,Ngumbi,xd22,nkhu1238,Nkhumbi,Atlantic-Congo,EA202,80000.0,,1880,,"10,000 after severe famines in 1912 and 1915, 80,000 prior"
+Ac17,Suku,xd41,suku1259,Suku,Atlantic-Congo,EA202,80000.0,,1949,Feshi territory lineage center,in 1949; No population data is available for +1920; note focal year for cultural data is 1910
+Ad25,Rangi,xd93,lang1320,Langi,Atlantic-Congo,EA202,80000.0,,,,Date for population estimate missing
+Ae50,Bamum,xd172,bamu1253,Bamun,Atlantic-Congo,EA202,80000.0,,1951,,in 1951; note focal year for cultural data is 1920
+Ai25,Mbandja,xd354,mban1263,Mbandja,Atlantic-Congo,EA202,80000.0,,,,Date for population estimate missing
+Aj5,Turkana,xd410,turk1308,Turkana,Nilotic,EA202,80000.0,,1951,,in 1951; note focal year for cultural data is 1920
+Ah35,Bura,xd326,bura1292,Bura-Pabir,Afro-Asiatic,EA202,81000.0,,1922,,
+Ic3,Belu,xd765,tetu1245,Tetum,Austronesian,EA202,82000.0,,1952,with special reference to the Mountain Belu,exclusive of those in Portuguese territory
+Ac9,Ngoni,xd75,ngon1269,Ngoni,Atlantic-Congo,EA202,85000.0,,1950,with special reference to the Mpezeni group of Fort Jameson,Mpezeni Ngoni
+Ad8,Hehe,xd125,hehe1240,Hehe,Atlantic-Congo,EA202,85000.0,,1930,with special reference to the northern or Iringa group,in 1930; note focal year for cultural data is 1910
+Ag5,Birifor,xd288,sout2790,Southern Birifor,Atlantic-Congo,EA202,85000.0,,,,Date for population estimate missing
+Ad50,Kaguru,xd121,kagu1239,Kagulu,Atlantic-Congo,EA202,87000.0,,1957,with special reference to the Mountain Kaguru,in 1957; note focal year for cultural data is 1900
+Ag52,Tem,xd291,temm1241,Tem,Atlantic-Congo,EA202,87000.0,,1958,,
+Ac11,Luvale,xd35,luva1239,Luvale,Atlantic-Congo,EA202,90000.0,,1940,,
+Ac30,Plateau Tonga,xd56,tong1318,Tonga (Zambia),Atlantic-Congo,EA202,90000.0,,1948,,
+Af18,Ekoi,xd195,ejag1239,Ejagham,Atlantic-Congo,EA202,90000.0,,1921,,in 1921; note focal year for cultural data is 1900
+Ai15,Mundang,xd343,mund1325,Mundang,Atlantic-Congo,EA202,90000.0,,1960,,in 1960; note focal year for cultural data is 1900
+Ca36,Beni-Amer,xd444,mans1267,Mansa',Afro-Asiatic,EA202,90000.0,,1950,,in 1950; note focal year for cultural data is 1860
+Ei17,Karbi,xd704,karb1241,Hills Karbi,Sino-Tibetan,EA202,90000.0,,1901,,
+Ie7,Enga,xd821,enga1252,Enga,Nuclear Trans New Guinea,EA202,90000.0,,,with special reference to the Mae group,"Date for population estimate missing; 26,000 Mae"
+Ae59,Widikum,xd181,meta1238,Meta',Atlantic-Congo,EA202,93000.0,,1948,with special reference to the Ngie subtribe,
+Ag41,Kusasi,xd279,kusa1250,Kusaal,Atlantic-Congo,EA202,93000.0,,1940,,in 1940; note focal year for cultural data is 1920
+Eg8,Kol,xd684,mund1320,Mundari,Austroasiatic,EA202,94000.0,,1941,,
+Ag29,Samo,xd265,sout2844,Southern Samo,Mande,EA202,95000.0,,1950,,in 1950; note focal year for cultural data is 1910
+Ab1,Herero,xd10,here1253,Herero,Atlantic-Congo,EA202,100000.0,,1900,,
+Ab15,Pedi,xd16,tswe1238,Tswene,Atlantic-Congo,EA202,100000.0,,1930,,in 1930; note focal year for cultural data is 1860
+Ab17,Ndau,xd18,ndau1241,Ndau,Atlantic-Congo,EA202,100000.0,,,,"Date for population estimate missing; Data source gives population number as ""more than 100,000 in Mozambique"""
+Ac3,Bemba,xd55,town1238,Town Bemba,Atlantic-Congo,EA202,100000.0,,1930,Zambia branch,in 1930; See HRAF reference 1:2; note focal year for cultural data is 1900
+Ac34,Luapula,xd60,luun1238,Luunda,Atlantic-Congo,EA202,100000.0,,,,Date for population estimate missing
+Ad13,Kiga,xd80,chig1238,Chiga,Atlantic-Congo,EA202,100000.0,,1940,,"310,000 in 1959"
+Ad29,Hadimu,xd97,pemb1239,Pemba,Atlantic-Congo,EA202,100000.0,,1924,,
+Ad36,Pare,xd105,asut1235,Asu (Tanzania),Atlantic-Congo,EA202,100000.0,,1948,,in 1948; note focal year for cultural data is 1890
+Ae11,Songola,xd129,song1300,Songoora,Atlantic-Congo,EA202,100000.0,,,,"Date for population estimate missing; Data source gives population data as ""more than 100,000"""
+Ae23,Lalia,xd142,ngan1302,Ngando-Lalia,Atlantic-Congo,EA202,100000.0,,1940,,
+Af14,Sherbro,xd191,sher1258,Sherbro,Atlantic-Congo,EA202,100000.0,,1948,,in 1948; note focal year for cultural data is 1930
+Af35,Adangme,xd214,adan1247,Adangme,Atlantic-Congo,EA202,100000.0,,1940,with special reference to the Krobo,
+Af39,Anyi,xd218,anyi1245,Anyin,Atlantic-Congo,EA202,100000.0,,1956,with special reference to the Ndenie,in 1956; note focal year for cultural data is 1900
+Af50,Dan,xd231,gwee1242,Gweetaawu,Mande,EA202,100000.0,,1950,,in 1950; note focal year for cultural data is 1920
+Ag11,Lobi,xd246,lobi1245,Lobi,Atlantic-Congo,EA202,100000.0,,,,Date for population estimate missing
+Ah7,Mafa,xd334,mafa1239,Mafa,Afro-Asiatic,EA202,100000.0,,1958,,in 1958; note focal year for cultural data is 1940
+Ai6,Shilluk,xd380,shil1265,Shilluk,Nilotic,EA202,100000.0,,1909,Shilluk Kingdom,See HRAF reference 2:37.
+Ca4,Iraqw,xd448,iraq1241,Iraqw,Afro-Asiatic,EA202,100000.0,,1948,,
+Cd13,Hamama,xd511,sout3114,South-Western Tunisian,Afro-Asiatic,EA202,100000.0,,,,Date for population estimate missing
+Ei18,Palaung,xd705,shwe1236,Shwe Palaung,Austroasiatic,EA202,100000.0,,,with special reference to the Katur subtribe,Date for population estimate missing; in Burma and others in China
+Ic9,Sumbanese,xd771,kamb1299,Kambera,Austronesian,EA202,100000.0,,1940,with special reference to eastern Sumba,
+Nj4,Totonac,xd1303,papa1238,Papantla Totonac,Totonacan,EA202,100000.0,,,,Date for population estimate missing
+Ad2,Nyoro,xd87,nyor1246,Nyoro,Atlantic-Congo,EA202,110000.0,,1957,,
+Ad24,Gogo,xd92,gogo1263,Gogo,Atlantic-Congo,EA202,110000.0,,,,Date for population estimate missing; early report
+Af52,Guro,xd233,guro1248,Guro,Mande,EA202,110000.0,,1950,,in 1950; note focal year for cultural data is 1920
+Ca6,Afar,xd454,afar1241,Afar,Afro-Asiatic,EA202,110000.0,,1950,,in 1950; note focal year for cultural data is 1880
+Ad30,Digo,xd99,digo1243,Digo,Atlantic-Congo,EA202,112000.0,,1948,,in 1948; note focal year for cultural data is 1890
+Aj7,Nandi,xd412,nand1266,Nandi,Nilotic,EA202,113000.0,,1948,,in 1948; note focal year for cultural data is 1910
+Ac36,Tumbuka,xd62,tumb1250,Tumbuka,Atlantic-Congo,EA202,115000.0,,1945,,in 1945; note focal year for cultural data is 1920
+Ag54,Yalunka,xd293,yalu1240,Yalunka,Mande,EA202,115000.0,,1950,,"in 1950; 20,000 in Sierra Leone; note focal year for cultural data is 1910"
+Ai26,Ngbandi,xd355,nort2774,Northern Ngbandi,Atlantic-Congo,EA202,115000.0,,1958,,in 1958; note focal year for cultural data is 1920
+Ad32,Giriama,xd101,giry1241,Giryama,Atlantic-Congo,EA202,120000.0,,1948,,in 1948; note focal year for cultural data is 1900
+Ag39,Dagara,xd276,sout2789,Central Dagaare,Atlantic-Congo,EA202,120000.0,,1949,,in 1949; note focal year for cultural data is 1910
+Cc15,Drawa,xd493,susi1238,Susiua,Afro-Asiatic,EA202,120000.0,,1925,,
+Ae28,Ngala,xd147,ling1263,Lingala,Atlantic-Congo,EA202,125000.0,,1950,,in 1950; note focal year for cultural data is 1900
+Ag24,Koranko,xd260,kura1250,Kuranko,Mande,EA202,125000.0,,1950,,in 1950; note focal year for cultural data is 1910
+Ei10,Chakma,xd697,chak1266,Chakma,Indo-European,EA202,125000.0,,1951,,in 1951; note focal year for cultural data is 1870
+Cd8,Shawiya,xd526,tach1249,Chaouia of the Aures,Afro-Asiatic,EA202,126000.0,,1926,,in 1926; note focal year for cultural data is 1910
+Ia3,Ifugao,xd743,tuwa1243,Tuwali Ifugao,Austronesian,EA202,130000.0,,1908,Kiangan Group,in 1908; note focal year for cultural data is 1920
+Ci1,Kalmyk,xd574,kalm1243,Oirad-Kalmyk,Mongolic,EA202,134000.0,,1939,with special reference to the Baga Dorbed group,"in 1939; 70,000 in Baga Dorbed; note focal year for cultural data is 1920"
+Ad28,Zigula,xd96,zigu1242,Zigula,Atlantic-Congo,EA202,135000.0,,1957,,in 1957; note focal year for cultural data is 1880
+Ci3,Kumyk,xd579,kumy1244,Kumyk,Turkic,EA202,135000.0,,1959,with special reference to the Kayakent group of eastern Dagestan,in 1959; note focal year for cultural data is 1900
+Ic12,Sumbawanese,xd762,sumb1241,Sumbawa,Austronesian,EA202,135000.0,,1941,with special reference to the village of Rarak in Western Sumbawa,
+Ad26,Turu,xd94,nyat1246,Nyaturu,Atlantic-Congo,EA202,145000.0,,1949,,in 1949; note focal year for cultural data is 1910
+Ib5,Kadazan-Dusun,xd754,cent2100,Central Dusun,Austronesian,EA202,145000.0,,,with special reference to the village of Sensuron,Date for population estimate missing
+Ab6,Venda,xd29,vend1245,Venda,Atlantic-Congo,EA202,150000.0,,1930,,in 1930; note focal year for cultural data is 1900
+Af11,Toma,xd188,toma1245,Toma,Mande,EA202,150000.0,,1950,,in 1950; note focal year for cultural data is 1920
+Af13,Ebira,xd190,ebir1243,Ebira,Atlantic-Congo,EA202,150000.0,,1952,,in 1952; note focal year for cultural data is 1920
+Af7,Bete,xd241,dalo1238,Daloa Bété,Atlantic-Congo,EA202,150000.0,,1956,,"Two different population sizes (150,000 in 1956 and 180,000 in 1956)"
+Ag45,Gurma,xd283,gour1243,Gourmanchéma,Atlantic-Congo,EA202,150000.0,,1912,with special reference to those in the Diapaga region,"in 1912; 250,000 in 1965; note focal year for cultural data is 1930"
+Ai29,Lendu,xd358,lend1245,Lendu,Central Sudanic,EA202,150000.0,,,,Date for population estimate missing
+Cd20,Sanusi,xd519,liby1240,Libyan Arabic,Afro-Asiatic,EA202,150000.0,,1940,,
+Ag31,Minianka,xd268,mama1271,Mamara Senoufo,Atlantic-Congo,EA202,154000.0,,1942,,in 1942; note focal year for cultural data is 1910
+Ag19,Diola,xd254,ejam1238,Ejamat,Atlantic-Congo,EA202,155000.0,,1950,with special reference to the Felup,"in 1950; including 50,000 Felup; note focal year for cultural data is 1930"
+Ag49,Kabre,xd287,kabi1261,Kabiyé,Atlantic-Congo,EA202,157000.0,,1950,,in 1950; note focal year for cultural data is 1930
+Aj9,Kipsigis,xd414,kips1239,Kipsigis,Nilotic,EA202,157000.0,,1948,,in 1948; note focal year for cultural data is 1920
+Ag27,Diula,xd263,dyul1238,Dyula,Mande,EA202,160000.0,,1950,,in 1950; note focal year for cultural data is 1910
+Ad6,Nyakyusa,xd123,nyak1261,Nyakyusa,Atlantic-Congo,EA202,163000.0,,1931,Age villages of Mwaya and Masoko,This figure reflects the total number of Nyakyusa in Tanzania and Malawi (EA-Summary).
+Ag15,Balanta,xd250,bala1301,Balanta-Kentohe,Atlantic-Congo,EA202,167000.0,,1950,,in 1950; note focal year for cultural data is 1930
+Ac8,Yombe,xd74,yomb1244,Yombe,Atlantic-Congo,EA202,170000.0,,1933,,
+Af34,Ife,xd213,ifee1241,Ifè,Atlantic-Congo,EA202,170000.0,,,"Ife Ilesha Division, Oyo Prov.",Date for population estimate missing
+Eh3,Tanala,xd689,tana1285,Tanala,Austronesian,EA202,170000.0,,1951,Menabe subtribe,in 1951; See EA-Summary; note focal year for cultural data is 1930
+Af15,Kpelle,xd192,libe1247,Liberia Kpelle,Mande,EA202,175000.0,,1950,,in 1950; note focal year for cultural data is 1920
+Af21,Ijaw,xd199,kala1381,Kalabari,Ijoid,EA202,175000.0,,1921,with special reference to the Kalabari,
+Ag44,Dagomba,xd282,dagb1246,Dagbani,Atlantic-Congo,EA202,175000.0,,1948,,in 1948; note focal year for cultural data is 1910
+Ei8,Khasi,xd714,khas1269,Khasi,Austroasiatic,EA202,175000.0,,1901,with special reference to those of the Jaintia Hills,
+Ab2,Swazi,xd21,swat1243,Swati,Atlantic-Congo,EA202,180000.0,,1946,,in 1946; note focal year for cultural data is 1880
+Ai23,Bwaka,xd352,ngba1284,Ngbaka Ma'bo,Atlantic-Congo,EA202,180000.0,,1940,,in 1940; note focal year for cultural data is 1920
+Af26,Kukuruku,xd204,yekh1238,Yekhee,Atlantic-Congo,EA202,193000.0,,1952,with special reference to the Etsako,"in 1952; including 88,000 Etsako; note focal year for cultural data is 1900"
+Ad14,Luguru,xd81,lugu1238,Luguru,Atlantic-Congo,EA202,200000.0,,1960,Morogoro District,in 1960; Population data is unavailable for +1920; note focal year for cultural data is 1930
+Ad48,Toro,xd118,toor1238,Tooro,Atlantic-Congo,EA202,200000.0,,1959,,
+Ae14,Ha,xd132,haaa1252,Ha,Atlantic-Congo,EA202,200000.0,,1948,,
+Ae20,Ekonda,xd139,ekon1238,Ekonda Mongo,Atlantic-Congo,EA202,200000.0,,1944,,
+Ae24,Mongo,xd143,long1393,Longo (Democratic Republic of Congo),Atlantic-Congo,EA202,200000.0,,1940,,"in 1940; Not to be confused with the kindred Nkundo (Ae4), previously designated as Mongo. Data source gives population data as ""more than 200,000""; note focal year for cultural data is 1920"
+Af2,Kissi,xd197,nort2765,Northern Kissi,Atlantic-Congo,EA202,200000.0,,1954,,
+Af24,Edo,xd202,bini1246,Bini,Atlantic-Congo,EA202,200000.0,,1952,,in 1952; note focal year for cultural data is 1900
+Af28,Gbagyi,xd206,gbar1246,Gbari,Atlantic-Congo,EA202,200000.0,,1960,,in 1960; note focal year for cultural data is 1910
+Af29,Idoma,xd207,idom1241,Idoma,Atlantic-Congo,EA202,200000.0,,1952,,
+Af30,Igala,xd209,igal1242,Igala,Atlantic-Congo,EA202,200000.0,,1944,,in 1944; note focal year for cultural data is 1920
+Af42,Fante,xd222,fant1241,Fante,Atlantic-Congo,EA202,200000.0,,1950,,in 1950; note focal year for cultural data is 1900
+Ag53,Bisa,xd292,biss1248,Bissa,Mande,EA202,200000.0,,1960,with special reference to those of Garango,"Data source gives population data as ""more than 200,000"""
+Ai7,Gbaya,xd381,nort2775,Northwest Gbaya,Atlantic-Congo,EA202,200000.0,,1930,,in 1930; note focal year for cultural data is 1910
+Aj10,Acholi,xd385,dhop1238,Dhopaluo,Nilotic,EA202,200000.0,,,,"Date for population estimate missing; Data source gives population data as ""more than 200,000"""
+Aj17,Alur,xd392,alur1250,Alur,Nilotic,EA202,200000.0,,,,Date for population estimate missing
+Sa10,Lacandon,xd1310,laca1243,Lacandon,Mayan,EA202,200000.0,,1900,,
+ch19,Karelians,xd556,livv1243,Livvi,Uralic,EA202,208100.0,,1897,with special reference to the Livvikjoj group of the Olonetskij Uezd,in 1897; note focal year for cultural data is 1874
+Ch9,Lithuanians,xd573,lith1251,Lithuanian,Indo-European,EA202,217000.0,,1950,,in 1950; note focal year for cultural data is 1930
+Eg13,Muria Gond,xd676,west2408,Western Muria,Dravidian,EA202,219700.0,,1941,Bastar State,"The actual figure is 219,654 (2:630)."
+Ad10,Shambaa,xd77,sham1280,Shambala,Atlantic-Congo,EA202,220000.0,,1948,,in 1948; note focal year for cultural data is 1910
+Af33,Ekiti,xd212,ekit1244,Ekiti,Atlantic-Congo,EA202,220000.0,,,"Ekiti Division, Ondo Prov.",Date for population estimate missing
+Ed9,Li,xd652,hlai1239,Hlai,Tai-Kadai,EA202,220000.0,,1954,,in 1954; note focal year for cultural data is 1930
+Ag3,Dogon,xd266,bank1259,Bankan Tey Dogon,Dogon,EA202,225000.0,,1957,,in 1957; note focal year for cultural data is 1930
+Eh9,Antaisaka,xd695,tesa1236,Tesaka Malagasy,Austronesian,EA202,225000.0,,1951,,in 1951; note focal year for cultural data is 1930
+Ad3,Chagga,xd98,moch1256,Mochi,Atlantic-Congo,EA202,237000.0,,1948,,in 1948; note focal year for cultural data is 1910
+Ad12,Gusii,xd79,gusi1247,Gusii,Atlantic-Congo,EA202,238000.0,,1950,,
+Ag30,Bobo,xd267,nort2819,Northern Bobo Madaré,Mande,EA202,240000.0,,1942,,in 1942; note focal year for cultural data is 1910
+Ai32,Lugbara,xd362,lugb1240,Lugbara,Central Sudanic,EA202,240000.0,,1948,,in 1948; note focal year for cultural data is 1920
+Ec2,Yakut,xd628,yaku1245,Sakha,Turkic,EA202,245000.0,,1911,with special reference to the Yakutsk district,in 1911; note focal year for cultural data is 1900
+Ab12,Zulu,xd13,zulu1248,Zulu,Atlantic-Congo,EA202,250000.0,,1921,,in 1921; note focal year for cultural data is 1830
+Ad9,Gisu,xd126,masa1299,Masaaba,Atlantic-Congo,EA202,250000.0,,1948,,in 1948; note focal year for cultural data is 1900
+Af1,Fon,xd186,fonn1241,Fon,Atlantic-Congo,EA202,250000.0,,,City and environs of Abomey,Date for population estimate missing; This is the population figure found in EA-Summary
+Cb20,Zerma,xd470,zarm1239,Zarma-Kaado,Songhay,EA202,250000.0,,1954,,in 1954; note focal year for cultural data is 1920
+Ci4,Cherkess,xd580,kaba1278,Kabardian,Abkhaz-Adyge,EA202,250000.0,,,,Date for population estimate missing
+Ej13,Muong,xd720,muon1246,Muong,Austroasiatic,EA202,250000.0,,1946,,
+Ad35,Meru,xd104,kiku1240,Kikuyu,Atlantic-Congo,EA202,255000.0,,1948,"To be distinguished from the tribe of the same name on the southeast slope f Mt. Mero, who are a branch of the Chagga",
+Eh7,Antandroy,xd693,tand1256,Tandroy Malagasy,Austronesian,EA202,255000.0,,1951,,in 1951; note focal year for cultural data is 1900
+Ab10,Pondo,xd11,mpon1252,Mpondo,Atlantic-Congo,EA202,260000.0,,1936,,
+Cb26,Zazzagawa Hausa,xd476,araw1280,Arawa,Afro-Asiatic,EA202,260000.0,,1948,Zazzagawa of Zaria,"This is the population of Hausa in Zaria. All together 5,000,000 Hausa in 1952 (HRAF Source #3 p. 7)."
+Aj4,Lango,xd409,lang1324,Lango (Uganda),Nilotic,EA202,275000.0,,1947,,in 1947; note focal year for cultural data is 1920
+Cb23,Tukulor,xd473,pula1263,Pulaar,Atlantic-Congo,EA202,275000.0,,1950,,in 1950; note focal year for cultural data is 1930
+Eh8,Sakalava,xd694,saka1291,West Malagasy Sakalava,Austronesian,EA202,275000.0,,1951,,in 1951; note focal year for cultural data is 1900
+Ab9,Ndebele,xd32,nort2795,Zimbabwean Ndebele,Atlantic-Congo,EA202,300000.0,,1948,,in 1948; note focal year for cultural data is 1870
+Ae33,Ndaka Babali,xd153,bali1274,Bali (Democratic Republic of Congo),Atlantic-Congo,EA202,300000.0,,,,Date for population estimate missing
+Ag22,Serer,xd258,sere1260,Sereer,Atlantic-Congo,EA202,300000.0,,1950,with special reference to those of Sine,in 1950; note focal year for cultural data is 1920
+Ag26,Susu,xd262,susu1250,Susu,Mande,EA202,300000.0,,1950,,in 1950; note focal year for cultural data is 1930
+Ca39,Jimma,xd447,west2721,West Central Oromo,Afro-Asiatic,EA202,300000.0,,1936,,
+Eb6,Buryat,xd614,russ1264,Russia Buriat,Mongolic,EA202,300000.0,,1900,with special reference to those southeast of Lake Baikal,
+Ei5,Kachin,xd711,kach1280,Southern Jinghpaw,Sino-Tibetan,EA202,300000.0,,,with special reference to the Jinghpaw,Date for population estimate missing
+Nj2,Aztec,xd1301,clas1250,Classical Nahuatl,Uto-Aztecan,EA202,300000.0,,1520,City & environs of Tenochtitlan,Population of Tenochtitlan only. Population of Aztec empire as a whole is estimated at several million.
+Nj9,Tlaxcalans,xd1308,cent2132,Tlaxcala-Puebla-Central Nahuatl,Uto-Aztecan,EA202,300000.0,,1960,,
+Ad42,Haya,xd112,haya1250,Haya,Atlantic-Congo,EA202,325000.0,,1957,,in 1957; note focal year for cultural data is 1900
+Ca8,Gurage,xd456,seba1251,Sebat Bet Gurage,Afro-Asiatic,EA202,350000.0,,1960,,in 1960; note focal year for cultural data is 1940
+Ci6,Ossetians,xd582,osse1243,Ossetian,Indo-European,EA202,350000.0,,1939,,in 1939; note focal year for cultural data is 1880
+Ei19,Chin,xd706,asho1236,Asho Chin,Sino-Tibetan,EA202,350000.0,,1943,,
+ch16,Estonians,xd553,esto1258,Estonian,Uralic,EA202,350000.0,,1897,with special reference to the Valkskij Uezd,in 1897; within the territory of present-day Estonia; note focal year for cultural data is 1908
+Ac7,Yao,xd73,yaoo1241,Yao,Atlantic-Congo,EA202,360000.0,,1945,,in 1945; exclusive of a large number of Yao in Mozambique; note focal year for cultural data is 1920
+Af8,Nupe,xd242,nupe1254,Nupe-Nupe-Tako,Atlantic-Congo,EA202,360000.0,,1955,,in 1955; note focal year for cultural data is 1930
+Ag25,Soninke,xd261,soni1259,Soninke,Mande,EA202,360000.0,,1950,,in 1950; note focal year for cultural data is 1900
+Ad44,Konjo,xd114,konz1239,Konzo,Atlantic-Congo,EA202,375000.0,,1959,,in 1959; note focal year for cultural data is 1920
+Af9,Baule,xd243,baou1238,Baoulé,Atlantic-Congo,EA202,383000.0,,1950,,in 1950; note focal year for cultural data is 1900
+Cb3,Songhai,xd480,koyr1242,Koyraboro Senni Songhai,Songhay,EA202,400000.0,,1953,Bamba division,in 1953; This figure is taken from EA-Summary; note focal year for cultural data is 1940
+Cd3,Riffians,xd521,tari1263,Tarifiyt-Beni-Iznasen-Eastern Middle Atlas Berber,Afro-Asiatic,EA202,400000.0,,1921,Entirety: Moroccan,
+Ch4,Mari,xd568,east2328,Eastern Mari,Uralic,EA202,400000.0,,1941,,in 1941; note focal year for cultural data is 1900
+Ci7,Chechen,xd583,chec1245,Chechen,Nakh-Daghestanian,EA202,400000.0,,1939,,in 1939; note focal year for cultural data is 1900
+Cj10,Madan,xd587,meso1252,Gilit Mesopotamian Arabic,Afro-Asiatic,EA202,400000.0,,,with special reference to the village of ech-Chibayish,"Date for population estimate missing; 11,000 ech-Chibayish"
+Ea12,Qashqui,xd599,qash1240,Qashqa'i,Turkic,EA202,400000.0,,,,Date for population estimate missing
+Ed8,Minchia,xd651,cent2004,Central Bai,Sino-Tibetan,EA202,400000.0,,1950,,in 1950; note focal year for cultural data is 1930
+Ad46,Soga,xd116,soga1242,Soga,Atlantic-Congo,EA202,425000.0,,1948,,
+Aj3,Nuer,xd406,nuer1246,Nuer,Nilotic,EA202,430000.0,,1931,,
+Af25,Isoko,xd203,isok1239,Isoko,Atlantic-Congo,EA202,435000.0,,1952,,in 1952; note focal year for cultural data is 1930
+Cb8,Bororo Fulani,xd485,boro1274,Bororo of Kano and Zaria,Atlantic-Congo,EA202,450000.0,,,with special reference to the Bororo Fulani of Skoto,Date for population estimate missing
+Cd7,Beraber,xd525,cent2194,Central Moroccan Berber,Afro-Asiatic,EA202,450000.0,,1925,with special reference to the Zemmur tribe,in 1925; note focal year for cultural data is 1910
+Ea2,Yusufzai,xd601,yusu1238,Yusufzai,Indo-European,EA202,450000.0,,,with special reference to the Yusufsai of Swat,Date for population estimate missing; This is the population figure for Swat.
+Ae5,Bamileke,xd171,fefe1239,Fe'fe',Atlantic-Congo,EA202,455000.0,,1951,,in 1951; note focal year for cultural data is 1910
+Af32,Egba,xd211,egba1238,Egba,Atlantic-Congo,EA202,500000.0,,,Abeouta Province and Benin,Date for population estimate missing
+Ag1,Bambara,xd244,bamb1269,Bambara,Mande,EA202,500000.0,,1902,Segou to Bamako on Niger River,in 1902; See HRAF reference 2:1; note focal year for cultural data is 1920
+Ai11,Mangbetu,xd339,nucl1420,Nuclear Mangbetu,Central Sudanic,EA202,500000.0,,,,Date for population estimate missing
+Aj11,Dinka,xd386,sout2832,Southwestern Dinka,Nilotic,EA202,500000.0,,1952,,in 1952; note focal year for cultural data is 1900
+Cd15,Jebala,xd513,jebl1238,Jebli,Afro-Asiatic,EA202,500000.0,,,,Date for population estimate missing
+Ea3,Hazara,xd602,haza1239,Hazaragi,Indo-European,EA202,500000.0,,,with special reference to the Urazgani,"Date for population estimate missing; 65,000 Urazgani"
+ch26,Udmurt,xd564,sout2681,South Udmurt,Uralic,EA202,504000.0,,1926,with special reference to those of the Sarapul'skij Uezd,in 1926; note focal year for cultural data is 1890
+Ed7,Okinawans,xd650,cent2126,Central Okinawan,Japonic,EA202,517000.0,,1950,,
+Ad45,Nyankole,xd115,nyan1307,Nyankole,Atlantic-Congo,EA202,520000.0,,1959,,in 1959; note focal year for cultural data is 1920
+Ef4,Ho,xd666,hooo1248,Ho,Austroasiatic,EA202,523000.0,,1931,,in 1931; note focal year for cultural data is 1920
+Af57,Temne,xd238,timn1235,Timne,Atlantic-Congo,EA202,525000.0,,1948,,in 1948; note focal year for cultural data is 1910
+Ah3,Tiv,xd320,tivv1240,Tiv,Atlantic-Congo,EA202,530000.0,,,Tar of Benue Province,Date for population estimate missing; See 1:13.
+Ag32,Senufo,xd269,ceba1235,Cebaara Senoufo,Atlantic-Congo,EA202,540000.0,,1948,,in 1948; note focal year for cultural data is 1900
+Aj1,Teso,xd384,teso1249,Teso,Nilotic,EA202,560000.0,,1948,,
+Ac38,Nyanja,xd64,nucl1395,Nuclear Nyanja,Atlantic-Congo,EA202,575000.0,,1945,,in 1945; note focal year for cultural data is 1910
+Ab13,Tswana,xd14,tswa1253,Tswana,Atlantic-Congo,EA202,580000.0,,1946,with special reference to the Kgatla (Bakxatla),"in 1946; 12,000 Kgatla; note focal year for cultural data is 1880"
+Ac12,Chokwe,xd36,chok1245,Chokwe,Atlantic-Congo,EA202,600000.0,,1940,,in 1940; note focal year for cultural data is 1920
+Ad34,Kamba,xd103,kamb1297,Kamba (Kenya),Atlantic-Congo,EA202,600000.0,,1948,,in 1948; note focal year for cultural data is 1910
+Ad7,Ganda,xd124,gand1255,Ganda,Atlantic-Congo,EA202,600000.0,,1900,Kyaddondo district (V: Kampala),in 1900; See HRAF reference 2:6; note focal year for cultural data is 1880
+Cd5,Shluh,xd523,susi1238,Susiua,Afro-Asiatic,EA202,600000.0,,1921,with special reference to those of the Grand Atlas Mountains,
+Sf2,Aymara,xd1375,cent2142,Central Aymara,Aymaran,EA202,600000.0,,1936,Chucuito Clan community in Peru,
+Ef6,Kurukh,xd668,kuru1302,Kurukh,Dravidian,EA202,650000.0,,1951,,in 1951; note focal year for cultural data is 1940
+Cb2,Wolof,xd469,nucl1347,Wolof,Atlantic-Congo,EA202,660000.0,,1949,Upper and lower Salum in Gambia,See HRAF 1:12
+ch20,Kazan tatar,xd558,midd1325,Middle Tatar,Turkic,EA202,675419.0,,1897,with special reference to those of the Altayrskij Uezd,in 1897; note focal year for cultural data is 1910
+Ab18,Shona,xd19,shon1251,Shona,Atlantic-Congo,EA202,700000.0,,1931,with special reference to the Zezuru,in 1931; note focal year for cultural data is 1920
+Af36,Ewe,xd215,aguu1242,Agu (Ewe),Atlantic-Congo,EA202,700000.0,,1948,with special reference to the Glidyi,in 1948; note focal year for cultural data is 1900
+Cb16,Shuwa,xd465,char1283,Chari-Baguirmi,Afro-Asiatic,EA202,700000.0,,,,"Date for population estimate missing; Data source gives population number as ""several hundred thousand"""
+Ag6,Futajalonke,xd294,pula1262,Pular,Atlantic-Congo,EA202,720000.0,,1940,,in 1940; note focal year for cultural data is 1890
+Ac10,Chewa,xd34,chew1246,Chewa,Atlantic-Congo,EA202,750000.0,,1955,,in 1955; note focal year for cultural data is 1920
+Cb19,Kanuri,xd468,cent2050,Central Kanuri,Saharan,EA202,750000.0,,1952,,in 1952; note focal year for cultural data is 1870
+Ac42,Makua,xd69,makh1264,Makhuwa,Atlantic-Congo,EA202,800000.0,,1950,,in 1950; note focal year for cultural data is 1900
+Aj6,Luo,xd411,luok1236,Luo (Kenya and Tanzania),Nilotic,EA202,800000.0,,1947,,
+Eb5,Turkmen,xd613,turk1304,Turkmen,Turkic,EA202,800000.0,,1939,with special reference to the sedentary Teke of the Merv oasis,in 1939; note focal year for cultural data is 1910
+Ag9,Malinke,xd297,kita1249,Kita Maninkakan,Mande,EA202,830000.0,,1950,,in 1950; note focal year for cultural data is 1930
+ch14,Chuvash,xd551,chuv1255,Chuvash,Turkic,EA202,845000.0,,1897,with special reference to the Virjal group,in 1897; note focal year for cultural data is 1908
+Ae3,Fang,xd149,fang1246,Fang (Equatorial Guinea),Atlantic-Congo,EA202,850000.0,,1950,,in 1950; note focal year for cultural data is 1910
+Ab8,Sotho,xd31,sout2807,Southern Sotho,Atlantic-Congo,EA202,900000.0,,1953,Basuto,in 1953; note focal year for cultural data is 1860
+ch25,Moldovans,xd563,mold1248,Moldavian,Indo-European,EA202,921000.0,,1897,with special reference to the Beletskij Uezd,within Bessarabia.
+Ad22,Sukuma,xd90,suku1261,Sukuma,Atlantic-Congo,EA202,1000000.0,,1948,,
+Ae4,Nkundo,xd160,nkun1238,Nkundo,Atlantic-Congo,EA202,1000000.0,,1930,Ilanga group,"The population during 1930 was reported to be in excess of 1,000,000 (2:2)."
+Af20,Ibibio,xd198,ibib1240,Ibibio,Atlantic-Congo,EA202,1000000.0,,,,Date for population estimate missing
+Ca3,Tigrinya,xd437,tigr1271,Tigrinya,Afro-Asiatic,EA202,1000000.0,,,,Date for population estimate missing
+Cb9,Hausa Kanawa,xd486,kano1249,Kano,Afro-Asiatic,EA202,1000000.0,,,"Hausa, with special reference to the Kanawa",Date for population estimate missing
+Cd14,Hamyan,xd512,oran1236,Oran,Afro-Asiatic,EA202,1000000.0,,,,Date for population estimate missing
+Cd19,Sahel,xd517,sahi1245,Sahil,Afro-Asiatic,EA202,1000000.0,,,,"Date for population estimate missing; Data source gives population data as ""more than 1,000,000"""
+Cd4,Kabyle,xd522,kaby1243,Kabyle,Afro-Asiatic,EA202,1000000.0,,1930,,in 1930; note focal year for cultural data is 1890
+Eh2,Merina,xd688,meri1243,Merina,Austronesian,EA202,1000000.0,,1951,,in 1951; note focal year for cultural data is 1900
+Ib3,Balinese,xd752,bali1278,Balinese,Austronesian,EA202,1000000.0,,1959,Tihingan Village,
+Ib4,Toba Batak,xd753,bata1289,Batak Toba,Austronesian,EA202,1000000.0,,1959,with special reference to the Toba group,in 1959; note focal year for cultural data is 1930
+Sf6,Muisca,xd1379,chib1270,Chibcha,Chibchan,EA202,1000000.0,,,,Aboriginally; Note focal year for cultural data is 1540
+ch15,Erzya Mordvins,xd552,erzy1239,Erzya,Uralic,EA202,1025000.0,,1897,with special reference to those of the Boklinskij Uezd,
+Ad4,Kikuyu,xd109,kiku1240,Kikuyu,Atlantic-Congo,EA202,1026300.0,,1948,Fort Hall or Metume district,in 1948; See HRAF reference 1:12; note focal year for cultural data is 1930
+Ab5,Mbundu,xd28,umbu1257,Umbundu,Atlantic-Congo,EA202,1200000.0,,1940,,See EA-Summary
+Cd16,Moroccans,xd514,sout3117,Southern Morocco Arabic,Afro-Asiatic,EA202,1200000.0,,1925,with special reference to those in the hinterlandof Casablanca,western Morocco
+Ef5,Bhil,xd667,bhil1251,Bhili,Indo-European,EA202,1250000.0,,,,Date for population estimate missing
+Ej8,Malays,xd730,mala1479,Colloquial Malay,Austronesian,EA202,1250000.0,,,with special reference to those of Trengganu,Date for population estimate missing
+Ag47,Mossi (Ouagadougou),xd285,moss1236,Mossi,Atlantic-Congo,EA202,1300000.0,,1950,with special reference to those of Ouagadougou (see Ag2 for those of Yatenga),in 1950; note focal year for cultural data is 1900
+ch21,Latvians,xd559,latv1249,Latvian,Indo-European,EA202,1312000.0,,1897,with special reference to the Vidzeme group,in 1897; note focal year for cultural data is 1881
+ch12,Bashkir,xd549,bash1264,Bashkir,Turkic,EA202,1320000.0,,1897,with special reference to the Birskij Uezd Bashkir,all
+Cj6,Jordanians,xd592,sout3123,South Levantine Arabic,Afro-Asiatic,EA202,1440000.0,,1956,with special reference to the sedentary population,
+Sf1,Inca,xd1374,cusc1236,Cusco Quechua,Quechuan,EA202,1500000.0,,1571,City and environs of Cuzco,in 1571; note focal year for cultural data is 1530
+Cj7,Lebanese,xd593,nort3139,North Levantine Arabic,Afro-Asiatic,EA202,1575000.0,,1956,with special reference to the village of Munsif,581 in Munsif
+Ci8,Georgians,xd584,imer1248,Imeretian,Kartvelian,EA202,1600000.0,,1926,,in 1926; note focal year for cultural data is 1850
+Ag2,Mossi (Yatenga),xd255,moss1236,Mossi,Atlantic-Congo,EA202,1700000.0,,1950,"with special reference to Massi (Moshi) of Yatenga; (for those of Ouagadougou, see Ag47)","400,000 in Yatenga"
+Ef8,Kashmiri,xd670,kash1277,Kashmiri,Indo-European,EA202,1900000.0,,1961,with special reference to the Pandit or Sarasvati Brahmans,in 1961; Hindu Kashmiri; note focal year for cultural data is 1950
+Ae8,Rundi,xd184,rund1242,Rundi,Atlantic-Congo,EA202,2000000.0,,,,Date for population estimate missing
+Ai3,Azande,xd359,zand1248,Zande,Atlantic-Congo,EA202,2000000.0,,1926,,
+Cd6,Ancient Egyptians,xd524,egyp1246,Egyptian (Ancient),Afro-Asiatic,EA202,2000000.0,,,with special reference to the New Empire,"Date for population estimate missing; Data source gives population data as ""2,000,000 or more"""
+Eg7,Hill Bhuiya,xd683,oriy1255,Odia,Indo-European,EA202,2000000.0,,,with special reference to the Pauri or Hill Bhuiya,Date for population estimate missing
+Ei7,Karen,xd713,pwow1235,Pwo Western Karen,Sino-Tibetan,EA202,2000000.0,,,,Date for population estimate missing
+Ib6,Minangkabau,xd755,mina1268,Minangkabau,Austronesian,EA202,2000000.0,,1930,,
+Ae10,Banyaruanda,xd128,kiny1244,Kinyarwanda,Atlantic-Congo,EA202,2133000.0,,1952,,in 1952; note focal year for cultural data is 1910
+Eh6,Sinhalese,xd692,sinh1246,Sinhala,Indo-European,EA202,2157000.0,,1954,with special reference to the Kandyan Sinhalese,See HRAF reference 4:13.
+Ia12,Sugbuanon,xd735,cebu1242,Cebuano,Austronesian,EA202,2225000.0,,1964,,in 1964; note focal year for cultural data is 1950
+Ed4,Miao,xd647,horn1235,Horned Miao,Hmong-Mien,EA202,2500000.0,,1954,with special reference to the Magpie (Yachio) Miao,"in 1954; 10,000 Magpie Miao; note focal year for cultural data is 1940"
+Ef1,Santal,xd661,sant1410,Santali,Austroasiatic,EA202,2500000.0,,1931,Bankura and Berghum Districts,See HRAF reference 4:2.
+Cg3,Irish,xd543,iris1253,Irish,Indo-European,EA202,2963000.0,,1926,County Clare,See HRAF reference 1:98.
+Eg2,Tamil,xd678,tami1289,Tamil,Dravidian,EA202,3000000.0,,,with special reference to the agricultural castes in Tanjore,Date for population estimate missing; in Tanjore
+Ej5,Khmer,xd727,cent1989,Central Khmer,Austroasiatic,EA202,3500000.0,,1950,,
+Af10,Igbo,xd187,nucl1417,Igbo,Atlantic-Congo,EA202,4000000.0,,1929,,See HRAF reference 8:v.
+Cj9,Yemeni,xd595,sana1295,Sanaani Arabic,Afro-Asiatic,EA202,4000000.0,,1947,,"This figure is taken from HRAF 2:12, which lists no field date. Since the publication date is 1947, one may assume that the figure is taken from a point in time prior to this time."
+Ee4,Tibetans,xd656,tibe1272,Tibetan,Sino-Tibetan,EA202,4000000.0,,1915,with special reference to Central Tibet,
+Ic1,Macassarese,xd759,maka1311,Makasar,Austronesian,EA202,4000000.0,,1950,Borongloe,
+Ea11,Ghilzai,xd598,ghil1238,Ghilzai,Indo-European,EA202,4500000.0,,1950,with special reference to the Ghilzai tribe,
+Ef7,Pahari,xd669,maha1287,Mahasu Pahari,Indo-European,EA202,5000000.0,,,with special reference to the village of Sirkanda in western Uttar Pradesh,Date for population estimate missing
+Af6,Oyo Yoruba,xd240,ilaa1245,Ila (Yoruba),Atlantic-Congo,EA202,5500000.0,,,"Yoruba, with special reference to the Oyo","Date for population estimate missing; 220,000 in 1931"
+Cd21,Tunisians,xd520,tuni1260,Tunis (Tunisian Arabic),Afro-Asiatic,EA202,7000000.0,,,,"Date for population estimate missing; Data source gives population number as ""several millions"""
+Ch3,Czechs,xd567,czec1258,Czech,Indo-European,EA202,8800000.0,,1950,with special reference to the Hana district of central Moravia,
+Ch8,Magyar,xd572,hung1274,Hungarian,Uralic,EA202,9400000.0,,1950,,
+Ea1,Sindhi,xd596,sind1272,Sindhi,Indo-European,EA202,9500000.0,,1961,,in 1961; note focal year for cultural data is 1950
+Ea9,Iranians,xd608,tehr1242,Tehrani,Indo-European,EA202,10000000.0,,,,Date for population estimate missing
+Ej9,Thai,xd731,thai1261,Thai,Tai-Kadai,EA202,10000000.0,,1940,,
+Ch10,Romanians,xd547,baya1255,Bayash-Rudar,Indo-European,EA202,16000000.0,,1950,,in 1950; note focal year for cultural data is 1910
+Ej4,Annamese,xd726,viet1252,Vietnamese,Austroasiatic,EA202,22000000.0,,,Red River Delta in Tonkin,Date for population estimate missing; This is the total number of Vietnamese.
+Cd2,Egyptians,xd518,egyp1253,Egyptian Arabic,Afro-Asiatic,EA202,23000000.0,,1957,Town and environs of Silwa,
+Ef10,Bihari,xd662,mait1250,Maithili,Indo-European,EA202,24200000.0,,1880,Ganges River Valley,
+Ci11,Kurd,xd576,cent1972,Central Kurdish,Indo-European,EA202,30000000.0,,1951,,in 1951; This figure is taken from HRAF/PSF A:245; note focal year for cultural data is 1940
+Ed5,Japanese,xd648,nucl1643,Japanese,Japonic,EA202,80000000.0,,,Okayama,Date for population estimate missing
