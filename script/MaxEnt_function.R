@@ -67,19 +67,18 @@ clip <- function(raster,shape) {
 # - buffering / clipping
 # - variable selection
 # - k-fold cross validation
-Maxent_function <- function(species_occurence, currentEnv) {
+Maxent_validation_function <- function(species_occurence, currentEnv) {
   bindlonglat <- as.data.frame(cbind(species_occurence[, c("decimal_longitude", "decimal_latitude")]))
   points <- bindlonglat
   points$decimal_longitude <- as.numeric(as.character(points$decimal_longitude))
   points$decimal_latitude <- as.numeric(as.character(points$decimal_latitude))
   coordinates(points) <- ~ decimal_longitude + decimal_latitude
-  x <- gBuffer(points, width= 5, byid = TRUE)
+  x <- gBuffer(points, width= 9, byid = TRUE) ## 1000 km buffers
   x <- gUnaryUnion(x)
-  
   ## clip function
   modelEnv = clip(currentEnv, x)
   names(modelEnv) <- names(currentEnv)
-  
+
   # remove collinearity 
   Env_removed_correlation <- removeCollinearity_adjusted(modelEnv, multicollinearity.cutoff = 0.7, select.variables = TRUE)
   currentEnv2 <- subset(modelEnv, Env_removed_correlation)
@@ -87,13 +86,36 @@ Maxent_function <- function(species_occurence, currentEnv) {
   ## make a dataframe of just the longitude and latitude locations remove all the other variables
   Species_occ <- cbind.data.frame(species_occurence$decimal_longitude, species_occurence$decimal_latitude)
   
-  # create a k-fold cross validation. This means we set aside 25% of the data as test data and we use the other 75% as train data. 
-  fold <- kfold(Species_occ, k=4)
-  Species_test <- Species_occ[fold == 1, ]
-  Species_train <- Species_occ[fold != 1, ]
+  ## Maxent model with training data and cropped extent to train the model. We use all the occurence data to train the model 
+  species_model <- dismo::maxent(currentEnv2, Species_occ, args = c("noproduct", "nothreshold", "nohinge", "noextrapolate", "outputformat=logistic", "jackknife", "applyThresholdRule=10 percentile training presence",  "redoifexists"))
   
-  ## Maxent model with training data and cropped extent to train the model 
-  species_model <- dismo::maxent(currentEnv2, Species_train)
+  ### null model 
+  output <- list(species_model, currentEnv2, Species_occ)
   
-  output <- list(species_model, currentEnv2, Species_test)
 }
+
+
+# adjusted null-model from Niels Raes
+
+nullModel_adjusted <- function (x, y, n, rep = 100)
+{
+  e <- list()
+  #stopifnot(n < nrow(x))
+  bindlonglat <- as.data.frame(cbind(x[, c("decimal_longitude", "decimal_latitude")]))
+  points <- bindlonglat
+  points$decimal_longitude <- as.numeric(as.character(points$decimal_longitude))
+  points$decimal_latitude <- as.numeric(as.character(points$decimal_latitude))
+  coordinates(points) <- ~ decimal_longitude + decimal_latitude
+  crop_points<- crop(points, extent(y))
+  plot(crop_points)
+  ras<- raster(y,1)
+
+    for (i in 1:rep) {
+    random_points<- sample(crop_points, n)
+    species_mod <- dismo::maxent(y, random_points, args = c("noproduct", "nothreshold", "nohinge", "noextrapolate", "outputformat=logistic", "jackknife", "applyThresholdRule=10 percentile training presence",  "redoifexists"))
+   AUC<- species_mod@results[[5,1]]
+   e[i] <- AUC
+    }
+  output<- e
+}
+
