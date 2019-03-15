@@ -67,7 +67,7 @@ clip <- function(raster,shape) {
 # - buffering / clipping
 # - variable selection
 # - k-fold cross validation
-Maxent_validation_function <- function(species_occurence, currentEnv) {
+Maxent_function <- function(species_occurence, currentEnv) {
   bindlonglat <- as.data.frame(cbind(species_occurence[, c("decimal_longitude", "decimal_latitude")]))
   points <- bindlonglat
   points$decimal_longitude <- as.numeric(as.character(points$decimal_longitude))
@@ -90,7 +90,7 @@ Maxent_validation_function <- function(species_occurence, currentEnv) {
   species_model <- dismo::maxent(currentEnv2, Species_occ, args = c("noproduct", "nothreshold", "nohinge", "noextrapolate", "outputformat=logistic", "jackknife", "applyThresholdRule=10 percentile training presence",  "redoifexists"))
   
   ### null model 
-  output <- list(species_model, currentEnv2, Species_occ)
+  output <- list(species_model, currentEnv2, Species_occ, x)
   
 }
 
@@ -106,10 +106,10 @@ nullModel_adjusted <- function (x, y, n, rep = 100)
   points$decimal_longitude <- as.numeric(as.character(points$decimal_longitude))
   points$decimal_latitude <- as.numeric(as.character(points$decimal_latitude))
   coordinates(points) <- ~ decimal_longitude + decimal_latitude
-  crop_points<- crop(points, extent(y))
+  crop_points<- crop(points, y)
   #plot(points)
   #plot(crop_points, add=TRUE, col="red")
-  
+  #plot(modelenvironment, add=TRUE, col="blue")
   
     for (i in 1:rep) {
     random_points<- sample(crop_points, n)
