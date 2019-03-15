@@ -278,6 +278,9 @@ The Maxent function used in this loop can be viewed and adapted in our Github re
 # list for models with a high accuracy (AUC above 0.7)
 list_species_model_low_accuracy <- list()
 list_species_model_high_accuracy <- list()
+output_AUC <- data.frame(matrix(ncol = 3, nrow = length(taxa)))
+colnames(output_AUC) <- c("taxon","trainingAUC","confidence.interval")
+
 
 # iterate over n species
 for (i in 1:length(taxa)) {
@@ -285,6 +288,7 @@ for (i in 1:length(taxa)) {
   name <- taxa[i]
   valid.model.file <- sprintf("%s/results/per_species/%s/valid_maxent_model.rda", REPO_HOME, name)
   invalid.model.file <- sprintf("%s/results/per_species/%s/invalid_maxent_model.rda", REPO_HOME, name)
+
 
   # check if we have the model cached
   
@@ -316,27 +320,17 @@ for (i in 1:length(taxa)) {
     visited_areas <- subset(empty.df, empty.df$taxon_name != name_underscore)
     modelenvironment <- species_model[[2]]
 
-    AUCvalues<- nullModel_adjusted(visited_areas, modelenvironment, occurence_samples, rep = 3)
+    AUCvalues<- nullModel_adjusted(visited_areas, modelenvironment, occurence_samples, rep = 100)
     
     auc <- sort(unlist(AUCvalues), decreasing = FALSE)
     # select 95th number in the list 
     confidence.interval<- auc[95]
     
-    
-    # validate the model with the test data
-    # to construct an AUC model we need random points drawn from the clipped, variable-selected, environment
-   # random <- randomPoints(species_model[[2]], 1000)
-  #  Validation_species <- dismo::evaluate(
-   #   p = species_model[[3]], # all the occurence datapoints 
-   #   a = random, # random absences
-   #   x = species_model[[2]], # the clipped, variable-selected environment
-    #  model = species_model[[1]] # the maxent model
-   # )
-    
-   
+    # save AUC values 
+     output_AUC[i,] <- c(name_underscore, trainingAUC, confidence.interval)
 
     # populate two stacks, one with the models with a low accuracy  and one with a high accuracy 
-    if (Validation_species@auc > confidence.interval) {
+    if (trainingAUC > confidence.interval) {
       model <- species_model[[1]]
       list_species_model_high_accuracy[[name]] <- model
       save(model, file = valid.model.file)
@@ -360,6 +354,10 @@ for (i in 1:length(taxa)) {
     list_species_model_low_accuracy[[name]] <- env[[nm]]
   }
 }
+
+AUC.csv <- paste(REPO_HOME, "/results/maxent/AUCvalues.csv", sep="")
+
+write.csv(output_AUC, AUC.csv)
 ```
 
 
@@ -431,11 +429,14 @@ for (i in 1:length(list_species_model_high_accuracy)) {
     # select non correlated layers from model environment in the world environment
     noncorrelated <- names(open_species_model@presence)
     subsetworldEnv <- subset(currentEnv, noncorrelated)
+    
+    # create an extent to select the limitations of the predictions 
+    
 
-    # make prediction of the whole earth based on the maxent SDM
-    species.pred <- predict(open_species_model, subsetworldEnv)
+    # make projection of the whole earth based on the maxent SDM
+    species.pred <- dismo::predict(open_species_model, subsetworldEnv)
 
-    # save file, stack prediction contents
+    # save file, stack projection contents
     save(species.pred, file = valid.model.prediction)
     prediction_rasters <- stack(prediction_rasters, species.pred)
   }
