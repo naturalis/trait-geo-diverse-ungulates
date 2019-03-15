@@ -280,15 +280,14 @@ list_species_model_low_accuracy <- list()
 list_species_model_high_accuracy <- list()
 output_AUC <- data.frame(matrix(ncol = 3, nrow = length(taxa)))
 colnames(output_AUC) <- c("taxon","trainingAUC","confidence.interval")
+AUC.csv <- paste(REPO_HOME, "/results/maxent/AUCvalues.csv", sep="")
 
-
+# length(taxa)
 # iterate over n species
-for (i in 1:length(taxa)) {
-  i=12
+for (i in 1: 54) {
   name <- taxa[i]
   valid.model.file <- sprintf("%s/results/per_species/%s/valid_maxent_model.rda", REPO_HOME, name)
   invalid.model.file <- sprintf("%s/results/per_species/%s/invalid_maxent_model.rda", REPO_HOME, name)
-
 
   # check if we have the model cached
   
@@ -319,8 +318,9 @@ for (i in 1:length(taxa)) {
     occurence_samples<- nrow(species_occurence)
     visited_areas <- subset(empty.df, empty.df$taxon_name != name_underscore)
     modelenvironment <- species_model[[2]]
+    polygonextent<- species_model[[4]]
 
-    AUCvalues<- nullModel_adjusted(visited_areas, modelenvironment, occurence_samples, rep = 100)
+    AUCvalues<- nullModel_adjusted(visited_areas, modelenvironment, polygonextent, occurence_samples, rep = 100)
     
     auc <- sort(unlist(AUCvalues), decreasing = FALSE)
     # select 95th number in the list 
@@ -354,8 +354,6 @@ for (i in 1:length(taxa)) {
     list_species_model_low_accuracy[[name]] <- env[[nm]]
   }
 }
-
-AUC.csv <- paste(REPO_HOME, "/results/maxent/AUCvalues.csv", sep="")
 
 write.csv(output_AUC, AUC.csv)
 ```
