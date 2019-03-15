@@ -95,7 +95,7 @@ Maxent_validation_function <- function(species_occurence, currentEnv) {
 }
 
 
-# adjusted null-model from Niels Raes
+# Null model function
 
 nullModel_adjusted <- function (x, y, n, rep = 100)
 {
@@ -107,9 +107,10 @@ nullModel_adjusted <- function (x, y, n, rep = 100)
   points$decimal_latitude <- as.numeric(as.character(points$decimal_latitude))
   coordinates(points) <- ~ decimal_longitude + decimal_latitude
   crop_points<- crop(points, extent(y))
-  plot(crop_points)
-  ras<- raster(y,1)
-
+  #plot(points)
+  #plot(crop_points, add=TRUE, col="red")
+  
+  
     for (i in 1:rep) {
     random_points<- sample(crop_points, n)
     species_mod <- dismo::maxent(y, random_points, args = c("noproduct", "nothreshold", "nohinge", "noextrapolate", "outputformat=logistic", "jackknife", "applyThresholdRule=10 percentile training presence",  "redoifexists"))

@@ -281,13 +281,13 @@ list_species_model_high_accuracy <- list()
 
 # iterate over n species
 for (i in 1:length(taxa)) {
-  i=1
+  i=12
   name <- taxa[i]
   valid.model.file <- sprintf("%s/results/per_species/%s/valid_maxent_model.rda", REPO_HOME, name)
   invalid.model.file <- sprintf("%s/results/per_species/%s/invalid_maxent_model.rda", REPO_HOME, name)
 
   # check if we have the model cached
-  i <- 1
+  
   if (!file.exists(valid.model.file) && !file.exists(invalid.model.file)) {
     message(name)
 
@@ -319,22 +319,24 @@ for (i in 1:length(taxa)) {
     AUCvalues<- nullModel_adjusted(visited_areas, modelenvironment, occurence_samples, rep = 3)
     
     auc <- sort(unlist(AUCvalues), decreasing = FALSE)
-    hist(auc) #make a histogram
-
+    # select 95th number in the list 
+    confidence.interval<- auc[95]
+    
+    
     # validate the model with the test data
     # to construct an AUC model we need random points drawn from the clipped, variable-selected, environment
-    random <- randomPoints(species_model[[2]], 1000)
-    Validation_species <- dismo::evaluate(
-      p = species_model[[3]], # all the occurence datapoints 
-      a = random, # random absences
-      x = species_model[[2]], # the clipped, variable-selected environment
-      model = species_model[[1]] # the maxent model
-    )
+   # random <- randomPoints(species_model[[2]], 1000)
+  #  Validation_species <- dismo::evaluate(
+   #   p = species_model[[3]], # all the occurence datapoints 
+   #   a = random, # random absences
+   #   x = species_model[[2]], # the clipped, variable-selected environment
+    #  model = species_model[[1]] # the maxent model
+   # )
     
    
 
-    # populate two stacks, one with the models with a low accuracy <0.7 and one with a high accuracy >0.7
-    if (Validation_species@auc > 0.7) {
+    # populate two stacks, one with the models with a low accuracy  and one with a high accuracy 
+    if (Validation_species@auc > confidence.interval) {
       model <- species_model[[1]]
       list_species_model_high_accuracy[[name]] <- model
       save(model, file = valid.model.file)
