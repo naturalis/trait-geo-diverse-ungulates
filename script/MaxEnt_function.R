@@ -67,7 +67,7 @@ clip <- function(raster,shape) {
 # - buffering / clipping
 # - variable selection
 # - k-fold cross validation
-Maxent_validation_function <- function(species_occurence, currentEnv) {
+Maxent_function <- function(species_occurence, currentEnv) {
   bindlonglat <- as.data.frame(cbind(species_occurence[, c("decimal_longitude", "decimal_latitude")]))
   points <- bindlonglat
   points$decimal_longitude <- as.numeric(as.character(points$decimal_longitude))
@@ -90,32 +90,55 @@ Maxent_validation_function <- function(species_occurence, currentEnv) {
   species_model <- dismo::maxent(currentEnv2, Species_occ, args = c("noproduct", "nothreshold", "nohinge", "noextrapolate", "outputformat=logistic", "jackknife", "applyThresholdRule=10 percentile training presence",  "redoifexists"))
   
   ### null model 
-  output <- list(species_model, currentEnv2, Species_occ)
+  output <- list(species_model, currentEnv2, Species_occ, x)
   
 }
 
 
-# adjusted null-model from Niels Raes
+# Null model function
 
-nullModel_adjusted <- function (x, y, n, rep = 100)
+nullModel_adjusted <- function (visited_areas, modelenvironment, polygonextent, occurence_samples, rep = 100)
 {
   e <- list()
   #stopifnot(n < nrow(x))
-  bindlonglat <- as.data.frame(cbind(x[, c("decimal_longitude", "decimal_latitude")]))
+  bindlonglat <- as.data.frame(cbind(visited_areas[, c("decimal_longitude", "decimal_latitude")]))
   points <- bindlonglat
   points$decimal_longitude <- as.numeric(as.character(points$decimal_longitude))
   points$decimal_latitude <- as.numeric(as.character(points$decimal_latitude))
   coordinates(points) <- ~ decimal_longitude + decimal_latitude
-  crop_points<- crop(points, extent(y))
-  plot(crop_points)
-  ras<- raster(y,1)
-
+  crop_points<- crop(points, polygonextent)
+  #plot(points)
+  #plot(polygonextent, add=TRUE, col="blue")
+  #plot(crop_points, add=TRUE, col="red")
+  
+  cropped_points<- if (is.null(crop_points)) {0} else {nrow(crop_points@coords)}
+  
+  if (cropped_points > occurence_samples) {
     for (i in 1:rep) {
-    random_points<- sample(crop_points, n)
-    species_mod <- dismo::maxent(y, random_points, args = c("noproduct", "nothreshold", "nohinge", "noextrapolate", "outputformat=logistic", "jackknife", "applyThresholdRule=10 percentile training presence",  "redoifexists"))
-   AUC<- species_mod@results[[5,1]]
-   e[i] <- AUC
+    random_points<- sample(crop_points, occurence_samples)
+    species_mod <- dismo::maxent(modelenvironment, random_points, args = c("noproduct", "nothreshold", "nohinge", "noextrapolate", "outputformat=logistic", "jackknife", "applyThresholdRule=10 percentile training presence",  "redoifexists"))
+    AUC<- species_mod@results[[5,1]]
+    e[i] <- AUC
+  }
+    output<- e
+
+    
+  }
+  else {
+    jk<-raster(modelenvironment, 1)
+    polygon<- rasterToPolygons(jk, dissolve=TRUE)
+    polygon <- gUnaryUnion(polygon)
+    #plot(polygon)
+    
+    for (i in 1:rep) {
+      random_points<- spsample(polygon, occurence_samples, type="random")
+      #plot(random_points, add=TRUE, col="red")
+      species_mod <- dismo::maxent(modelenvironment, random_points, args = c("noproduct", "nothreshold", "nohinge", "noextrapolate", "outputformat=logistic", "jackknife", "applyThresholdRule=10 percentile training presence",  "redoifexists"))
+      AUC<- species_mod@results[[5,1]]
+      e[i] <- AUC
     }
+  }
   output<- e
 }
+
 
