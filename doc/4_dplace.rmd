@@ -5,14 +5,30 @@ date: "14-3-2019"
 output: html_document
 ---
 
-### Set up variables
+### Set up environment
 
 ```{r preamble}
 library(dplyr)
 library(ape)
+library(geiger)
+library(circlize)
 
 # XXX set working directory to script source first
 REPO_HOME <- paste(getwd(), "/../", sep = "")
+
+# generic function to load single SCCS tabls
+read.sccs.variable <- function(sccs.code) {
+  sccs.file <- sprintf('%s/data/d-place/%s.csv',REPO_HOME,sccs.code)
+  sccs.matrix <- select(
+    read.table( sccs.file, header = T, sep = ',', quote = "\"" ),
+    language_glottocode,
+    code
+  )
+  sccs.df <- as.data.frame(sccs.matrix)
+  row.names(sccs.df) <- sccs.df$language_glottocode
+  names(sccs.df) <- c('language_glottocode',sccs.code)
+  return(sccs.df)
+}
 ```
 
 ### Domestic animals (SCCS)
@@ -51,84 +67,66 @@ sccs.code <- list(
   SCCS1514 = c('Bos_frontalis_gaurus', 'Bos_javanicus', 'Bos_taurus_primigenius')
 )
 
-# containers to hold full data; list of rows; list of columns
-animal.present <- list()
-societies <- c()
-dom.taxa <- c()
-
-# iterate over society codes
+animal.present.df <- data.frame( language_glottocode = character())
 for ( sc in names(sccs.code) ) {
+  temp.df <- read.sccs.variable(sc)
   
-  # load CSV file
-  sccs.file <- sprintf('%s/data/d-place/%s.csv',REPO_HOME,sc)
-  animal.present[[sc]] <- select(
-    read.table(
-      sccs.file, 
-      header = T, 
-      sep = ',', 
-      quote = "\""
-    ),
-    language_glottocode,
-    code
-  )
-  
-  # grown lists of rows and columns
-  societies <- c(societies, as.character(animal.present[[sc]]$language_glottocode))
-  dom.taxa <- c(dom.taxa, sccs.code[[sc]])
-}
-societies <- unique(societies)
-
-# create and populate matrix
-animal.present.matrix <- matrix(
-  nrow = length(societies), 
-  ncol = length(dom.taxa),
-  dimnames = list(societies,dom.taxa)
-)
-for ( sc in names(sccs.code) ) {
-  taxa <- sccs.code[[sc]]
-  for ( i in 1:length(animal.present[[sc]]$language_glottocode) ) {
-    record <- animal.present[[sc]][i,]
-    socid <- as.character(record$language_glottocode)
-    for ( taxon in taxa ) {
-      animal.present.matrix[socid,taxon] <- record$code
-    }
+  # copy values over to all taxa
+  values <- temp.df[,2]
+  for ( taxon in sccs.code[[sc]] ) {
+    temp.df[[taxon]] <- values
   }
+  rm(values, taxon) # clean
+  
+  # subset to remove opaque identifier column header
+  temp.df <- temp.df[,c('language_glottocode',sccs.code[[sc]])]
+  
+  # do an outer join on the glottocodes, avoid coercion warning
+  temp.df$language_glottocode <- as.character(temp.df$language_glottocode)
+  animal.present.df <- full_join(animal.present.df, temp.df, by = c('language_glottocode'))
+  rm(temp.df) # clean
 }
-animal.present.df <- as.data.frame(animal.present.matrix)
-animal.present.df$language_glottocode <- row.names(animal.present.df)
+rm(sc) # clean
 ```
 
 ### Demographics (SCCS)
 
 We interpret niche cluster 7 as a less productive, drier environment. Hence, 
-these have relatively low population densities. We read data sets:
+these have relatively low population densities. We read these data:
 
 - Population Density (from Pryor Data) [SCCS1130](https://d-place.org/parameters/SCCS1130)
-- Scale 8- Density of Population [SCCS156](https://d-place.org/parameters/SCCS156)
+	2. less than 1 per square mile (n=51)
+	3. 1-4.9 per square mile (n=28)
+	4. 5-24.9 per square mile (n=35)
+	5. 25-99.9 per square mile (n=37)
+	6. 99-499.9 per square mile (n=24)
+	7. 500 or more per square mile (n=11)
+
 
 ```{r pop_density}
-# generic function to load single SCCS tabls
-read.sccs.variable <- function(sccs.code) {
-  sccs.file <- sprintf('%s/data/d-place/%s.csv',REPO_HOME,sccs.code)
-  sccs.matrix <- select(
-    read.table(
-      sccs.file, 
-      header = T, 
-      sep = ',', 
-      quote = "\"",
-      as.is = c('language_glottocode')
-    ),
-    language_glottocode,
-    code
-  )
-  sccs.df <- as.data.frame(sccs.matrix)
-  row.names(sccs.df) <- sccs.df$language_glottocode
-  names(sccs.df) <- c('language_glottocode',sccs.code)
-  return(sccs.df)
-}
-
-pop.density.SCCS156 <- read.sccs.variable('SCCS156')
+# update column names after loading
 pop.density.SCCS1130 <- read.sccs.variable('SCCS1130')
+names(pop.density.SCCS1130) <- c('language_glottocode', 'pop.density.SCCS1130')
+
+# split in low and high density subsets
+smallpop <- filter(pop.density.SCCS1130, pop.density.SCCS1130 < 4)
+smallpop$pop.density <- 'low'
+bigpop <- filter(pop.density.SCCS1130, pop.density.SCCS1130 > 3)
+bigpop$pop.density <- 'high'
+
+# concatenate into new data frame
+pop.density.SCCS1130 <- data.frame(
+  language_glottocode = c(
+    as.character(smallpop$language_glottocode),
+    as.character(bigpop$language_glottocode)
+  ),
+  pop.density.SCCS1130 = c(
+    smallpop$pop.density,
+    bigpop$pop.density
+  )
+)
+rm(smallpop,bigpop)
+plot(pop.density.SCCS1130$pop.density.SCCS1130)
 ```
 
 ### Sedentism (SCCS)
@@ -136,23 +134,100 @@ pop.density.SCCS1130 <- read.sccs.variable('SCCS1130')
 We interpret niche cluster 5 as more productive, and therefore more conducive
 to sedentism. We download the following data set:
 
-- Scale 2- Fixity of Residence [SCCS150](https://d-place.org/parameters/SCCS150)
+- Scale 2 - Fixity of Residence [SCCS150](https://d-place.org/parameters/SCCS150)
+
+The data is ordinal, with the following values:
+
+1. Nomadic (n=28)
+2. Seminomadic (n=21)
+3. Semisedentary (n=20)
+4. Sedentary; impermanent (n=15)
+5. Sedentary (n=102)
+
+We will lump the first four states together and contrast those with the only
+fully sedentary state.
 
 ```{r sedentism}
 sedentism.SCCS150 <- read.sccs.variable('SCCS150')
+
+# make a subframe with all records that are not truly sedentary (i.e. anything
+# below 5), and assign these the string value 'impermanent'
+sedentism.SCCS150.nomadic <- filter(sedentism.SCCS150, SCCS150 < 5)
+sedentism.SCCS150.nomadic$SCCS150 <- "impermanent"
+
+# make a subframe with only those records that are truly sedentary (i.e. value
+# is 5), and assign these the string value 'sedentary'
+sedentism.SCCS150.sedentary <- filter(sedentism.SCCS150, SCCS150 == 5)
+sedentism.SCCS150.sedentary$SCCS150 <- "sedentary"
+
+# concatenate the subframes into a new frame. Don't turn strings into factors
+# just yet so that the glottocodes continue to be strings, then coerce the
+# sedentary/impermanent states to factors.
+sedentism.SCCS150 <- data.frame( 
+  language_glottocode = c( 
+    as.character(sedentism.SCCS150.nomadic$language_glottocode), 
+    as.character(sedentism.SCCS150.sedentary$language_glottocode) 
+  ), 
+  sedentism.SCCS150 = c(
+    sedentism.SCCS150.nomadic$SCCS150,
+    sedentism.SCCS150.sedentary$SCCS150
+  )
+)
+
+# clean up namespace, free memory
+rm(sedentism.SCCS150.nomadic, sedentism.SCCS150.sedentary)
+plot(sedentism.SCCS150$sedentism.SCCS150)
 ```
 
-### Despotism (SCCS)
+### Stratification (SCCS)
 
 Sedentary societies with high population densities should be conducive to local
-despotism. We download the following data sets:
+stratification. We download the following data:
 
-- Despotic Bias in Conflict Resolution [SCCS1134](https://d-place.org/parameters/SCCS1134)
-- Scale 10- Social Stratification [SCCS158](https://d-place.org/parameters/SCCS158)
+- Scale 10 - Social Stratification [SCCS158](https://d-place.org/parameters/SCCS158),
+  which is ordinal and has the following levels:
+  1. Egalitarian (n=65)
+  2. Hereditary slavery	(n=52) *
+  3. 2 social classes, no castes/slavery (n=19)
+  4. 2 social classes, castes/slavery (n=20)
+  5. 3 social classes or castes, w/ or w/out slavery (n=30)
 
 ```{r despotism}
-despotism.SCCS1134 <- read.sccs.variable('SCCS1134')
-despotism.SCCS158 <- read.sccs.variable('SCCS158')
+stratification.SCCS158 <- read.sccs.variable('SCCS158')
+
+# make a subframe only with records that are truly egalitarian
+# and assign these the string (i.e. factor) value 'egalitarian'
+stratification.SCCS158.egalitarian <- filter(
+  stratification.SCCS158,
+  SCCS158 < 3
+)
+stratification.SCCS158.egalitarian$SCCS158 <- "egalitarian"
+
+# make a subframe with all records that are not truly egalitarian (values 2..5),
+# and assign these the string (i.e. factor) value 'stratified'
+stratification.SCCS158.stratified <- filter(
+  stratification.SCCS158,
+  SCCS158 > 2
+)
+stratification.SCCS158.stratified$SCCS158 <- "stratified"
+
+# concatenate the subframes into a new frame. Don't make factors here so that
+# we keep the glottocodes as strings, but coerce the egalitarian/stratification
+# string values afterwards.
+stratification.SCCS158 <- data.frame(
+  language_glottocode = c(
+    as.character(stratification.SCCS158.egalitarian$language_glottocode),
+    as.character(stratification.SCCS158.stratified$language_glottocode)
+  ),
+  stratification.SCCS158 = c(
+    stratification.SCCS158.egalitarian$SCCS158,
+    stratification.SCCS158.stratified$SCCS158
+  )
+)
+
+# clean up namespace, free memory
+rm(stratification.SCCS158.egalitarian,stratification.SCCS158.stratified)
+plot(stratification.SCCS158$stratification.SCCS158)
 ```
 
 ### Join data
@@ -161,62 +236,127 @@ We left-join the different data frames on the `language_glottocode` columns:
 
 ```{r leftjoin}
 # join population densities
-joined.df <- dplyr::left_join(animal.present.df, pop.density.SCCS1130)
-joined.df <- dplyr::left_join(joined.df, pop.density.SCCS156)
+joined.df <- dplyr::left_join(animal.present.df, pop.density.SCCS1130, by=c('language_glottocode'))
+joined.df <- dplyr::left_join(joined.df, pop.density.SCCS156, by=c('language_glottocode'))
 
 # join sedentism
-joined.df <- dplyr::left_join(joined.df, sedentism.SCCS150)
+joined.df <- dplyr::left_join(joined.df, sedentism.SCCS150, by=c('language_glottocode'))
 
-# join despotism
-joined.df <- dplyr::left_join(joined.df, despotism.SCCS1134)
-joined.df <- dplyr::left_join(joined.df, despotism.SCCS158)
+# join stratification
+joined.df <- dplyr::left_join(joined.df, stratification.SCCS158, by=c('language_glottocode'))
 
 # assign row names
 row.names(joined.df) <- joined.df$language_glottocode
 
-# define clusters
-taxa.cluster7 <- c(
-  'Capra_hircus_aegagrus',
-  'Camelus_bactrianus', 
-  'Camelus_dromedarius',
-  'Equus_przewalskii',
-  'Bos_grunniens_mutus'
-)
-taxa.cluster5 <- c(
-  'Ovis_aries_orientalis',
-  'Lama_glama_guanicoe', 
-  'Vicagna_vicugna',
-  'Bos_javanicus',
-  'Bos_taurus_primigenius'
+# grouping of domesticated taxa by niche cluster
+clusters <- list(
+  cluster7 = c(
+    'Capra_hircus_aegagrus',
+    'Camelus_bactrianus', 
+    'Camelus_dromedarius',
+    'Equus_przewalskii',
+    'Bos_grunniens_mutus'
+  ),
+  cluster5 = c(
+    'Ovis_aries_orientalis',
+    'Lama_glama_guanicoe', 
+    'Vicagna_vicugna',
+    'Bos_javanicus',
+    'Bos_taurus_primigenius'
+  ),
+  cluster2 = c(
+    'Bubalus_bubalis_arnee', # 5
+    'Bos_frontalis_gaurus'   # 5
+  ),
+  cluster14 = c('Sus_scrofa'), # 5
+  cluster26 = c('Rangifer_tarandus'), # 7
+  cluster0 = c('Equus_africanus') # 7
 )
 
 # create and populate matrix
 summarized.matrix <- matrix(
   nrow = length(societies), 
-  ncol = 3,
-  dimnames = list(societies,c('taxa.cluster7','taxa.cluster5','clusters'))
+  ncol = length(names(clusters))+1,
+  dimnames = list(societies,c(names(clusters),'clusters'))
 )
 for ( soc in societies ) {
-  tc7 <- sum(joined.df[soc,taxa.cluster7], na.rm = T)
-  summarized.matrix[soc,'taxa.cluster7'] <- tc7
-  
-  tc5 <- sum(joined.df[soc,taxa.cluster5], na.rm = T)
-  summarized.matrix[soc,'taxa.cluster5'] <- tc5
-  
-  if ( tc5 == 0 & tc7 == 0 ) {
-    summarized.matrix[soc,'clusters'] <- 0 # no livestock
+  for ( cluster in names(clusters) ) {
+    taxa <- clusters[[cluster]]
+    total <- sum(joined.df[soc,taxa],na.rm=T)
+    if ( total == 0 ) {
+      summarized.matrix[soc,cluster] <- NA
+    } else {
+      summarized.matrix[soc,cluster] <- cluster
+    }
   }
-  if ( tc5 != 0 & tc7 == 0 ) {
-    summarized.matrix[soc,'clusters'] <- 2 # sedentary livestock
-  }
-  if ( tc5 == 0 & tc7 != 0 ) {
-    summarized.matrix[soc,'clusters'] <- 1 # roaming livestock
-  }
-  if ( tc5 != 0 & tc7 != 0 ) {
-    summarized.matrix[soc,'clusters'] <- 3 # both
-  }  
+#  remap <- function(i) {
+#    return(LETTERS[i+1]) 
+#  }
+#  if ( tc5 == 0 & tc7 == 0 ) {
+#    summarized.matrix[soc,'clusters'] <- 0 # no livestock
+#  }
+#  if ( tc5 != 0 & tc7 == 0 ) {
+#    summarized.matrix[soc,'clusters'] <- 2 # sedentary livestock
+#  }
+#  if ( tc5 == 0 & tc7 != 0 ) {
+#    summarized.matrix[soc,'clusters'] <- 1 # roaming livestock
+#  }
+#  if ( tc5 != 0 & tc7 != 0 ) {
+#    summarized.matrix[soc,'clusters'] <- 3 # both
+#  }  
 }
 summarized.df <- as.data.frame(summarized.matrix)
 summarized.df$language_glottocode <- row.names(summarized.df)
-joined.df <- left_join(joined.df,summarized.df)
+joined.df <- dplyr::left_join(joined.df,summarized.df,by=c('language_glottocode'))
+
+# clean up columns
+joined.df <- select(
+  joined.df,
+  language_glottocode,
+  pop.density.SCCS156,
+  sedentism.SCCS150,
+  stratification.SCCS158,
+  taxa.cluster7,
+  taxa.cluster5,
+  clusters
+)
+```
+
+### Load language tree
+
+To correct for Galton's Problem in the comparative analysis of societies we must
+correct for their relatedness. For this we use the following tree:
+
+- [Phylogeny Global Classification (Glottolog 3.3)](https://d-place.org/phylogenys/glottolog_global)
+
+```{r tree}
+tree.file <- sprintf('%s/data/d-place/glottolog_global.trees',REPO_HOME)
+tree <- read.tree( file = tree.file )
+
+# intersection between tree tips and societies in data matrix
+societies <- tree$tip.label[
+  match(
+    joined.df$language_glottocode, 
+    tree$tip.label, 
+    nomatch = 0
+  )
+]
+
+# prune tree
+tree <- keep.tip(tree, societies)
+
+# prune matrix
+row.names(joined.df) <- joined.df$language_glottocode
+joined.df <- joined.df[societies,]
+
+plot( tree, show.tip.label = F )
+```
+
+### Do multistate analysis
+
+```{r multistate}
+clusters <- joined.df$clusters
+names(clusters) <- joined.df$language_glottocode
+fitARD <- fitDiscrete(multi2di(tree),clusters,model="ARD")
+plot(fitARD)
 ```
