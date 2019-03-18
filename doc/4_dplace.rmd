@@ -95,12 +95,12 @@ We interpret niche cluster 7 as a less productive, drier environment. Hence,
 these have relatively low population densities. We read these data:
 
 - Population Density (from Pryor Data) [SCCS1130](https://d-place.org/parameters/SCCS1130)
-	2. less than 1 per square mile (n=51)
-	3. 1-4.9 per square mile (n=28)
-	4. 5-24.9 per square mile (n=35)
-	5. 25-99.9 per square mile (n=37)
-	6. 99-499.9 per square mile (n=24)
-	7. 500 or more per square mile (n=11)
+	2. less than 1 per square mile (n=51), `low`
+	3. 1-4.9 per square mile (n=28), `low`
+	4. 5-24.9 per square mile (n=35), `high`
+	5. 25-99.9 per square mile (n=37), `high`
+	6. 99-499.9 per square mile (n=24), `high`
+	7. 500 or more per square mile (n=11), `high`
 
 
 ```{r pop_density}
@@ -126,7 +126,7 @@ pop.density.SCCS1130 <- data.frame(
   )
 )
 rm(smallpop,bigpop)
-plot(pop.density.SCCS1130$pop.density.SCCS1130)
+plot(pop.density.SCCS1130$pop.density.SCCS1130, main = "Population density")
 ```
 
 ### Sedentism (SCCS)
@@ -176,7 +176,7 @@ sedentism.SCCS150 <- data.frame(
 
 # clean up namespace, free memory
 rm(sedentism.SCCS150.nomadic, sedentism.SCCS150.sedentary)
-plot(sedentism.SCCS150$sedentism.SCCS150)
+plot(sedentism.SCCS150$sedentism.SCCS150, main = "Fixity of residence")
 ```
 
 ### Stratification (SCCS)
@@ -186,11 +186,11 @@ stratification. We download the following data:
 
 - Scale 10 - Social Stratification [SCCS158](https://d-place.org/parameters/SCCS158),
   which is ordinal and has the following levels:
-  1. Egalitarian (n=65)
-  2. Hereditary slavery	(n=52) *
-  3. 2 social classes, no castes/slavery (n=19)
-  4. 2 social classes, castes/slavery (n=20)
-  5. 3 social classes or castes, w/ or w/out slavery (n=30)
+  1. Egalitarian (n=65), `egalitarian`
+  2. Hereditary slavery	(n=52), `egalitarian`
+  3. 2 social classes, no castes/slavery (n=19), `stratified`
+  4. 2 social classes, castes/slavery (n=20), `stratified`
+  5. 3 social classes or castes, w/ or w/out slavery (n=30), `stratified`
 
 ```{r despotism}
 stratification.SCCS158 <- read.sccs.variable('SCCS158')
@@ -227,7 +227,7 @@ stratification.SCCS158 <- data.frame(
 
 # clean up namespace, free memory
 rm(stratification.SCCS158.egalitarian,stratification.SCCS158.stratified)
-plot(stratification.SCCS158$stratification.SCCS158)
+plot(stratification.SCCS158$stratification.SCCS158, main = "Social stratification")
 ```
 
 ### Join data
@@ -235,18 +235,12 @@ plot(stratification.SCCS158$stratification.SCCS158)
 We left-join the different data frames on the `language_glottocode` columns:
 
 ```{r leftjoin}
-# join population densities
-joined.df <- dplyr::left_join(animal.present.df, pop.density.SCCS1130, by=c('language_glottocode'))
-joined.df <- dplyr::left_join(joined.df, pop.density.SCCS156, by=c('language_glottocode'))
-
-# join sedentism
-joined.df <- dplyr::left_join(joined.df, sedentism.SCCS150, by=c('language_glottocode'))
-
-# join stratification
+# join data sets
+joined.df <- dplyr::left_join(pop.density.SCCS1130, sedentism.SCCS150, by=c('language_glottocode'))
 joined.df <- dplyr::left_join(joined.df, stratification.SCCS158, by=c('language_glottocode'))
 
 # assign row names
-row.names(joined.df) <- joined.df$language_glottocode
+societies <- row.names(joined.df) <- joined.df$language_glottocode
 
 # grouping of domesticated taxa by niche cluster
 clusters <- list(
@@ -275,50 +269,51 @@ clusters <- list(
 
 # create and populate matrix
 summarized.matrix <- matrix(
-  nrow = length(societies), 
+  nrow = length(animal.present.df$language_glottocode), 
   ncol = length(names(clusters))+1,
-  dimnames = list(societies,c(names(clusters),'clusters'))
+  dimnames = list(animal.present.df$language_glottocode,c(names(clusters),'clusters'))
 )
-for ( soc in societies ) {
+row.names(animal.present.df) <- animal.present.df$language_glottocode
+for ( soc in animal.present.df$language_glottocode ) {
   for ( cluster in names(clusters) ) {
     taxa <- clusters[[cluster]]
-    total <- sum(joined.df[soc,taxa],na.rm=T)
+    total <- sum(animal.present.df[soc,taxa],na.rm=T)
     if ( total == 0 ) {
-      summarized.matrix[soc,cluster] <- NA
+      summarized.matrix[soc,cluster] <- 0
     } else {
-      summarized.matrix[soc,cluster] <- cluster
+      summarized.matrix[soc,cluster] <- 1
     }
   }
-#  remap <- function(i) {
-#    return(LETTERS[i+1]) 
-#  }
-#  if ( tc5 == 0 & tc7 == 0 ) {
-#    summarized.matrix[soc,'clusters'] <- 0 # no livestock
-#  }
-#  if ( tc5 != 0 & tc7 == 0 ) {
-#    summarized.matrix[soc,'clusters'] <- 2 # sedentary livestock
-#  }
-#  if ( tc5 == 0 & tc7 != 0 ) {
-#    summarized.matrix[soc,'clusters'] <- 1 # roaming livestock
-#  }
-#  if ( tc5 != 0 & tc7 != 0 ) {
-#    summarized.matrix[soc,'clusters'] <- 3 # both
-#  }  
 }
 summarized.df <- as.data.frame(summarized.matrix)
 summarized.df$language_glottocode <- row.names(summarized.df)
-joined.df <- dplyr::left_join(joined.df,summarized.df,by=c('language_glottocode'))
+
+# filter on steppe/pasture
+steppe <- filter(summarized.df, cluster7 == 1 | cluster26 == 1)
+steppe$clusters <- 'steppe'
+pasture <- filter(summarized.df, cluster5 == 1 | cluster2 == 1 | cluster14 == 1)
+pasture$clusters <- 'pasture'
+filtered <- data.frame(
+  language_glottocode = c(
+    steppe$language_glottocode,
+    pasture$language_glottocode
+  ),
+  habitat = c(
+    steppe$clusters,
+    pasture$clusters
+  )
+)
+
+joined.df <- dplyr::left_join(filtered,joined.df,by=c('language_glottocode'))
 
 # clean up columns
 joined.df <- select(
   joined.df,
   language_glottocode,
-  pop.density.SCCS156,
+  pop.density.SCCS1130,
   sedentism.SCCS150,
   stratification.SCCS158,
-  taxa.cluster7,
-  taxa.cluster5,
-  clusters
+  habitat
 )
 ```
 
