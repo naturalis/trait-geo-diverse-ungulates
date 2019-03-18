@@ -108,14 +108,37 @@ nullModel_adjusted <- function (visited_areas, modelenvironment, polygonextent, 
   coordinates(points) <- ~ decimal_longitude + decimal_latitude
   crop_points<- crop(points, polygonextent)
   #plot(points)
+  #plot(polygonextent, add=TRUE, col="blue")
   #plot(crop_points, add=TRUE, col="red")
-
+  
+  cropped_points<- if (is.null(crop_points)) {0} else {nrow(crop_points@coords)}
+  
+  if (cropped_points > occurence_samples) {
     for (i in 1:rep) {
     random_points<- sample(crop_points, occurence_samples)
     species_mod <- dismo::maxent(modelenvironment, random_points, args = c("noproduct", "nothreshold", "nohinge", "noextrapolate", "outputformat=logistic", "jackknife", "applyThresholdRule=10 percentile training presence",  "redoifexists"))
-   AUC<- species_mod@results[[5,1]]
-   e[i] <- AUC
+    AUC<- species_mod@results[[5,1]]
+    e[i] <- AUC
+  }
+    output<- e
+
+    
+  }
+  else {
+    jk<-raster(modelenvironment, 1)
+    polygon<- rasterToPolygons(jk, dissolve=TRUE)
+    polygon <- gUnaryUnion(polygon)
+    #plot(polygon)
+    
+    for (i in 1:rep) {
+      random_points<- spsample(polygon, occurence_samples, type="random")
+      #plot(random_points, add=TRUE, col="red")
+      species_mod <- dismo::maxent(modelenvironment, random_points, args = c("noproduct", "nothreshold", "nohinge", "noextrapolate", "outputformat=logistic", "jackknife", "applyThresholdRule=10 percentile training presence",  "redoifexists"))
+      AUC<- species_mod@results[[5,1]]
+      e[i] <- AUC
     }
+  }
   output<- e
 }
+
 
