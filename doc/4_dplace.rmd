@@ -353,7 +353,7 @@ plot( tree, show.tip.label = F )
 ### Do multistate analysis
 
 ```{r multistate}
-clusters <- joined.df$clusters
+clusters <- joined.df$habitat
 names(clusters) <- joined.df$language_glottocode
 fitARD <- fitDiscrete(multi2di(tree),clusters,model="ARD")
 plot(fitARD)
