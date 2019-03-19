@@ -289,9 +289,11 @@ summarized.df <- as.data.frame(summarized.matrix)
 summarized.df$language_glottocode <- row.names(summarized.df)
 
 # filter on steppe/pasture
-steppe <- filter(summarized.df, cluster7 == 1)
+steppe <- filter(filter(summarized.df, cluster7 == 1 | cluster26 == 1),
+                 cluster5 == 0 & cluster2 == 0 & cluster14 == 0)
 steppe$clusters <- 'steppe'
-pasture <- filter(summarized.df, cluster5 == 1)
+pasture <- filter(filter(summarized.df, cluster5 == 1 | cluster2 == 1 | cluster14 == 1),
+                  cluster7 == 0 & cluster26 == 0)
 pasture$clusters <- 'pasture'
 filtered <- data.frame(
   language_glottocode = c(
@@ -315,6 +317,7 @@ joined.df <- select(
   stratification.SCCS158,
   habitat
 )
+plot(joined.df$habitat)
 ```
 
 ### Load language tree
