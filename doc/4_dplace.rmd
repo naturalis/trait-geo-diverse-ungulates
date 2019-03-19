@@ -96,7 +96,7 @@ these have relatively low population densities. We read these data:
 
 - Population Density (from Pryor Data) [SCCS1130](https://d-place.org/parameters/SCCS1130)
 	2. less than 1 per square mile (n=51), `low`
-	3. 1-4.9 per square mile (n=28), `low`
+	3. 1-4.9 per square mile (n=28), `high`
 	4. 5-24.9 per square mile (n=35), `high`
 	5. 25-99.9 per square mile (n=37), `high`
 	6. 99-499.9 per square mile (n=24), `high`
@@ -109,9 +109,9 @@ pop.density.SCCS1130 <- read.sccs.variable('SCCS1130')
 names(pop.density.SCCS1130) <- c('language_glottocode', 'pop.density.SCCS1130')
 
 # split in low and high density subsets
-smallpop <- filter(pop.density.SCCS1130, pop.density.SCCS1130 < 4)
+smallpop <- filter(pop.density.SCCS1130, pop.density.SCCS1130 == 2)
 smallpop$pop.density <- 'low'
-bigpop <- filter(pop.density.SCCS1130, pop.density.SCCS1130 > 3)
+bigpop <- filter(pop.density.SCCS1130, pop.density.SCCS1130 > 2)
 bigpop$pop.density <- 'high'
 
 # concatenate into new data frame
@@ -151,13 +151,13 @@ fully sedentary state.
 sedentism.SCCS150 <- read.sccs.variable('SCCS150')
 
 # make a subframe with all records that are not truly sedentary (i.e. anything
-# below 5), and assign these the string value 'impermanent'
-sedentism.SCCS150.nomadic <- filter(sedentism.SCCS150, SCCS150 < 5)
+# below 3), and assign these the string value 'impermanent'
+sedentism.SCCS150.nomadic <- filter(sedentism.SCCS150, SCCS150 < 3)
 sedentism.SCCS150.nomadic$SCCS150 <- "impermanent"
 
 # make a subframe with only those records that are truly sedentary (i.e. value
-# is 5), and assign these the string value 'sedentary'
-sedentism.SCCS150.sedentary <- filter(sedentism.SCCS150, SCCS150 == 5)
+# is > 2), and assign these the string value 'sedentary'
+sedentism.SCCS150.sedentary <- filter(sedentism.SCCS150, SCCS150 > 2)
 sedentism.SCCS150.sedentary$SCCS150 <- "sedentary"
 
 # concatenate the subframes into a new frame. Don't turn strings into factors
@@ -187,7 +187,7 @@ stratification. We download the following data:
 - Scale 10 - Social Stratification [SCCS158](https://d-place.org/parameters/SCCS158),
   which is ordinal and has the following levels:
   1. Egalitarian (n=65), `egalitarian`
-  2. Hereditary slavery	(n=52), `egalitarian`
+  2. Hereditary slavery	(n=52), `stratified`
   3. 2 social classes, no castes/slavery (n=19), `stratified`
   4. 2 social classes, castes/slavery (n=20), `stratified`
   5. 3 social classes or castes, w/ or w/out slavery (n=30), `stratified`
@@ -199,7 +199,7 @@ stratification.SCCS158 <- read.sccs.variable('SCCS158')
 # and assign these the string (i.e. factor) value 'egalitarian'
 stratification.SCCS158.egalitarian <- filter(
   stratification.SCCS158,
-  SCCS158 < 3
+  SCCS158 < 2
 )
 stratification.SCCS158.egalitarian$SCCS158 <- "egalitarian"
 
@@ -207,7 +207,7 @@ stratification.SCCS158.egalitarian$SCCS158 <- "egalitarian"
 # and assign these the string (i.e. factor) value 'stratified'
 stratification.SCCS158.stratified <- filter(
   stratification.SCCS158,
-  SCCS158 > 2
+  SCCS158 > 1
 )
 stratification.SCCS158.stratified$SCCS158 <- "stratified"
 
@@ -289,9 +289,9 @@ summarized.df <- as.data.frame(summarized.matrix)
 summarized.df$language_glottocode <- row.names(summarized.df)
 
 # filter on steppe/pasture
-steppe <- filter(summarized.df, cluster7 == 1 | cluster26 == 1)
+steppe <- filter(summarized.df, cluster7 == 1)
 steppe$clusters <- 'steppe'
-pasture <- filter(summarized.df, cluster5 == 1 | cluster2 == 1 | cluster14 == 1)
+pasture <- filter(summarized.df, cluster5 == 1)
 pasture$clusters <- 'pasture'
 filtered <- data.frame(
   language_glottocode = c(
