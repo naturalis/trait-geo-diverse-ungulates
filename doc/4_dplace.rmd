@@ -199,7 +199,7 @@ stratification.SCCS158 <- read.sccs.variable('SCCS158')
 # and assign these the string (i.e. factor) value 'egalitarian'
 stratification.SCCS158.egalitarian <- filter(
   stratification.SCCS158,
-  SCCS158 < 2
+  SCCS158 < 3
 )
 stratification.SCCS158.egalitarian$SCCS158 <- "egalitarian"
 
@@ -207,7 +207,7 @@ stratification.SCCS158.egalitarian$SCCS158 <- "egalitarian"
 # and assign these the string (i.e. factor) value 'stratified'
 stratification.SCCS158.stratified <- filter(
   stratification.SCCS158,
-  SCCS158 > 1
+  SCCS158 > 2
 )
 stratification.SCCS158.stratified$SCCS158 <- "stratified"
 
@@ -292,8 +292,7 @@ summarized.df$language_glottocode <- row.names(summarized.df)
 steppe <- filter(filter(summarized.df, cluster7 == 1 | cluster26 == 1),
                  cluster5 == 0 & cluster2 == 0 & cluster14 == 0)
 steppe$clusters <- 'steppe'
-pasture <- filter(filter(summarized.df, cluster5 == 1 | cluster2 == 1 | cluster14 == 1),
-                  cluster7 == 0 & cluster26 == 0)
+pasture <- filter(summarized.df, cluster5 == 1 | cluster2 == 1 | cluster14 == 1)
 pasture$clusters <- 'pasture'
 filtered <- data.frame(
   language_glottocode = c(
