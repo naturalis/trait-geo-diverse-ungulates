@@ -454,6 +454,7 @@ realms<- spTransform(realms, CRS("+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,
 plot(realms)
 
 for (i in 1:length(list_species_model_high_accuracy)) {
+  #length(list_species_model_high_accuracy)
   # file name: load if exists, create otherwise
   valid.model.prediction <- sprintf("%s/results/per_species/%s/valid_maxent_prediction.rda", REPO_HOME, taxon.names[i])
   if (file.exists(valid.model.prediction)) {
@@ -509,7 +510,7 @@ for (i in 1:length(list_species_model_high_accuracy)) {
   }
 }
 
-names(prediction_rasters) <- names(taxon.names)
+names(prediction_rasters) <- taxon.names
 
 ```
 
@@ -556,24 +557,30 @@ for ( i in 1:length(taxa)) {
     taxa_remove<- gsub( "_", " ", name)
     
     template<- 
-      '# {{taxa_name}} 
-    ![](image_taxa.png) 
-    ## Distribution of occurence points 
-    The following map shows the distribution of the filtered occurence points for {{taxa_name}} used in the Maxent model. 
-    ![](occurrences.png)
+'# {{taxa_name}} 
+
+![](image_taxa.png) 
+
+## Distribution of occurence points 
+The following map shows the distribution of the filtered occurence points for {{taxa_name}} used in the Maxent model. 
+
+![](occurrences.png)
     
-    ## Variable importance 
-    The variable importance graph shows the relative importance of the abiotic raster layers in the  Maxent model for {{taxa_name}}. 
-    ![](valid_maxent_variable_importance.png)
+## Variable importance 
+The variable importance graph shows the relative importance of the abiotic raster layers in the  Maxent model for {{taxa_name}}. 
+
+![](valid_maxent_variable_importance.png)
     
-    ## Response curve 
-    The response curve graphs show the response of the Maxent model for {{taxa_name}} to different values in the abiotic raster layers. 
-    ![](valid_maxent_response_curve.png)
+## Response curve 
+The response curve graphs show the response of the Maxent model for {{taxa_name}} to different values in the abiotic raster layers. 
+
+![](valid_maxent_response_curve.png)
     
-    ## prediction map 
-    The first map shows the predicted suitable areas on earth based on the niche preferences for {{taxa_name}} calculated in the Maxent model. The second map shows the suitable area map with the original occurence points. 
-    ![](prediction_map.png)
-    ![](prediction_occurence_map.png)
+## prediction map 
+The first map shows the predicted suitable areas on earth based on the niche preferences for {{taxa_name}} calculated in the Maxent model. The second map shows the suitable area map with the original occurence points.
+
+![](prediction_map.png)
+![](prediction_occurence_map.png)
     '
     data <- list( taxa_name = taxa_remove)
     
