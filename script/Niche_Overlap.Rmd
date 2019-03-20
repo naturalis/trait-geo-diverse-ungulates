@@ -39,6 +39,7 @@ library(ecospat, quietly = T)
 library(phytools, quietly = T)
 library(rphylopic, quietly = T)
 library(whisker, quietly = T)
+library(rgdal, quietly=T)
 
 # our local code. the goal is that this will eventually be properly portable code that lives
 # inside the ./R folder of the repository
@@ -173,7 +174,6 @@ Below, the raw occurrence data are plotted on a map, which goes to `/results/per
 ```{r plot_points}
 data(wrld_simpl)
 for (i in 1:length(taxa)) {
-
   # construct the name of the occurrences file for the current taxon
   taxon <- taxa[i]
   occ.map.file <- sprintf("%s/results/per_species/%s/occurrences.png", REPO_HOME, taxon)
@@ -195,10 +195,10 @@ for (i in 1:length(taxa)) {
       axes = TRUE,
       xlim = c(min(lon) - 5, max(lon) + 5),
       ylim = c(min(lat) - 5, max(lat) + 5),
-      col = "grey",
+      col = "gray93",
       main = sprintf("Filtered occurrences for %s", taxon_name)
     )
-    points(lon, lat, col = "orange", pch = 20, cex = 0.75)
+    points(lon, lat, col = "red", pch = 20, cex = 0.75)
     box()
     dev.off()
   }
@@ -317,7 +317,7 @@ for (i in c(1:134, 136:150, 152:154)) {
     modelenvironment <- species_model[[2]]
     polygonextent<- species_model[[4]]
 
-    AUCvalues<- nullModel_adjusted(visited_areas, modelenvironment, polygonextent, occurence_samples, rep = 100)
+    AUCvalues<- nullModel_without_spatial(visited_areas, modelenvironment, polygonextent, occurence_samples, rep = 100)
     
     auc <- sort(unlist(AUCvalues), decreasing = FALSE)
     # select 95th number in the list 
@@ -449,8 +449,12 @@ files for the models with a high prediction accuracy.
 # combine all prediction rasters, either by doing the projection or by reading from a file
 prediction_rasters <- stack()
 taxon.names <- names(list_species_model_high_accuracy)
-for (i in 1:length(list_species_model_high_accuracy)) {
+realms<- readOGR(paste(REPO_HOME, "/data/GIS/Realms/newRealms.shp", sep = ""))
+realms<- spTransform(realms, CRS("+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs"))
+plot(realms)
 
+for (i in 1:length(list_species_model_high_accuracy)) {
+  #length(list_species_model_high_accuracy)
   # file name: load if exists, create otherwise
   valid.model.prediction <- sprintf("%s/results/per_species/%s/valid_maxent_prediction.rda", REPO_HOME, taxon.names[i])
   if (file.exists(valid.model.prediction)) {
@@ -468,20 +472,46 @@ for (i in 1:length(list_species_model_high_accuracy)) {
     # select non correlated layers from model environment in the world environment
     noncorrelated <- names(open_species_model@presence)
     subsetworldEnv <- subset(currentEnv, noncorrelated)
-    
-    # create an extent to select the limitations of the predictions 
-    
 
     # make projection of the whole earth based on the maxent SDM
     species.pred <- dismo::predict(open_species_model, subsetworldEnv)
+    
+    # limit the predictions to zoogeographic regions (Realms)
+    occurence.csv <- sprintf("%s/data/filtered/%s.csv", REPO_HOME, taxon.names[i])
+    occ <- read.csv(occurence.csv, header = T)
+    bindlonglat <- as.data.frame(cbind(occ[, c("decimal_longitude", "decimal_latitude")]))
+    points <- bindlonglat
+    points$decimal_longitude <- as.numeric(as.character(points$decimal_longitude))
+    points$decimal_latitude <- as.numeric(as.character(points$decimal_latitude))
+    coordinates(points) <- ~ decimal_longitude + decimal_latitude
+    proj4string(points) <- CRS("+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs")
+    
+    polys.sub <- realms[!is.na(sp::over(realms, sp::geometry(points))), ] 
+    polys.sub <- gUnaryUnion(polys.sub)
+
+    # set all the values outside the polygon to 0
+    maskedprediction<- mask(species.pred, polys.sub, updatevalue = 0, updateNA=TRUE)
+    
+    # remove the 10% lowest prediction values under the occurence points 
+    
+    projection.values<-extract(maskedprediction, points, method="simple")
+
+    sort.projection.values <- sort(unlist(projection.values), decreasing = FALSE)
+
+    percentage.number<- round((0.1* nrow(occ)), digits = 0)
+    
+    threshold.value<- sort.projection.values[percentage.number]
+    
+    maskedprediction[maskedprediction < threshold.value] <- 0
 
     # save file, stack projection contents
-    save(species.pred, file = valid.model.prediction)
-    prediction_rasters <- stack(prediction_rasters, species.pred)
+    save(maskedprediction, file = valid.model.prediction)
+    prediction_rasters <- stack(prediction_rasters, maskedprediction)
   }
 }
 
-names(prediction_rasters) <- names(list_species_model_high_accuracy)
+names(prediction_rasters) <- taxon.names
+
 ```
 
 Now that we have the prediction rasters we can write them to files:
@@ -527,24 +557,30 @@ for ( i in 1:length(taxa)) {
     taxa_remove<- gsub( "_", " ", name)
     
     template<- 
-      '# {{taxa_name}} 
-    ![](image_taxa.png) 
-    ## Distribution of occurence points 
-    The following map shows the distribution of the filtered occurence points for {{taxa_name}} used in the Maxent model. 
-    ![](occurrences.png)
+'# {{taxa_name}} 
+
+![](image_taxa.png) 
+
+## Distribution of occurence points 
+The following map shows the distribution of the filtered occurence points for {{taxa_name}} used in the Maxent model. 
+
+![](occurrences.png)
     
-    ## Variable importance 
-    The variable importance graph shows the relative importance of the abiotic raster layers in the  Maxent model for {{taxa_name}}. 
-    ![](valid_maxent_variable_importance.png)
+## Variable importance 
+The variable importance graph shows the relative importance of the abiotic raster layers in the  Maxent model for {{taxa_name}}. 
+
+![](valid_maxent_variable_importance.png)
     
-    ## Response curve 
-    The response curve graphs show the response of the Maxent model for {{taxa_name}} to different values in the abiotic raster layers. 
-    ![](valid_maxent_response_curve.png)
+## Response curve 
+The response curve graphs show the response of the Maxent model for {{taxa_name}} to different values in the abiotic raster layers. 
+
+![](valid_maxent_response_curve.png)
     
-    ## prediction map 
-    The first map shows the predicted suitable areas on earth based on the niche preferences for {{taxa_name}} calculated in the Maxent model. The second map shows the suitable area map with the original occurence points. 
-    ![](prediction_map.png)
-    ![](prediction_occurence_map.png)
+## prediction map 
+The first map shows the predicted suitable areas on earth based on the niche preferences for {{taxa_name}} calculated in the Maxent model. The second map shows the suitable area map with the original occurence points.
+
+![](prediction_map.png)
+![](prediction_occurence_map.png)
     '
     data <- list( taxa_name = taxa_remove)
     
