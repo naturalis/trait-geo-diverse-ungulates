@@ -494,7 +494,11 @@ subsistence <- as.integer(as.factor(joined.df$subsistence.SCCS833))-1
 names(subsistence) <- joined.df$language_glottocode
 habitat <- as.integer(joined.df$habitat)-1
 names(habitat) <- joined.df$language_glottocode
-pagel <- fitPagel(tree,subsistence,habitat)
+sedentism <- as.integer(joined.df$sedentism.SCCS150)-1
+names(sedentism) <- joined.df$language_glottocode
+stratification <- as.integer(joined.df$stratification.SCCS158)-1
+names(stratification) <- joined.df$language_glottocode
+pagel <- fitPagel(tree,habitat,stratification)
 pagel
 plot(pagel)
 ```
