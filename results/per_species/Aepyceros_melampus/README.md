@@ -1,11 +1,15 @@
 # Aepyceros melampus 
+
 ![](image_taxa.png) 
+
 ## Distribution of occurence points 
 The following map shows the distribution of the filtered occurence points for Aepyceros melampus used in the Maxent model. 
+
 ![](occurrences.png)
     
 ## Variable importance 
 The variable importance graph shows the relative importance of the abiotic raster layers in the  Maxent model for Aepyceros melampus. 
+
 ![](valid_maxent_variable_importance.png)
     
 ## Response curve 
@@ -14,7 +18,8 @@ The response curve graphs show the response of the Maxent model for Aepyceros me
 ![](valid_maxent_response_curve.png)
     
 ## prediction map 
-The first map shows the predicted suitable areas on earth based on the niche preferences for Aepyceros melampus calculated in the Maxent model. The second map shows the suitable area map with the original occurence points. 
+The first map shows the predicted suitable areas on earth based on the niche preferences for Aepyceros melampus calculated in the Maxent model. The second map shows the suitable area map with the original occurence points.
+
 ![](prediction_map.png)
 ![](prediction_occurence_map.png)
     
