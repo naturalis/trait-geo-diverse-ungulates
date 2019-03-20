@@ -10,6 +10,7 @@ The variable importance graph shows the relative importance of the abiotic raste
     
 ## Response curve 
 The response curve graphs show the response of the Maxent model for Aepyceros melampus to different values in the abiotic raster layers. 
+
 ![](valid_maxent_response_curve.png)
     
 ## prediction map 
