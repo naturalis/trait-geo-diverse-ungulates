@@ -165,19 +165,6 @@ subsistence.SCCS833  <- read.sccs.variable('SCCS833')
 subsistence.SCCS1716 <- read.sccs.variable('SCCS1716')
 subsistence.SCCS246  <- read.sccs.variable('SCCS246')
 
-# extract pastoralism
-subsistence.SCCS820.pastoralism  <- filter(subsistence.SCCS820, SCCS820 == 5)
-subsistence.SCCS833.pastoralism  <- filter(subsistence.SCCS833, SCCS833 == 4)
-#subsistence.EA042.pastoralism    <- filter(subsistence.EA042, EA042 == 4)
-subsistence.SCCS1716.pastoralism <- filter(subsistence.SCCS1716, SCCS1716 == 3)
-subsistence.SCCS246.pastoralism  <- filter(subsistence.SCCS246, SCCS246 == 4)
-
-subsistence.SCCS820.pastoralism$subsistence.SCCS820   <- 'pastoralism'
-subsistence.SCCS833.pastoralism$subsistence.SCCS833   <- 'pastoralism'
-#subsistence.EA042.pastoralism$subsistence.EA042       <- 'pastoralism'
-subsistence.SCCS1716.pastoralism$subsistence.SCCS1716 <- 'pastoralism'
-subsistence.SCCS246.pastoralism$subsistence.SCCS246   <- 'pastoralism'
-
 # extract agriculturalism
 subsistence.SCCS820.agriculturalism  <- filter(subsistence.SCCS820, SCCS820 == 4 | SCCS820 == 6 | SCCS820 == 7 )
 subsistence.SCCS833.agriculturalism  <- filter(subsistence.SCCS833, SCCS833 < 4)
@@ -185,11 +172,25 @@ subsistence.SCCS833.agriculturalism  <- filter(subsistence.SCCS833, SCCS833 < 4)
 subsistence.SCCS1716.agriculturalism <- filter(subsistence.SCCS1716, SCCS1716 < 3)
 subsistence.SCCS246.agriculturalism  <- filter(subsistence.SCCS246, SCCS246 > 4 & SCCS246 < 8 )
 
-subsistence.SCCS820.agriculturalism$subsistence.SCCS820   <- 'agriculturalism'
-subsistence.SCCS833.agriculturalism$subsistence.SCCS833   <- 'agriculturalism'
-#subsistence.EA042.agriculturalism$subsistence.EA042       <- 'agriculturalism'
-subsistence.SCCS1716.agriculturalism$subsistence.SCCS1716 <- 'agriculturalism'
-subsistence.SCCS246.agriculturalism$subsistence.SCCS246   <- 'agriculturalism'
+subsistence.SCCS820.agriculturalism$subsistence.SCCS820   <- 'agriculture'
+subsistence.SCCS833.agriculturalism$subsistence.SCCS833   <- 'agriculture'
+#subsistence.EA042.agriculturalism$subsistence.EA042       <- 'agriculture'
+subsistence.SCCS1716.agriculturalism$subsistence.SCCS1716 <- 'agriculture'
+subsistence.SCCS246.agriculturalism$subsistence.SCCS246   <- 'agriculture'
+
+# extract pastoralism
+subsistence.SCCS820.pastoralism  <- filter(subsistence.SCCS820, SCCS820 != 4 & SCCS820 != 6 & SCCS820 != 7 )
+subsistence.SCCS833.pastoralism  <- filter(subsistence.SCCS833, SCCS833 > 3 )
+#subsistence.EA042.pastoralism    <- filter(subsistence.EA042, EA042 == 4)
+subsistence.SCCS1716.pastoralism <- filter(subsistence.SCCS1716, SCCS1716 > 2)
+subsistence.SCCS246.pastoralism  <- filter(subsistence.SCCS246, SCCS246 < 5)
+
+subsistence.SCCS820.pastoralism$subsistence.SCCS820   <- 'other'
+subsistence.SCCS833.pastoralism$subsistence.SCCS833   <- 'other'
+#subsistence.EA042.pastoralism$subsistence.EA042       <- 'other'
+subsistence.SCCS1716.pastoralism$subsistence.SCCS1716 <- 'other'
+subsistence.SCCS246.pastoralism$subsistence.SCCS246   <- 'other'
+
 
 # merge
 subsistence.SCCS820  <- frameize(subsistence.SCCS820.pastoralism,  subsistence.SCCS820.agriculturalism,  'subsistence.SCCS820')
@@ -485,16 +486,15 @@ joined.df <- joined.df[societies,]
 
 plot( tree, show.tip.label = F, use.edge.length = F, type = "fan" )
 ```
+### fitPagel
 
-### corDISC
 
-```{r cordisc}
-data <- select(joined.df,language_glottocode,habitat,stratification.SCCS158,sedentism.SCCS150)
-data$language_glottocode <- as.factor(data$language_glottocode)
-data$habitat <- as.integer(data$habitat)-1
-data$stratification.SCCS158 <- as.integer(data$stratification.SCCS158)-1
-data$sedentism.SCCS150 <- as.integer(data$sedentism.SCCS150)-1
-cd <- corDISC(tree, data, ntraits = 2, model = "ARD")
-"habitat (0=pasture, 1=steppe), stratification (0=egalitarian, 1=stratified), sedentism (0=impermanent, 1=sedentary)"
-cd
+```{r fitpagel}
+subsistence <- as.integer(as.factor(joined.df$subsistence.SCCS833))-1
+names(subsistence) <- joined.df$language_glottocode
+habitat <- as.integer(joined.df$habitat)-1
+names(habitat) <- joined.df$language_glottocode
+pagel <- fitPagel(tree,subsistence,habitat)
+pagel
+plot(pagel)
 ```
