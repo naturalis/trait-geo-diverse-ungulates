@@ -12,6 +12,7 @@ library(dplyr)
 library(ape)
 library(geiger)
 library(circlize)
+library(corHMM)
 
 # XXX set working directory to script source first
 REPO_HOME <- paste(getwd(), "/../", sep = "")
@@ -88,6 +89,129 @@ for ( sc in names(sccs.code) ) {
 }
 rm(sc) # clean
 ```
+
+### Subsistence (SCCS)
+
+We are going to load data on the main mode of subsistence (pastoralism versus
+agriculture). We will include the following data sets:
+
+- Principal Subsistence Category [SCCS820](https://d-place.org/parameters/SCCS820)
+	1. Gathering (n=10)
+	2. Hunting (n=16)
+	3. Fishing (n=23)
+	4. Incipient Agriculture (n=18)
+	5. Domestic Animals (n=16)
+	6. Extensive Agriculture (n=46)
+	7. Intensive Agriculture (n=55)
+	8. Trade (n=2)
+- Subsistence Economy: Dominant Mode [SCCS833](https://d-place.org/parameters/SCCS833)
+	1. Advanced Agriculture (n=56)
+	2. Horticulture (n=18)
+	3. Simple or Shifting Cultivation (n=51)
+	4. Domestic Animals (n=15)
+	5. Exchange (n=1)
+	6. Fishing (n=17)
+	7. Gathering (n=13)
+	8. Hunting (n=15)
+- Subsistence economy: dominant activity [EA042](https://d-place.org/parameters/EA042)
+	1. Gathering (n=103)
+	2. Fishing (n=121)
+	3. Hunting (n=77)
+	4. Pastoralism (n=77)
+	5. Casual agriculture (n=0)
+	6. Extensive agriculture (n=477)
+	7. Intensive agriculture (n=282)
+	8. Two or more sources (n=67)
+	9. Agriculture, type unknown (n=86)
+- Primary Source of Subsistence [SCCS1716](https://d-place.org/parameters/SCCS1716)
+	1. intensive agriculture (n=26)
+	2. extensive agriculture (n=37)
+	3. animal husbandry (n=9)
+	4. fishing (n=11)
+	5. hunting (n=9)
+	6. gathering (n=8)
+	7. trade (n=0)
+	8. wage labor (n=1)
+- Subsistence economy: dominant activity [Note, identical to EA042] [SCCS246](https://d-place.org/parameters/SCCS246)
+	1. Gathering (n=15)
+	2. Fishing (n=19)
+	3. Hunting (n=12)
+	4. Pastoralism (n=16)
+	5. Casual agriculture (n=0)
+	6. Extensive agriculture (n=60)
+	7. Intensive agriculture (n=57)
+	8. Two or more sources (n=7)
+	9. Agriculture, type unknown (n=0)
+
+```{r subsistence}
+frameize <- function(frame1,frame2,predicate) {
+  result <- data.frame(
+    language_glottocode = c(
+      as.character(frame1$language_glottocode),
+      as.character(frame2$language_glottocode)
+    )
+  )
+  result[[predicate]] <- c(
+    frame1[[predicate]],
+    frame2[[predicate]]
+  )
+  return(result)
+}
+
+# read csv files
+subsistence.SCCS820  <- read.sccs.variable('SCCS820')
+subsistence.SCCS833  <- read.sccs.variable('SCCS833')
+#subsistence.EA042    <- read.sccs.variable('EA042')
+subsistence.SCCS1716 <- read.sccs.variable('SCCS1716')
+subsistence.SCCS246  <- read.sccs.variable('SCCS246')
+
+# extract pastoralism
+subsistence.SCCS820.pastoralism  <- filter(subsistence.SCCS820, SCCS820 == 5)
+subsistence.SCCS833.pastoralism  <- filter(subsistence.SCCS833, SCCS833 == 4)
+#subsistence.EA042.pastoralism    <- filter(subsistence.EA042, EA042 == 4)
+subsistence.SCCS1716.pastoralism <- filter(subsistence.SCCS1716, SCCS1716 == 3)
+subsistence.SCCS246.pastoralism  <- filter(subsistence.SCCS246, SCCS246 == 4)
+
+subsistence.SCCS820.pastoralism$subsistence.SCCS820   <- 'pastoralism'
+subsistence.SCCS833.pastoralism$subsistence.SCCS833   <- 'pastoralism'
+#subsistence.EA042.pastoralism$subsistence.EA042       <- 'pastoralism'
+subsistence.SCCS1716.pastoralism$subsistence.SCCS1716 <- 'pastoralism'
+subsistence.SCCS246.pastoralism$subsistence.SCCS246   <- 'pastoralism'
+
+# extract agriculturalism
+subsistence.SCCS820.agriculturalism  <- filter(subsistence.SCCS820, SCCS820 == 4 | SCCS820 == 6 | SCCS820 == 7 )
+subsistence.SCCS833.agriculturalism  <- filter(subsistence.SCCS833, SCCS833 < 4)
+#subsistence.EA042.agriculturalism    <- filter(subsistence.EA042, EA042 > 4 & EA042 < 8)
+subsistence.SCCS1716.agriculturalism <- filter(subsistence.SCCS1716, SCCS1716 < 3)
+subsistence.SCCS246.agriculturalism  <- filter(subsistence.SCCS246, SCCS246 > 4 & SCCS246 < 8 )
+
+subsistence.SCCS820.agriculturalism$subsistence.SCCS820   <- 'agriculturalism'
+subsistence.SCCS833.agriculturalism$subsistence.SCCS833   <- 'agriculturalism'
+#subsistence.EA042.agriculturalism$subsistence.EA042       <- 'agriculturalism'
+subsistence.SCCS1716.agriculturalism$subsistence.SCCS1716 <- 'agriculturalism'
+subsistence.SCCS246.agriculturalism$subsistence.SCCS246   <- 'agriculturalism'
+
+# merge
+subsistence.SCCS820  <- frameize(subsistence.SCCS820.pastoralism,  subsistence.SCCS820.agriculturalism,  'subsistence.SCCS820')
+subsistence.SCCS833  <- frameize(subsistence.SCCS833.pastoralism,  subsistence.SCCS833.agriculturalism,  'subsistence.SCCS833')
+#subsistence.EA042    <- frameize(subsistence.EA042.pastoralism,    subsistence.EA042.agriculturalism,    'subsistence.EA042')
+subsistence.SCCS1716 <- frameize(subsistence.SCCS1716.pastoralism, subsistence.SCCS1716.agriculturalism, 'subsistence.SCCS1716')
+subsistence.SCCS246  <- frameize(subsistence.SCCS246.pastoralism,  subsistence.SCCS246.agriculturalism,  'subsistence.SCCS246')
+rm(
+  subsistence.SCCS820.pastoralism,
+  subsistence.SCCS820.agriculturalism,
+  subsistence.SCCS833.pastoralism,
+  subsistence.SCCS833.agriculturalism,
+#  subsistence.EA042.pastoralism,
+#  subsistence.EA042.agriculturalism,
+  subsistence.SCCS1716.pastoralism,
+  subsistence.SCCS1716.agriculturalism,
+  subsistence.SCCS246.pastoralism,
+  subsistence.SCCS246.agriculturalism
+)
+
+```
+
 
 ### Demographics (SCCS)
 
@@ -226,8 +350,12 @@ stratification.SCCS158 <- data.frame(
 )
 
 # clean up namespace, free memory
-rm(stratification.SCCS158.egalitarian,stratification.SCCS158.stratified)
-plot(stratification.SCCS158$stratification.SCCS158, main = "Social stratification")
+rm(
+  stratification.SCCS158.egalitarian,
+  stratification.SCCS158.stratified
+)
+plot(stratification.SCCS158$stratification.SCCS158, main = "Social stratification [SCCS158]")
+
 ```
 
 ### Join data
@@ -238,6 +366,10 @@ We left-join the different data frames on the `language_glottocode` columns:
 # join data sets
 joined.df <- dplyr::left_join(pop.density.SCCS1130, sedentism.SCCS150, by=c('language_glottocode'))
 joined.df <- dplyr::left_join(joined.df, stratification.SCCS158, by=c('language_glottocode'))
+joined.df <- dplyr::left_join(joined.df, subsistence.SCCS1716, by=c('language_glottocode'))
+joined.df <- dplyr::left_join(joined.df, subsistence.SCCS246, by=c('language_glottocode'))
+joined.df <- dplyr::left_join(joined.df, subsistence.SCCS820, by=c('language_glottocode'))
+joined.df <- dplyr::left_join(joined.df, subsistence.SCCS833, by=c('language_glottocode'))
 
 # assign row names
 societies <- row.names(joined.df) <- joined.df$language_glottocode
@@ -314,8 +446,13 @@ joined.df <- select(
   pop.density.SCCS1130,
   sedentism.SCCS150,
   stratification.SCCS158,
+  subsistence.SCCS1716,
+  subsistence.SCCS246,
+  subsistence.SCCS820,
+  subsistence.SCCS833,
   habitat
 )
+rm(filtered,steppe,pasture,summarized.df,summarized.matrix,total,taxa,soc,cluster)
 plot(joined.df$habitat)
 ```
 
@@ -346,14 +483,18 @@ tree <- keep.tip(tree, societies)
 row.names(joined.df) <- joined.df$language_glottocode
 joined.df <- joined.df[societies,]
 
-plot( tree, show.tip.label = F )
+plot( tree, show.tip.label = F, use.edge.length = F, type = "fan" )
 ```
 
-### Do multistate analysis
+### corDISC
 
-```{r multistate}
-clusters <- joined.df$habitat
-names(clusters) <- joined.df$language_glottocode
-fitARD <- fitDiscrete(multi2di(tree),clusters,model="ARD")
-plot(fitARD)
+```{r cordisc}
+data <- select(joined.df,language_glottocode,habitat,stratification.SCCS158,sedentism.SCCS150)
+data$language_glottocode <- as.factor(data$language_glottocode)
+data$habitat <- as.integer(data$habitat)-1
+data$stratification.SCCS158 <- as.integer(data$stratification.SCCS158)-1
+data$sedentism.SCCS150 <- as.integer(data$sedentism.SCCS150)-1
+cd <- corDISC(tree, data, ntraits = 2, model = "ARD")
+"habitat (0=pasture, 1=steppe), stratification (0=egalitarian, 1=stratified), sedentism (0=impermanent, 1=sedentary)"
+cd
 ```
