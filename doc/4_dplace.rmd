@@ -142,6 +142,12 @@ agriculture). We will include the following data sets:
 	7. Intensive agriculture (n=57)
 	8. Two or more sources (n=7)
 	9. Agriculture, type unknown (n=0)
+- Scale 3- Agriculture [SCCS151](https://d-place.org/parameters/SCCS151)
+	1. None (n=38)
+	2. 10% food supply (n=17)
+	3. 10 %; secondary (n=11)
+	4. Primary; not intensive (n=63)
+	5. Primary; intensive (n=57)
 
 ```{r subsistence}
 frameize <- function(frame1,frame2,predicate) {
@@ -164,6 +170,7 @@ subsistence.SCCS833  <- read.sccs.variable('SCCS833')
 #subsistence.EA042    <- read.sccs.variable('EA042')
 subsistence.SCCS1716 <- read.sccs.variable('SCCS1716')
 subsistence.SCCS246  <- read.sccs.variable('SCCS246')
+subsistence.SCCS151  <- read.sccs.variable('SCCS151')
 
 # extract agriculturalism
 subsistence.SCCS820.agriculturalism  <- filter(subsistence.SCCS820, SCCS820 == 4 | SCCS820 == 6 | SCCS820 == 7 )
@@ -171,12 +178,14 @@ subsistence.SCCS833.agriculturalism  <- filter(subsistence.SCCS833, SCCS833 < 4)
 #subsistence.EA042.agriculturalism    <- filter(subsistence.EA042, EA042 > 4 & EA042 < 8)
 subsistence.SCCS1716.agriculturalism <- filter(subsistence.SCCS1716, SCCS1716 < 3)
 subsistence.SCCS246.agriculturalism  <- filter(subsistence.SCCS246, SCCS246 > 4 & SCCS246 < 8 )
+subsistence.SCCS151.agriculturalism  <- filter(subsistence.SCCS151, SCCS151 > 3)
 
 subsistence.SCCS820.agriculturalism$subsistence.SCCS820   <- 'agriculture'
 subsistence.SCCS833.agriculturalism$subsistence.SCCS833   <- 'agriculture'
 #subsistence.EA042.agriculturalism$subsistence.EA042       <- 'agriculture'
 subsistence.SCCS1716.agriculturalism$subsistence.SCCS1716 <- 'agriculture'
 subsistence.SCCS246.agriculturalism$subsistence.SCCS246   <- 'agriculture'
+subsistence.SCCS151.agriculturalism$subsistence.SCCS151   <- 'agriculture'
 
 # extract pastoralism
 subsistence.SCCS820.pastoralism  <- filter(subsistence.SCCS820, SCCS820 != 4 & SCCS820 != 6 & SCCS820 != 7 )
@@ -184,12 +193,14 @@ subsistence.SCCS833.pastoralism  <- filter(subsistence.SCCS833, SCCS833 > 3 )
 #subsistence.EA042.pastoralism    <- filter(subsistence.EA042, EA042 == 4)
 subsistence.SCCS1716.pastoralism <- filter(subsistence.SCCS1716, SCCS1716 > 2)
 subsistence.SCCS246.pastoralism  <- filter(subsistence.SCCS246, SCCS246 < 5)
+subsistence.SCCS151.pastoralism  <- filter(subsistence.SCCS151, SCCS151 < 4)
 
 subsistence.SCCS820.pastoralism$subsistence.SCCS820   <- 'other'
 subsistence.SCCS833.pastoralism$subsistence.SCCS833   <- 'other'
 #subsistence.EA042.pastoralism$subsistence.EA042       <- 'other'
 subsistence.SCCS1716.pastoralism$subsistence.SCCS1716 <- 'other'
 subsistence.SCCS246.pastoralism$subsistence.SCCS246   <- 'other'
+subsistence.SCCS151.pastoralism$subsistence.SCCS151   <- 'other'
 
 
 # merge
@@ -198,6 +209,7 @@ subsistence.SCCS833  <- frameize(subsistence.SCCS833.pastoralism,  subsistence.S
 #subsistence.EA042    <- frameize(subsistence.EA042.pastoralism,    subsistence.EA042.agriculturalism,    'subsistence.EA042')
 subsistence.SCCS1716 <- frameize(subsistence.SCCS1716.pastoralism, subsistence.SCCS1716.agriculturalism, 'subsistence.SCCS1716')
 subsistence.SCCS246  <- frameize(subsistence.SCCS246.pastoralism,  subsistence.SCCS246.agriculturalism,  'subsistence.SCCS246')
+subsistence.SCCS151  <- frameize(subsistence.SCCS151.pastoralism,  subsistence.SCCS151.agriculturalism,  'subsistence.SCCS151')
 rm(
   subsistence.SCCS820.pastoralism,
   subsistence.SCCS820.agriculturalism,
@@ -208,7 +220,9 @@ rm(
   subsistence.SCCS1716.pastoralism,
   subsistence.SCCS1716.agriculturalism,
   subsistence.SCCS246.pastoralism,
-  subsistence.SCCS246.agriculturalism
+  subsistence.SCCS246.agriculturalism,
+  subsistence.SCCS151.pastoralism,  
+  subsistence.SCCS151.agriculturalism
 )
 
 ```
@@ -312,28 +326,22 @@ stratification. We download the following data:
 - Scale 10 - Social Stratification [SCCS158](https://d-place.org/parameters/SCCS158),
   which is ordinal and has the following levels:
   1. Egalitarian (n=65), `egalitarian`
-  2. Hereditary slavery	(n=52), `stratified`
+  2. Hereditary slavery	(n=52), `egalitarian`
   3. 2 social classes, no castes/slavery (n=19), `stratified`
   4. 2 social classes, castes/slavery (n=20), `stratified`
   5. 3 social classes or castes, w/ or w/out slavery (n=30), `stratified`
 
-```{r despotism}
+```{r stratification}
 stratification.SCCS158 <- read.sccs.variable('SCCS158')
 
 # make a subframe only with records that are truly egalitarian
 # and assign these the string (i.e. factor) value 'egalitarian'
-stratification.SCCS158.egalitarian <- filter(
-  stratification.SCCS158,
-  SCCS158 < 3
-)
+stratification.SCCS158.egalitarian <- filter( stratification.SCCS158, SCCS158 < 3 )
 stratification.SCCS158.egalitarian$SCCS158 <- "egalitarian"
 
 # make a subframe with all records that are not truly egalitarian (values 2..5),
 # and assign these the string (i.e. factor) value 'stratified'
-stratification.SCCS158.stratified <- filter(
-  stratification.SCCS158,
-  SCCS158 > 2
-)
+stratification.SCCS158.stratified <- filter( stratification.SCCS158, SCCS158 > 2 )
 stratification.SCCS158.stratified$SCCS158 <- "stratified"
 
 # concatenate the subframes into a new frame. Don't make factors here so that
@@ -355,6 +363,67 @@ rm(
   stratification.SCCS158.egalitarian,
   stratification.SCCS158.stratified
 )
+
+# same for SCCS1751
+stratification.SCCS1751 <- read.sccs.variable('SCCS1751')
+stratification.SCCS1751.egalitarian <- filter( stratification.SCCS1751, SCCS1751 < 3 )
+stratification.SCCS1751.egalitarian$SCCS1751 <- 'egalitarian'
+stratification.SCCS1751.stratified <- filter( stratification.SCCS1751, SCCS1751 > 2 )
+stratification.SCCS1751.stratified$SCCS1751 <- 'stratified'
+stratification.SCCS1751 <- data.frame(
+  language_glottocode = c(
+    as.character(stratification.SCCS1751.egalitarian$language_glottocode),
+    as.character(stratification.SCCS1751.stratified$language_glottocode)
+  ),
+  stratification.SCCS1751 = c(
+    stratification.SCCS1751.egalitarian$SCCS1751,
+    stratification.SCCS1751.stratified$SCCS1751
+  )
+)
+rm(stratification.SCCS1751.egalitarian,stratification.SCCS1751.stratified)
+
+# same for Social Stratification in the Local Community [SCCS710]
+stratification.SCCS710 <- read.sccs.variable('SCCS710')
+stratification.SCCS710.egalitarian <- filter( stratification.SCCS710, SCCS710 < 2 )
+stratification.SCCS710.egalitarian$SCCS710 <- 'egalitarian'
+stratification.SCCS710.stratified <- filter( stratification.SCCS710, SCCS710 > 1 )
+stratification.SCCS710.stratified$SCCS710 <- 'stratified'
+stratification.SCCS710 <- data.frame(
+  language_glottocode = c(
+    as.character(stratification.SCCS710.egalitarian$language_glottocode),
+    as.character(stratification.SCCS710.stratified$language_glottocode)
+  ),
+  stratification.SCCS710 = c(
+    stratification.SCCS710.egalitarian$SCCS710,
+    stratification.SCCS710.stratified$SCCS710
+  )
+)
+rm(stratification.SCCS710.egalitarian,stratification.SCCS710.stratified)
+
+# Class differentiation: primary [EA066]
+stratification.EA066 <- read_csv(sprintf('%s/data/d-place/EA066.csv',REPO_HOME))
+stratification.EA066 <- unique(stratification.EA066)
+stratification.EA066 <- select(left_join(animal.present.df,stratification.EA066),language_glottocode,code)
+stratification.EA066.egalitarian <- filter(stratification.EA066, code < 3)
+stratification.EA066.egalitarian$code <- 'egalitarian'
+stratification.EA066.egalitarian <- unique(stratification.EA066.egalitarian)
+stratification.EA066.stratified <- filter(stratification.EA066, code > 2)
+stratification.EA066.stratified$code <- 'stratified'
+stratification.EA066.stratified <- unique(stratification.EA066.stratified)
+stratification.EA066 <- data.frame(
+  language_glottocode = c(
+    as.character(stratification.EA066.egalitarian$language_glottocode),
+    as.character(stratification.EA066.stratified$language_glottocode)
+  ),
+  stratification.EA066 = c(
+    stratification.EA066.egalitarian$code,
+    stratification.EA066.stratified$code
+  )
+)
+stratification.EA066 <- filter(stratification.EA066, language_glottocode != 'boro1274' & language_glottocode != 'kiku1240')
+rm(stratification.EA066.egalitarian,stratification.EA066.stratified)
+
+# plot results
 plot(stratification.SCCS158$stratification.SCCS158, main = "Social stratification [SCCS158]")
 
 ```
@@ -367,10 +436,14 @@ We left-join the different data frames on the `language_glottocode` columns:
 # join data sets
 joined.df <- dplyr::left_join(pop.density.SCCS1130, sedentism.SCCS150, by=c('language_glottocode'))
 joined.df <- dplyr::left_join(joined.df, stratification.SCCS158, by=c('language_glottocode'))
+joined.df <- dplyr::left_join(joined.df, stratification.SCCS1751, by=c('language_glottocode'))
+joined.df <- dplyr::left_join(joined.df, stratification.SCCS710, by=c('language_glottocode'))
+joined.df <- dplyr::left_join(joined.df, stratification.EA066, by=c('language_glottocode'))
 joined.df <- dplyr::left_join(joined.df, subsistence.SCCS1716, by=c('language_glottocode'))
 joined.df <- dplyr::left_join(joined.df, subsistence.SCCS246, by=c('language_glottocode'))
 joined.df <- dplyr::left_join(joined.df, subsistence.SCCS820, by=c('language_glottocode'))
 joined.df <- dplyr::left_join(joined.df, subsistence.SCCS833, by=c('language_glottocode'))
+joined.df <- dplyr::left_join(joined.df, subsistence.SCCS151, by=c('language_glottocode'))
 
 # assign row names
 societies <- row.names(joined.df) <- joined.df$language_glottocode
@@ -447,10 +520,14 @@ joined.df <- select(
   pop.density.SCCS1130,
   sedentism.SCCS150,
   stratification.SCCS158,
+  stratification.SCCS1751,
+  stratification.SCCS710,
+  stratification.EA066,
   subsistence.SCCS1716,
   subsistence.SCCS246,
   subsistence.SCCS820,
   subsistence.SCCS833,
+  subsistence.SCCS151,
   habitat
 )
 rm(filtered,steppe,pasture,summarized.df,summarized.matrix,total,taxa,soc,cluster)
@@ -498,7 +575,11 @@ sedentism <- as.integer(joined.df$sedentism.SCCS150)-1
 names(sedentism) <- joined.df$language_glottocode
 stratification <- as.integer(joined.df$stratification.SCCS158)-1
 names(stratification) <- joined.df$language_glottocode
-pagel <- fitPagel(tree,habitat,stratification)
+pop.density <- as.integer(joined.df$pop.density.SCCS1130)-1
+names(pop.density) <- joined.df$language_glottocode
+
+
+pagel <- fitPagel(tree,subsistence,stratification, dep.var = "y")
 pagel
 plot(pagel)
 ```
