@@ -13,6 +13,7 @@ library(raster, quietly = T)
 library(SDMTools, quietly = T)
 library(factoextra, quietly = T)
 library(ecospat, quietly = T)
+library(cluster, quietly = T)
 ```
 
 Set the location of the root directory of the git repository
@@ -81,6 +82,11 @@ The raster layers are transformed to a spatialpixelsdataframe
 ```{r taxa}
 rtoAsc<- as(currentEnv, "SpatialPixelsDataFrame")
 proj4string(rtoAsc) <- CRS("+proj=longlat +datum=WGS84")
+
+additional_datasets<-0
+currentEnv<- 0
+currentEnv1<-0
+dataset<-0
 ```
 
 
@@ -89,25 +95,25 @@ Transform the csv files with longitude and latitude values to a SpatialPointsDat
 ```{r SpatialPointDataFrame}
 # create an empty SpatialPointDataFrame to populate in the following loop
 
-spdf<-new("SpatialPointsDataFrame", coords = structure(numeric(0), .Dim = c(0L, 2L),                  .Dimnames = list(NULL, c("decimal_longitude", "decimal_latitude"))),  
+spdf<-new("SpatialPointsDataFrame", coords = structure(numeric(0), .Dim = c(0L, 2L),                  .Dimnames = list(NULL, c("x", "y"))),  
     bbox = structure(c(1, 1, 1, 1), .Dim = c(2L, 2L),                         
-                     .Dimnames = list(c("decimal_longitude", "decimal_latitude"),
+                     .Dimnames = list(c("x", "y"),
                                       c("min", "max"))),
     proj4string = new("CRS", projargs = "+proj=longlat +datum=WGS84")) 
 
 # populate the empty dataframe with longitude and latitude values from the taxa list
-
-for (i in c(1:134, 136:150, 152:154)){
+#c(1:134, 136:150, 152:154)
+for (i in c(101:134, 136:150, 152:154)){
   valid.model.prediction <- sprintf("%s/results/per_species/%s/valid_maxent_prediction.rda", REPO_HOME, taxa.names[i])
     env <- new.env()
     nm <- load(valid.model.prediction, envir = env)[[1]]
     raster<- env[[nm]]
     raster[raster == 0] <- NA
-    points<-rasterToPoints(raster, spatial=TRUE)
+    points<-rasterToPoints(raster, spatial=FALSE)
     points.number<- nrow(points)
     name<- paste(taxa.names[i])
 
-    spdf2<- SpatialPointsDataFrame(points, data.frame(species = rep(name, points.number)))
+    spdf2<- SpatialPointsDataFrame(points[,-3], data.frame(species = rep(name, points.number)))
   proj4string(spdf2) <- CRS("+proj=longlat +datum=WGS84")
   spdf<- rbind(spdf, spdf2)
 }
@@ -117,6 +123,7 @@ for (i in c(1:134, 136:150, 152:154)){
 Two dataframes are constructed:
 1. a dataframe (dfavail) with all the values in the SpatialPixelsDataframe i.e. the traits 
 2. a dataframe (dfused) with the amount of occurences per pixel  
+
 
 ```{r create_dataframes}
 cp <- count.points(spdf, rtoAsc)
@@ -142,13 +149,23 @@ dud<- dudi.pca(dfavail[2:42], scannf=FALSE)
 ```{r OMI_analysis}
 nic<- niche(dud, dfused, scannf=FALSE)
 
-# OMI values 
-OMI<-niche.param(nic)
-df_OMI<-as.data.frame(OMI)
-
 ## This dataframe shows the averages per species for the standardized environmental variables
 p<-nic$tab
 
+normalized.csv<- paste(REPO_HOME, "/Results/OMI/normalized_values_150.csv", sep="")
+write.csv(p, normalized.csv)
+```
 
+calculate gower's distance
+
+```{r gowers_distance}
+overlap.tree<- paste(REPO_HOME, "/Results/maxent/overlap_gower.tree", sep="")
+
+gow<- daisy(p, metric ="gower", stand=FALSE)
+tree <- nj(gow)
+write.tree(tree, file = overlap.tree)
 
 ```
+
+
+
