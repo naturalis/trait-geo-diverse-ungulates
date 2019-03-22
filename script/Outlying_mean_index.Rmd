@@ -82,11 +82,6 @@ The raster layers are transformed to a spatialpixelsdataframe
 ```{r taxa}
 rtoAsc<- as(currentEnv, "SpatialPixelsDataFrame")
 proj4string(rtoAsc) <- CRS("+proj=longlat +datum=WGS84")
-
-additional_datasets<-0
-currentEnv<- 0
-currentEnv1<-0
-dataset<-0
 ```
 
 
