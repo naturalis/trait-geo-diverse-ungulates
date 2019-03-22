@@ -141,4 +141,27 @@ nullModel_adjusted <- function (visited_areas, modelenvironment, polygonextent, 
   output<- e
 }
 
+# Null model function
+
+nullModel_without_spatial <- function (visited_areas, modelenvironment, polygonextent, occurence_samples, rep = 100)
+{
+  e <- list()
+  jk<-raster(modelenvironment, 1)
+  polygon<- rasterToPolygons(jk, dissolve=TRUE)
+  polygon <- gUnaryUnion(polygon)
+
+      for (i in 1:rep) {
+    
+        #plot(polygon)
+      random_points<- spsample(polygon, occurence_samples, type="random")
+      #plot(random_points, add=TRUE, col="red")
+      species_mod <- dismo::maxent(modelenvironment, random_points, args = c("noproduct", "nothreshold", "nohinge", "noextrapolate", "outputformat=logistic", "jackknife", "applyThresholdRule=10 percentile training presence",  "redoifexists"))
+      AUC<- species_mod@results[[5,1]]
+      e[i] <- AUC
+      }
+  
+  output<- e
+}
+
+
 
