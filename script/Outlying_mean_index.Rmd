@@ -147,25 +147,36 @@ nic<- niche(dud, dfused, scannf=FALSE)
 ## This dataframe shows the averages per species for the standardized environmental variables
 p<-nic$tab
 
-normalized.csv<- paste(REPO_HOME, "/Results/OMI/normalized_values_150.csv", sep="")
+normalized.csv<- paste(REPO_HOME, "/Results/OMI/normalized_values.csv", sep="")
 write.csv(p, normalized.csv)
 ```
 
 calculate gower's distance
 
 ```{r gowers_distance}
-p<- read.csv("C:/Users/elkeh/Documents/Stage_Naturalis/Scripts_R/trait-geo-diverse-ungulates/Results/OMI/normalized_values.csv")
+# load the normalized values from the github
+normalized.repo <- paste(REPO_HOME, 'results/OMI/normalized_values.csv', sep = '')
+normalized.values<- read.csv(normalized.repo)
 
 # set names of species to rownames
-tree.withouthnames<-p[,-1]
-rownames(tree.withouthnames) <- p[,1]
+tree.withouthnames<-normalized.values[,-1]
+rownames(tree.withouthnames) <- normalized.values[,1]
 
-overlap.tree<- paste(REPO_HOME, "/Results/maxent/overlap_gower.tree", sep="")
-
-gow<- daisy(tree.withouthnames, metric ="gower", stand=FALSE)
+# save gowers dataframe 
+overlap.csv<- paste(REPO_HOME, "/Results/maxent/gowers_overlap.csv", sep="")
+gow<- daisy(tree.withouthnames[2:42], metric ="gower", stand=FALSE)
 gow_df<- as.matrix(gow)
-tree <- nj(gow)
-write.tree(tree, file = overlap.tree)
+
+  if (!file.exists(overlap.csv)) {
+write.csv(gow_df, overlap.csv)
+  }
+
+# create tree
+# compute distances, i.e. inverse of overlap
+distances <- as.dist(gow_df)
+
+hclust.tree <- hclust(distances)
+tree <- as.phylo(hclust.tree)
 
 
 ```
@@ -179,7 +190,7 @@ Now we can assess whether domesticated Ungulates come from specific areas in nic
 dom.taxa <- c(
   "Bos_frontalis_gaurus", "Bos_grunniens_mutus", "Bos_javanicus", "Bos_taurus_primigenius",
   "Bubalus_bubalis_arnee", "Camelus_bactrianus", "Camelus_dromedarius", "Capra_hircus_aegagrus",
-  "Equus_przewalskii", "Equus_africanus", "Lama_glama_guanicoe", "Ovis_aries_orientalis",
+  "Equus_przewalskii", "Lama_glama_guanicoe", "Ovis_aries_orientalis",
   "Rangifer_tarandus", "Sus_scrofa", "Vicagna_vicugna"
 )
 
@@ -221,7 +232,7 @@ for (i in 1:sam.num) {
 
 
 {
-  clustering.pdf.file <- sprintf("%s/results/maxent/clustering.pdf", REPO_HOME)
+  clustering.pdf.file <- sprintf("%s/results/maxent/clustering3.pdf", REPO_HOME)
   pdf(file = clustering.pdf.file)
   h <- hist(
     sam.dist,
