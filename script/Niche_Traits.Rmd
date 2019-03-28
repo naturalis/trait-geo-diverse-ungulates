@@ -8,6 +8,7 @@ output: html_document
 Load the required libraries:
 
 ```{r load_libs}
+library(dismo, quietly=T)
 library(phytools, quietly = T)
 library(phylolm, quietly = T)
 library(dplyr, quietly = T)
@@ -29,8 +30,50 @@ taxa.names <- scan(paste(REPO_HOME, "/data/filtered/taxa.txt", sep = ""), sep = 
 Define the list of GIS layers, i.e. the traits:
 
 ```{r layers}
-data.layers <- get_layers(REPO_HOME, data.res = 10)
-layers.names <- names(data.layers)
+data.layers <- get_layers(REPO_HOME, data.res = 5)
+layers.names <- c(
+"bio1",
+"bio2",
+"bio3",
+"bio4",                                    
+"bio5",
+"bio6",
+"bio7",
+"bio8" ,                                   
+ "bio9",
+"bio10",                                   
+"bio11",                                    
+"bio12",                                   
+"bio13",
+"bio14",                                   
+"bio15",
+"bio16",
+"bio17",
+"bio18",                                   
+"bio19", 
+ "Aspect",
+  "BulkDensity",
+  "ClayPercentage",
+  "annualPET",
+  "aridityIndexThornthwaite",
+  "climaticMoistureIndex",
+  "continentality",
+  "embergerQ",
+  "growingDegDays0",
+  "growingDegDays5",
+  "maxTempColdest",
+  "minTempWarmest",
+  "monthCountByTemp10",
+  "PETColdestQuarter",
+  "PETDriestQuarter",
+  "PETseasonality",
+  "PETWarmestQuarter",
+  "PETWettestQuarter",
+  "thermicityIndex",
+  "OrganicCarbon",
+  "PhCaCL",
+  "slope")
+
 
 # coerce layers to SpatialPixelsDataFrame with WGS84 coordinate reference system
 #data.layers.spdf <- as(data.layers, "SpatialPixelsDataFrame")
@@ -52,7 +95,7 @@ traits.contributions <- data.frame(matrix(
 )
 
 # start iterating over taxa
-for ( i in 1:length(taxa.names) ) {
+for (i in c(1:134, 136:150, 152:154)) {
   
   # load maxent model if it exists
   maxent.model <- get_maxent_model( REPO_HOME, taxa.names[i] )
@@ -98,7 +141,7 @@ We are going to look at the trait means as predictor variables for domestication
 we create a data frame with domestication as a state:
 
 ```{r domestication}
-traits.means.file <- sprintf('%s/results/OMI/standardized.averages.csv', REPO_HOME)
+traits.means.file <- sprintf('%s/results/OMI/normalized_values.csv', REPO_HOME)
 
 # do the averaging if we haven't already
 if (!file.exists(traits.means.file) ) {
@@ -114,7 +157,7 @@ if (!file.exists(traits.means.file) ) {
   dom.taxa <- c(
     "Bos_frontalis_gaurus", "Bos_grunniens_mutus", "Bos_javanicus", "Bos_taurus_primigenius",
    	"Bubalus_bubalis_arnee", "Camelus_bactrianus", "Camelus_dromedarius", "Capra_hircus_aegagrus",
-   	"Equus_przewalskii", "Equus_africanus", "Lama_glama_guanicoe", "Ovis_aries_orientalis",
+   	"Equus_przewalskii", "Lama_glama_guanicoe", "Ovis_aries_orientalis",
    	"Rangifer_tarandus", "Sus_scrofa", "Vicagna_vicugna"
   )
   
@@ -167,7 +210,7 @@ And load a phylogenetic tree:
 
 ```{r phylo}
 # reconcile tree and traits
-tree.file <- sprintf('%s/data/ungulates.tree',REPO_HOME)
+tree.file <- sprintf('%s/data/phylogeny/ungulates.tree',REPO_HOME)
 tree <- read.tree(file = tree.file)
 tip.idx <- match(row.names(traits.means),tree$tip.label)
 tip.idx <- tip.idx[!is.na(tip.idx)]
@@ -175,7 +218,7 @@ tree <- keep.tip(tree,tip.idx)
 traits.means.tree <- traits.means[tree$tip.label,]
 
 # run variable selection
-pglm.formula.tmpl <- 'IsDomesticated ~ bio3 + bio14 + current_10arcmin_embergerQ + bio15 + bio2 + %s'
+pglm.formula.tmpl <- 'IsDomesticated ~ %s'
 aic <- vector(mode = "numeric", length = length(layers.names))
 lnl <- vector(mode = "numeric", length = length(layers.names))
 results <- data.frame( aic = aic, lnl = lnl, row.names = layers.names)
@@ -196,35 +239,52 @@ in the results df. We add that layer to the formula, and then iterate again to
 find the layer that minimizes the AIC in combination. If we keep doing this we
 find the combination that overall minimizes the AIC:
 
+first run
+
 - bio3  72.21593
 - bio3 + bio14 72.89198
 - *bio3 + bio14 + current_10arcmin_embergerQ 70.63874*
 - bio3 + bio14 + current_10arcmin_embergerQ + bio15 70.74186
 - bio3 + bio14 + current_10arcmin_embergerQ + bio15 + bio2  71.68594
 
+second run with new projections
+- maxTempColdest 67.68816
+- maxTempColdest + bio13 68.38021
+- maxTempColdest + bio13 + PETDriestQuarter 68.93208
+- maxTempColdest + bio13 + PETDriestQuarter + embergerQ 70.50978
+- maxTempColdest + bio13 + PETDriestQuarter + embergerQ + OrganicCarbon 71.74734
+- maxTempColdest + bio13 + PETDriestQuarter + embergerQ + OrganicCarbon + slope 73.46344
+- maxTempColdest + bio13 + PETDriestQuarter + embergerQ + OrganicCarbon + slope + bio14 75.68701
+
+
+
+
 ```{r plot3d}
-f <- IsDomesticated ~ bio3 + bio14 + current_10arcmin_embergerQ
+f <- IsDomesticated ~ maxTempColdest 
 r <- phyloglm(f, traits.means.tree, tree, method = "logistic_MPLE", btol = 30)
 summary(r)
 
 
-p3d <- as.matrix(dplyr::select(traits.means.tree,bio3,bio14,current_10arcmin_embergerQ))
+p3d <- as.matrix(dplyr::select(traits.means.tree, maxTempColdest, bio13, PETDriestQuarter, embergerQ, OrganicCarbon, slope, bio14))
 phylomorphospace3d(tree,p3d)
 ```
 
 Let's plot some of these values on the niche clustering dendrogram:
 
 ```{r trace}
-# load niche tree
-niche.tree.file <- sprintf('%s/results/maxent/dendrogram.tree',REPO_HOME)
-niche.tree <- read.tree(niche.tree.file)
+# load tree
+# CSV file location of all pairwise comparisons of niche overlap in Gowers's D
+overlap.file <- paste(REPO_HOME, '/results/maxent/phylo_tree_gower.tree', sep = '')
+niche.tree <- read.tree(overlap.file)
+
+
 dom.tip.idx <- match(dom.taxa,niche.tree$tip.label)
 dom.tip.idx <- dom.tip.idx[!is.na(dom.tip.idx)]
 
 # iterate over layers
 for ( i in 1:length(layers.names) ) {
   layer.name <- layers.names[i]
-  layer.file <- sprintf('%s/results/maxent/%s_contMap.pdf',REPO_HOME,layer.name)
+  layer.file <- sprintf('%s/probeersel/%s_contMap.pdf',REPO_HOME,layer.name)
   
   # write continuous mapping if not exists
   if (!file.exists(layer.file)) {
@@ -233,7 +293,7 @@ for ( i in 1:length(layers.names) ) {
     trait.vector <- traits.means[,layer.name]
     names(trait.vector) <- row.names(traits.means)
     trait.vector <- trait.vector[niche.tree$tip.label]
-  
+    
     # do the mapping
     cm <- contMap(
       niche.tree,
@@ -241,12 +301,13 @@ for ( i in 1:length(layers.names) ) {
       plot = F
     )
     
+    
     # write result
     pdf(file = layer.file)
     plot(
       cm,
       type = "fan",
-      fsize = 0.4,
+      fsize = 0.2,
       lwd = 2,
       outline = F,
       ftype = 'i'
