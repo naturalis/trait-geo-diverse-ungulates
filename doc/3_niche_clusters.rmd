@@ -29,7 +29,7 @@ dom.taxa <- c(
 ### Cluster by inverse niche overlap
 
 ```{r cluster}
-# CSV file location of all pairwise comparisons of niche overlap in Schoener's D
+# CSV file location of all pairwise comparisons of niche overlap in Gowers's D
 overlap.file <- paste(REPO_HOME, '/results/maxent/gowers_overlap.csv', sep = '')
 # load data
 overlap <- read.table(overlap.file, sep=",", header=TRUE, row.names = 1)
@@ -220,6 +220,5 @@ for ( i in 1:length(anc.acctran) ) {
     )
   }
 }
-
 
 ```
