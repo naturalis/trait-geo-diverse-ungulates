@@ -448,12 +448,13 @@ files for the models with a high prediction accuracy.
 ```{r plot_suitability}
 # combine all prediction rasters, either by doing the projection or by reading from a file
 prediction_rasters <- stack()
+taxon.names<- taxa
 taxon.names <- names(list_species_model_high_accuracy)
 realms<- readOGR(paste(REPO_HOME, "/data/GIS/Realms/newRealms.shp", sep = ""))
 realms<- spTransform(realms, CRS("+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs"))
 plot(realms)
 
-for (i in 1:length(list_species_model_high_accuracy)) {
+for (i in c(1:134, 136:150, 152:154)) {
   #length(list_species_model_high_accuracy)
   # file name: load if exists, create otherwise
   valid.model.prediction <- sprintf("%s/results/per_species/%s/valid_maxent_prediction.rda", REPO_HOME, taxon.names[i])
@@ -510,7 +511,7 @@ for (i in 1:length(list_species_model_high_accuracy)) {
   }
 }
 
-names(prediction_rasters) <- taxon.names
+names(prediction_rasters) <- taxon.names[c(1:134, 136:150, 152:154)]
 
 ```
 
