@@ -102,8 +102,8 @@ interaction research group at Sun Yat-sen University.
 # The location of the TIFF file with the stacked layers described directly above
 files.names <- list.files(paste(REPO_HOME, "/data/GIS/5_deg", sep = ""))
 
-# Turn the file names into layer names: strip the prefix, which might include
-# the resolution, and strip the file extension
+# Turn the file names into layer names: strip the prefix (which might include
+# the resolution) and strip the file extension
 gis.layers.names <- files.names
 gis.layers.names <- gsub('current_5arcmin_','',gis.layers.names)
 gis.layers.names <- gsub('.tif','',gis.layers.names)
@@ -180,7 +180,7 @@ for ( i in 1:length(taxa) ) {
 rm(csv.file,csv,i)
 ```
 
-Below, the raw occurrence data are plotted on a map, which goes to 
+Below the raw occurrences are plotted on a map for each species, which goes to 
 `/results/per_species/<taxon>/occurrences.png`:
 
 ```{r plot_points}
@@ -226,64 +226,26 @@ rm(i, wrld_simpl)
 Maxent: species distribution modeling
 -------------------------------------
 
-For this research we used the Maximum Entropy (MaxEnt) machine learning 
-algorithm version 3.3.3 to construct SDMs for all available species. Previous 
-research has demonstrated that the MaxEnt technique performs well when using 
-presence only data to estimate the relationships between environmental 
-predictors and the occurrences of species (Elith et al., 2011, Philips et al., 
-2006, Tognelli et al., 2009, Conolly et al., 2012). The widely-used machine 
-learning algorithm is very efficient in the complex handling of response and 
-predictor variable interactions and works well with little occurrence data 
-points (Elith et al., 2011, Elith et al., 2006, Wisz et al., 2008).
+For this study we use the `dismo::maxent` algorithm, which we invoke from the 
+`Maxent_function` as implemented in this [script](../script/MaxEnt_function.R).
 
-Before the construction of the maxent model the environmental rasters are 
-cropped to the extent of the occurrence points for a specific species + a buffer 
-around the total extent. Buffers that are too small can result in 
-underestimations of edge effects while buffers that are too large have the risk 
-of losing track of favorable environmental conditions due to noise. In this 
-research we set the extent of the buffer in proportion to the maximum distance 
-between two occurrence points, in this way we account for species with a wide 
-distribution and species with a small distribution. 
+In the following section we run the Maxent analysis for every taxon. To assess
+the validity of the model we follow the method of Raes and Ter Steege. This
+approach seeks to solve the problem that we do not have true absences (because
+absence of evidence is no evidence of absence). We do this by considering the 
+area within the buffer around the true occurrences of the focal species, and
+then sample from among the localities within that buffer where occurrences for
+other species have been recorded, but not for the focal species. This way we
+avoid sampling pseudo-absences in locations that are, for example, not 
+reachable, i.e. observer biases. 
 
-The cropped environmental data are checked for collinearity, because only 
-uncorrelated environmental raster layers can be used in the SDM (Dormann et al., 
-2013, Reas & Aguirre-Gutierrez, 2018). To remove correlated layers the 
-removeCollinearity function in the virtualspecies version 1.4-4 R package was 
-used (Leroy et al., 2016). Environmental variables with a Pearson’s R 
-correlation coefficients above 0.7 were grouped and one variable within this 
-group was randomly chosen, resulting in a raster stack with only uncorrelated 
-environmental rasters.
+By doing the resampling a sufficient number of times we can establish a 
+null distribution and assess whether the true AUC fits better than the AUCs 
+generated given pseudo-absences. If the true AUC fits better, it is written
+to a file `valid_maxent_model.rda`, otherwise to a file 
+`invalid_maxent_model.rda`.
 
-Afterwards the occurrence dataset is split in k-fold partitions: a training 
-dataset containing 75% of the data and a test dataset containing 25% of the 
-data. The maxent model is constructed using the maxent function from the dismo 
-R package (Hijmans & Elith, 2013). The function extracts abiotic environmental 
-data for the training occurrence locations and 1000 random sampled background 
-locations, resulting in a model maxent object that can be used to predict which 
-other locations are suitable.
-
-To assess the model performance we used the area under the receiver operating 
-curve (ROC), also known as the AUC, which is often used to estimate the ability 
-of models (Fourcade et al., 2014). The AUC was interpreted as the probability 
-that a randomly chosen “presence point”, the location of a species occurrence, 
-has a higher predicted probability of occurrence than a randomly chosen absence 
-point (Reas & Aguirre-Gutierrez, 2018). To compare a presence point to an 
-absence point 1000 absence points were randomly sampled within the study area. 
-The test occurence datasets were used to evaluate the model performance with 
-the evaluate function in the dismo R package (Hijmans & Elith, 2013). Only SDMs 
-with an AUC value higher than 0.7 were used in the further steps, since these 
-models are generally accepted as useful models (Swets et al., 2000).
-
-The script below loops through each species in the list, assesses the niche 
-model, and classifies it into one of two options:
-
-1. "valid"
-2. "invalid"
-
-The Maxent function used in this loop can be viewed and adapted in our Github 
-repository in this [script](../script/MaxEnt_function.R).
-
-```{r maxent1}
+```{r run_maxent}
 
 # first we created two empty lists, one list for models with a low accuracy (AUC 
 # below 0.7) and one list for models with a high accuracy (AUC above 0.7)
@@ -292,25 +254,24 @@ list_species_model_high_accuracy <- list()
 
 # length(taxa)
 # iterate over n species
-for (i in c(1:134, 136:150, 152:154)) {
+for (i in 1:length(taxa)) {
   name <- taxa[i]
-  valid.model.file <- sprintf("%s/results/per_species/%s/valid_maxent_model.rda", REPO_HOME, name)
-  invalid.model.file <- sprintf("%s/results/per_species/%s/invalid_maxent_model.rda", REPO_HOME, name)
+  valid.model.file <- sprintf(
+    "%s/results/per_species/%s/valid_maxent_model.rda", REPO_HOME, name)
+  invalid.model.file <- sprintf(
+    "%s/results/per_species/%s/invalid_maxent_model.rda", REPO_HOME, name)
 
   # check if we have the model cached
   if (!file.exists(valid.model.file) && !file.exists(invalid.model.file)) {
-    message(name)
-
-    # read occurrences
-    csv.file <- sprintf("%s/data/filtered/%s.csv", REPO_HOME, name)
-    species_occurence <- read.csv(csv.file, header = T)
+    taxon.name <- gsub('_', ' ', name)
+    taxon.occurrences <- dplyr::filter(occurrences.df, taxon_name == taxon.name)
 
     # Run maxent:
     # - clip environment to ± 9 degrees lat/long relative to the occurrences
     # - remove colinear layers
     # - prepare k-folds cross-validation partition
     # - run dismo::maxent()
-    species_model <- Maxent_function(species_occurence, currentEnv)
+    species_model <- Maxent_function(taxon.occurrences, gis.layers)
     # select species model from the output list
     spmod <- species_model[[1]] 
     # select trainingAUC
@@ -321,9 +282,7 @@ for (i in c(1:134, 136:150, 152:154)) {
     # - remove the species from the dataframe with all species 
     # - random sample x points from the dataframe 
     # - run the maxent model 100 times 
-    name_underscore <- gsub( "_", " ", name)
-    occurence_samples <- nrow(species_occurence)
-    visited_areas <- subset(empty.df, empty.df$taxon_name != name_underscore)
+    visited_areas <- dplyr::filter(occurrences.df, taxon_name != taxon.name)
     modelenvironment <- species_model[[2]]
     polygonextent <- species_model[[4]]
 
@@ -331,15 +290,16 @@ for (i in c(1:134, 136:150, 152:154)) {
       visited_areas, 
       modelenvironment, 
       polygonextent, 
-      occurence_samples, rep = 100
+      nrow(taxon.occurrences), 
+      rep = 100
     )
     
     auc <- sort(unlist(AUCvalues), decreasing = FALSE)
     # select 95th number in the list 
     confidence.interval<- auc[95]
     
-  
-    # populate two stacks, one with the models with low accuracy and one with high accuracy 
+    # populate two stacks, one with the models with 
+    # low accuracy and one with high accuracy 
     if (trainingAUC > confidence.interval) {
       model <- species_model[[1]]
       list_species_model_high_accuracy[[name]] <- model
@@ -364,15 +324,23 @@ for (i in c(1:134, 136:150, 152:154)) {
     list_species_model_low_accuracy[[name]] <- env[[nm]]
   }
 }
-
+rm(env,i,name,nm,invalid.model.file,valid.model.file)
 ```
 
-```{r list_aucvalues}
+Having constructed the models, we now record their scores in a spreadsheet:
+
+```{r write_auc_results}
 # combine two lists of valid and invalid models
-output_AUC_valid <- data.frame(matrix(ncol = 3, nrow = length(list_species_model_high_accuracy)))
+output_AUC_valid <- data.frame(
+  matrix(
+    ncol = 3, 
+    nrow = length(list_species_model_high_accuracy)
+  )
+)
 colnames(output_AUC_valid) <- c("taxon", "trainingAUC", "validation")
 AUC.csv <- paste(REPO_HOME, "/results/maxent/AUCvalues.csv", sep = "")
 
+# iterate over accurate models and add to data frame
 for (i in 1:length(list_species_model_high_accuracy)) {
   open_species_model <- list_species_model_high_accuracy[[i]]
   name <- names(list_species_model_high_accuracy[i])
@@ -381,9 +349,16 @@ for (i in 1:length(list_species_model_high_accuracy)) {
   output_AUC_valid[i, ] <- c(name_underscore, trainingAUC, "valid")
 }
 
-output_AUC_invalid <- data.frame(matrix(ncol = 3, nrow = length(list_species_model_low_accuracy)))
+# initialize data frame
+output_AUC_invalid <- data.frame(
+  matrix(
+    ncol = 3, 
+    nrow = length(list_species_model_low_accuracy)
+  )
+)
 colnames(output_AUC_invalid) <- c("taxon", "trainingAUC", "validation")
 
+# iterate over inaccurate models and add to data frame
 for (i in 1:length(list_species_model_low_accuracy)) {
   open_species_model <- list_species_model_low_accuracy[[i]]
   name <- names(list_species_model_low_accuracy[i])
@@ -392,62 +367,57 @@ for (i in 1:length(list_species_model_low_accuracy)) {
   output_AUC_invalid[i, ] <- c(name_underscore, trainingAUC, "invalid")
 }
 
+# concatenate data frames and write to CSV
 combined_auc <- rbind(output_AUC_invalid, output_AUC_valid)
 write.csv(combined_auc, file = AUC.csv)
 ```
 
-The models are now stacked in a list but can be viewed and examined as follows:
+For the accurate models we then write the respective importance of the selected 
+variables to a figure, and the same for the response curves to these variables:
 
-```{r plot_importance and plot_response}
+```{r plot_importance_response}
 
-# Select the first model in the list
-open_species_model <- list_species_model_high_accuracy[[1]]
-
-# name of the dataset plotted
-name <- paste("Variable importance for", names(list_species_model_high_accuracy[1]))
-
-# plot the variable importance
-plot(open_species_model, main = name)
-
-# plot the response curve to see what the range of important values is per abiotic dataset
-response(open_species_model)
-
-# the model views can be saved in a loop
-valid.model.variable.importance <- sprintf("%s/results/per_species/%s/valid_maxent_variable_importance.png", REPO_HOME, name)
-valid.model.response.curve <- sprintf("%s/results/per_species/%s/valid_maxent_response_curve.png", REPO_HOME, name)
-
-combined_lists<- append(list_species_model_low_accuracy, list_species_model_high_accuracy)
-
-
+# iterate over accurate models
 for (i in 1:length(list_species_model_high_accuracy)) {
-  open_model <- list_species_model_high_accuracy[[i]]
-  name <- names(list_species_model_high_accuracy[i])
-  name2 <- paste("Variable importance")
+  maxent.model <- list_species_model_high_accuracy[[i]]
+  taxon.name <- names(list_species_model_high_accuracy[i])
+  plot.title <- sprintf("Variable importance for %s", taxon.name)
 
-  variable.map.file <- sprintf("%s/results/per_species/%s/valid_maxent_variable_importance.png", REPO_HOME, name)
+  # construct file name for variable importance
+  variable.map.file <- sprintf(
+    "%s/results/per_species/%s/valid_maxent_variable_importance.png", 
+    REPO_HOME, 
+    name
+  )
   if (!file.exists(variable.map.file)) {
     png(file = variable.map.file)
-    plot(open_model, main = name2)
+    plot(maxent.model, main = plot.title)
     dev.off()
   }
-
-  response.map.file <- sprintf("%s/results/per_species/%s/valid_maxent_response_curve.png", REPO_HOME, name)
+  
+  # construct file for variable responses
+  response.map.file <- sprintf(
+    "%s/results/per_species/%s/valid_maxent_response_curve.png", 
+    REPO_HOME, 
+    name
+  )
   if (!file.exists(response.map.file)) {
     png(file = response.map.file, res = 80, units = "px")
-    response(open_model)
+    response(maxent.model)
     dev.off()
   }
 }
 ```
 
-The outcome of the species distribution models can be used to create a prediction of the areas 
-that are suitable for the species. The script below shows a loop that creates prediction raster 
-files for the models with a high prediction accuracy.
+The outcome of the species distribution models can be used to create a 
+prediction of the areas that are suitable for the species. The script below 
+shows a loop that creates prediction raster files for the models with a high 
+prediction accuracy.
 
 ```{r plot_suitability}
 # combine all prediction rasters, either by doing the projection or by reading from a file
 prediction_rasters <- stack()
-taxon.names<- taxa
+taxon.names <- taxa
 taxon.names <- names(list_species_model_high_accuracy)
 realms<- readOGR(paste(REPO_HOME, "/data/GIS/Realms/newRealms.shp", sep = ""))
 realms<- spTransform(realms, CRS("+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs"))
