@@ -177,6 +177,11 @@ for ( i in 1:length(taxa) ) {
   csv <- read.csv(csv.file, header = T)
   occurrences.df <- rbind(occurrences.df, csv)
 }
+
+# finalize data frame: parse longitudes and latitudes
+occurrences.df$decimal_longitude <- as.numeric(as.character(occurrences.df$decimal_longitude))
+occurrences.df$decimal_latitude <- as.numeric(as.character(occurrences.df$decimal_latitude))
+
 rm(csv.file,csv,i)
 ```
 
@@ -410,68 +415,72 @@ for (i in 1:length(list_species_model_high_accuracy)) {
 ```
 
 The outcome of the species distribution models can be used to create a 
-prediction of the areas that are suitable for the species. The script below 
-shows a loop that creates prediction raster files for the models with a high 
-prediction accuracy.
+prediction of the areas that are suitable for the species. We can do this world-
+wide, which allows us to calculate (potential) niche overlap even for species 
+that natively live on different continents. However, the projections that we
+thus generate disregard barriers to dispersal and are therefore quite unnatural.
+
+For more plausible projections we restrict the extent in which we project to the
+biomes in which the occurrences were recorded to begin with.
 
 ```{r plot_suitability}
 # combine all prediction rasters, either by doing the projection or by reading from a file
 prediction_rasters <- stack()
-taxon.names <- taxa
-taxon.names <- names(list_species_model_high_accuracy)
-realms<- readOGR(paste(REPO_HOME, "/data/GIS/Realms/newRealms.shp", sep = ""))
-realms<- spTransform(realms, CRS("+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs"))
-plot(realms)
+crs.string <- "+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs"
+realms <- readOGR(paste(REPO_HOME, "/data/GIS/Realms/newRealms.shp", sep = ""))
+realms <- spTransform(realms, CRS(crs.string))
 
-for (i in c(1:134, 136:150, 152:154)) {
-  #length(list_species_model_high_accuracy)
+for ( i in 1:length(taxa) ) {
+  taxon.name <- gsub( '_', ' ', taxa[i] )
+
   # file name: load if exists, create otherwise
-  valid.model.prediction <- sprintf("%s/results/per_species/%s/valid_maxent_prediction.rda", REPO_HOME, taxon.names[i])
-  if (file.exists(valid.model.prediction)) {
+  valid.model.prediction <- sprintf(
+    "%s/results/per_species/%s/valid_maxent_prediction.rda", 
+    REPO_HOME, 
+    taxa[i]
+  )
+  if ( file.exists(valid.model.prediction) ) {
 
     # load file
-    message(sprintf("loading prediction for taxon %s from file %s", taxon.names[i], valid.model.prediction))
+    message(sprintf("loading prediction for taxon %s from file %s", taxon.name, valid.model.prediction))
     env <- new.env()
     nm <- load(valid.model.prediction, envir = env)[[1]]
     prediction_rasters <- stack(prediction_rasters, env[[nm]])
   }
   else {
-    message(sprintf("computing prediction for taxon %s, will write to file %s", taxon.names[i], valid.model.prediction))
-    open_species_model <- list_species_model_high_accuracy[[i]]
+    message(sprintf("computing prediction for taxon %s, will write to file %s", taxon.name, valid.model.prediction))
+    maxent.model <- list_species_model_high_accuracy[[i]]
 
     # select non correlated layers from model environment in the world environment
-    noncorrelated <- names(open_species_model@presence)
-    subsetworldEnv <- subset(currentEnv, noncorrelated)
+    noncorrelated <- names(maxent.model@presence)
+    subsetworldEnv <- subset(gis.layers, noncorrelated)
 
     # make projection of the whole earth based on the maxent SDM
-    species.pred <- dismo::predict(open_species_model, subsetworldEnv)
+    species.pred <- dismo::predict(maxent.model, subsetworldEnv)
     
-    # limit the predictions to zoogeographic regions (Realms)
-    occurence.csv <- sprintf("%s/data/filtered/%s.csv", REPO_HOME, taxon.names[i])
-    occ <- read.csv(occurence.csv, header = T)
-    bindlonglat <- as.data.frame(cbind(occ[, c("decimal_longitude", "decimal_latitude")]))
-    points <- bindlonglat
-    points$decimal_longitude <- as.numeric(as.character(points$decimal_longitude))
-    points$decimal_latitude <- as.numeric(as.character(points$decimal_latitude))
+    # create occurrence points for focal taxon
+    points <- dplyr::filter( occurrences.df, taxon_name == taxon.name )
+    points <- dplyr::select( points, decimal_longitude, decimal_latitude )
     coordinates(points) <- ~ decimal_longitude + decimal_latitude
-    proj4string(points) <- CRS("+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs")
+    proj4string(points) <- CRS(crs.string)
     
+    # select realms in which occurrence points are recorded
     polys.sub <- realms[!is.na(sp::over(realms, sp::geometry(points))), ] 
     polys.sub <- gUnaryUnion(polys.sub)
 
     # set all the values outside the polygon to 0
-    maskedprediction<- mask(species.pred, polys.sub, updatevalue = 0, updateNA=TRUE)
+    maskedprediction <- mask(
+      species.pred, 
+      polys.sub, 
+      updatevalue = 0, 
+      updateNA=TRUE
+    )
     
     # remove the 10% lowest prediction values under the occurence points 
-    
-    projection.values<-extract(maskedprediction, points, method="simple")
-
+    projection.values <- extract(maskedprediction, points, method="simple")
     sort.projection.values <- sort(unlist(projection.values), decreasing = FALSE)
-
-    percentage.number<- round((0.1* nrow(occ)), digits = 0)
-    
-    threshold.value<- sort.projection.values[percentage.number]
-    
+    percentage.number <- round((0.1* nrow(occ)), digits = 0)
+    threshold.value <- sort.projection.values[percentage.number]
     maskedprediction[maskedprediction < threshold.value] <- 0
 
     # save file, stack projection contents
@@ -480,7 +489,7 @@ for (i in c(1:134, 136:150, 152:154)) {
   }
 }
 
-names(prediction_rasters) <- taxon.names[c(1:134, 136:150, 152:154)]
+names(prediction_rasters) <- taxa
 
 ```
 
