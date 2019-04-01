@@ -24,130 +24,157 @@ REPO_HOME <- paste(getwd(),'/../',sep='')
 Import the taxa list 
 
 ```{r taxa}
-taxa.names <- scan(paste(REPO_HOME, "/data/filtered/taxa.txt", sep = ""), sep = "\n", what = character())
+taxa.names <- scan(
+  paste(
+    REPO_HOME, 
+    "/data/filtered/taxa.txt", 
+    sep = ""
+  ), 
+  sep = "\n", 
+  what = character()
+)
 ```
 
-Open the abiotic environmental raster layers in the GIS repository
+Open the abiotic environmental raster layers in the GIS repository:
 
 ```{r layers}
-
-currentEnv1 = raster::getData(
-  "worldclim", 
-  var="bio", 
-  res=5, 
-  path=paste(REPO_HOME, '/data/GIS', sep=''), 
-  download=T
+# Load bioclim data
+gis.layers <- raster::getData(
+  "worldclim",
+  var = "bio",
+  res = 5,
+  path = paste(REPO_HOME, "/data/GIS", sep = ""),
+  download = T
 )
 
 # The location of the TIFF file with the stacked layers described directly above
-files_list <- list.files(paste(REPO_HOME,'/data/GIS/5_deg', sep=''))
-additional_datasets<- stack()
-for (i in 1:length(files_list) ){
-# Open the raster file in the list
-directorypath<- paste(REPO_HOME,'/data/GIS/5_deg/', files_list[i], sep='')
-name<- files_list[i]
-dataset<- raster(directorypath)
-additional_datasets<-stack(additional_datasets,dataset)
+files.names <- list.files(paste(REPO_HOME, "/data/GIS/5_deg", sep = ""))
+
+# Turn the file names into layer names: strip the prefix (which might include
+# the resolution) and strip the file extension
+gis.layers.names <- files.names
+gis.layers.names <- gsub('current_5arcmin_','',gis.layers.names)
+gis.layers.names <- gsub('.tif','',gis.layers.names)
+
+# Combine the layer names with those we've already read from BIOCLIM
+gis.layers.names <- c(names(gis.layers),gis.layers.names)
+
+# Iterate over files
+for (i in 1:length(files.names)) {
+  
+  # Stack with previously read layers
+  gis.layers <- stack(
+    gis.layers,
+    
+    # Read as raster
+    raster(
+      
+      # Construct file name
+      paste(REPO_HOME, "/data/GIS/5_deg/", files.names[i], sep = "")
+    )
+  )
 }
 
-names(additional_datasets)<- c("Aspect",
-  "BulkDensity",
-  "ClayPercentage",
-  "annualPET",
-  "aridityIndexThornthwaite",
-  "climaticMoistureIndex",
-  "continentality",
-  "embergerQ",
-  "growingDegDays0",
-  "growingDegDays5",
-  "maxTempColdest",
-  "minTempWarmest",
-  "monthCountByTemp10",
-  "PETColdestQuarter",
-  "PETDriestQuarter",
-  "PETseasonality",
-  "PETWarmestQuarter",
-  "PETWettestQuarter",
-  "thermicityIndex",
-  "OrganicCarbon",
-  "PhCaCL",
-  "slope")
+# Apply all names
+names(gis.layers) <- gis.layers.names
+rm(gis.layers.names, files.names, i)
 
-currentEnv <- stack(additional_datasets, currentEnv1)
-
+# Define CRS string
+crs.string <- "+proj=longlat +datum=WGS84"
 ```
 
 The raster layers are transformed to a spatialpixelsdataframe
 
 ```{r taxa}
-rtoAsc<- as(currentEnv, "SpatialPixelsDataFrame")
-proj4string(rtoAsc) <- CRS("+proj=longlat +datum=WGS84")
+gis.layers.spdf <- as(gis.layers, "SpatialPixelsDataFrame")
+sp::proj4string(gis.layers.spdf) <- CRS(crs.string)
 ```
 
-
-Transform the csv files with longitude and latitude values to a SpatialPointsDataFrame
+Transform the csv files with longitude and latitude values to a 
+SpatialPointsDataFrame:
 
 ```{r SpatialPointDataFrame}
 # create an empty SpatialPointDataFrame to populate in the following loop
+spdf <- new(
+  "SpatialPointsDataFrame", 
+  coords = structure(
+    numeric(0), 
+    .Dim = c(0L, 2L),
+    .Dimnames = list( NULL, c("x", "y") )
+  ),  
+  bbox = structure(
+    c(1,1,1,1), 
+    .Dim = c(2L, 2L),                         
+    .Dimnames = list( c("x","y"), c("min","max") )
+  ),
+  proj4string = new( "CRS", projargs = crs.string )
+) 
 
-spdf<-new("SpatialPointsDataFrame", coords = structure(numeric(0), .Dim = c(0L, 2L),                  .Dimnames = list(NULL, c("x", "y"))),  
-    bbox = structure(c(1, 1, 1, 1), .Dim = c(2L, 2L),                         
-                     .Dimnames = list(c("x", "y"),
-                                      c("min", "max"))),
-    proj4string = new("CRS", projargs = "+proj=longlat +datum=WGS84")) 
-
-# populate the empty dataframe with longitude and latitude values from the taxa list
-#c(1:134, 136:150, 152:154)
-for (i in c(101:134, 136:150, 152:154)){
-  valid.model.prediction <- sprintf("%s/results/per_species/%s/valid_maxent_prediction.rda", REPO_HOME, taxa.names[i])
-    env <- new.env()
-    nm <- load(valid.model.prediction, envir = env)[[1]]
-    raster<- env[[nm]]
-    raster[raster == 0] <- NA
-    points<-rasterToPoints(raster, spatial=FALSE)
-    points.number<- nrow(points)
-    name<- paste(taxa.names[i])
-
-    spdf2<- SpatialPointsDataFrame(points[,-3], data.frame(species = rep(name, points.number)))
-  proj4string(spdf2) <- CRS("+proj=longlat +datum=WGS84")
-  spdf<- rbind(spdf, spdf2)
+# populate the empty dataframe with lat/lon values from the taxa list
+for ( i in 1:length(taxa.names) ) {
+  message(taxa.names[i])
+  
+  # construct file name
+  valid.model.prediction <- sprintf(
+    "%s/results/per_species/%s/valid_maxent_prediction.rda", 
+    REPO_HOME, 
+    taxa.names[i]
+  )
+  
+  # load model prediction
+  env <- new.env()
+  nm <- load(valid.model.prediction, envir = env)[[1]]
+  raster <- env[[nm]]
+  
+  # threshold the prediction and retain the remaining points in SPDF
+  raster[raster == 0] <- NA
+  points <- rasterToPoints( raster, spatial=F )
+  spdf2 <- SpatialPointsDataFrame(
+    points[,-3], 
+    data.frame( species = rep( taxa.names[i], nrow(points) ) )
+  )
+  proj4string(spdf2) <- CRS(crs.string)
+  spdf <- rbind(spdf, spdf2)
 }
-
+rm(i,nm,valid.model.prediction,env,raster,spdf2,points)
 ```
 
-Two dataframes are constructed:
-1. a dataframe (dfavail) with all the values in the SpatialPixelsDataframe i.e. the traits 
-2. a dataframe (dfused) with the amount of occurences per pixel  
+Two data frames are constructed:
 
+1. a data frame (dfavail) with the values in the SpatialPixelsDataframe, i.e. 
+   the traits 
+2. a data frame (dfused) with the amount of occurrences per pixel  
 
 ```{r create_dataframes}
-cp <- count.points(spdf, rtoAsc)
+# XXX `grid has empty column/rows in dimension 2`
+cp <- count.points(spdf, gis.layers.spdf)
 
-dfavail <- slot(rtoAsc, "data")
+dfavail <- slot(gis.layers.spdf, "data")
 dfavail <- tibble::rowid_to_column(dfavail, "ID")
-dfavail<- na.omit(dfavail)
+dfavail <- na.omit(dfavail)
 
 dfused <- slot(cp, "data")
 dfused <- tibble::rowid_to_column(dfused, "ID")
 
-dfused<- subset(dfused, dfused$ID %in% dfavail$ID )
+dfused <- subset(dfused, dfused$ID %in% dfavail$ID )
 dfused <- subset(dfused, select = -ID )
 ```
 
-A PCA analysis is conducted to standardize all the environmental variables. This standardized dataframe is used a an input dataset for the niche function to calculate the OMI per species. The OMI is used to plot both niche breadth and niche position per species. 
+A PCA analysis is conducted to standardize all the environmental variables. 
+This standardized dataframe is used a an input dataset for the niche function to calculate the OMI per species. The OMI is used to plot both niche breadth and niche position per species. 
 
 ```{r PCA_analysis}
-dud<- dudi.pca(dfavail[2:42], scannf=FALSE)
+dud <- dudi.pca(dfavail[2:42], scannf=F)
 ```
 
 
 ```{r OMI_analysis}
-nic<- niche(dud, dfused, scannf=FALSE)
+nic <- niche(dud, dfused, scannf=F)
 
-## This dataframe shows the averages per species for the standardized environmental variables
-p<-nic$tab
+# shows the averages per species for the standardized environmental variables
+p <- nic$tab
 
-normalized.csv<- paste(REPO_HOME, "/Results/OMI/normalized_values.csv", sep="")
+normalized.csv <- paste(REPO_HOME, "/results/OMI/normalized_values.csv", sep="")
 write.csv(p, normalized.csv)
 ```
 
@@ -156,20 +183,20 @@ calculate gower's distance
 ```{r gowers_distance}
 # load the normalized values from the github
 normalized.repo <- paste(REPO_HOME, 'results/OMI/normalized_values.csv', sep = '')
-normalized.values<- read.csv(normalized.repo)
+normalized.values <- read.csv(normalized.repo)
 
 # set names of species to rownames
-tree.withouthnames<-normalized.values[,-1]
+tree.withouthnames <- normalized.values[,-1]
 rownames(tree.withouthnames) <- normalized.values[,1]
 
 # save gowers dataframe 
-overlap.csv<- paste(REPO_HOME, "/Results/maxent/gowers_overlap.csv", sep="")
-gow<- daisy(tree.withouthnames[2:42], metric ="gower", stand=FALSE)
-gow_df<- as.matrix(gow)
+overlap.csv <- paste(REPO_HOME, "/results/maxent/gowers_overlap.csv", sep="")
+gow <- daisy(tree.withouthnames[2:42], metric ="gower", stand=FALSE)
+gow_df <- as.matrix(gow)
 
-  if (!file.exists(overlap.csv)) {
-write.csv(gow_df, overlap.csv)
-  }
+if (!file.exists(overlap.csv)) {
+  write.csv(gow_df, overlap.csv)
+}
 
 # create tree
 # compute distances, i.e. inverse of overlap
