@@ -132,7 +132,6 @@ Rusa_timorensis
 Rusa_unicolor
 Sus_barbatus
 Sus_cebifrons
-Sus_philippensis
 Sus_scrofa
 Sylvicapra_grimmia
 Syncerus_caffer
@@ -148,7 +147,6 @@ Tragelaphus_imberbis
 Tragelaphus_scriptus
 Tragelaphus_spekii
 Tragelaphus_strepsiceros
-Tragulus_javanicus
 Tragulus_kanchil
 Tragulus_napu
 Vicugna_vicugna
