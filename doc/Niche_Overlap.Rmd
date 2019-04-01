@@ -5,11 +5,12 @@ Niche Models
 Introduction
 ------------
 
-The following R markdown file explains the steps needed to calculate niche overlap between the extant Ungulates. 
-Here we explain two different approaches to calculate the niche per species: 
+The following R markdown file performs the steps needed to calculate niche 
+overlap between the extant Ungulates. Here we implement two different approaches 
+to calculate the niche per species: 
 
 1. Maxent species distribution models, and 
-2. Outlying Mean Index (OMI) and how to calculate their overlap.
+2. Outlying Mean Index (OMI)
 
 The following libraries and scripts need to be loaded:
 
@@ -40,38 +41,45 @@ library(phytools, quietly = T)
 library(rphylopic, quietly = T)
 library(whisker, quietly = T)
 library(rgdal, quietly=T)
+library(dplyr, quietly=T)
 
-# our local code. the goal is that this will eventually be properly portable code that lives
-# inside the ./R folder of the repository
-source("MaxEnt_function.R")
+# our local code. the goal is that this will eventually be properly portable 
+# code that lives inside the ./script folder of the repository
+source("../script/MaxEnt_function.R")
 ```
 
-In addition, here we define the global variables that we will reuse throughout the code
+In addition, here we define the global variables that we will reuse throughout 
+the code:
 
 ```{r globals}
-# this is the location of the root directory of the git repository in the local file system.
-# normally you would be running the code from within rstudio, using a project that is initialized
-# within that directory, so the working directory should automatically be set.
+# this is the location of the root directory of the git repository in the local 
+# file system. normally you would be running the code from within rstudio, using
+# a project that is initialized within that directory, so the working directory 
+# should automatically be set.
 REPO_HOME <- paste(getwd(), "/../", sep = "")
 ```
 
-To calculate niches and niche overlap environmental data and occurrence data per species are needed.
+Environmental data
+------------------
 
-The environmental data used in this research are based on climatic variables, topography and soil 
-characteristics. Climatic information about the present was extracted from the widely used Bioclim 
-dataset, which includes 19 bioclimatic layers. The datasets contain information such as precipitation 
-in the driest quarter or maximum temperatures of the coldest month and are constructed based on 
-monthly remote sensing data between 1950 and 2000 (Hijmans et al., 2005, Title et al., 2018). The 
-dataset can directly be downloaded with the getData() function from the raster package. It is also 
-possible to adjust the spatial resolution res=2.5 to 30 seconds, 5 minutes and 10 minutes.
+The environmental data used in this research are based on climatic variables, 
+topography, and soil characteristics. Climatic information about the present 
+was extracted from the widely used Bioclim dataset, which includes 19 
+bioclimatic layers. The datasets contain information such as 'precipitation 
+in the driest quarter' or 'maximum temperatures of the coldest month' and are 
+constructed based on monthly remote sensing data between 1950 and 2000 (Hijmans 
+et al., 2005, Title et al., 2018). The dataset can directly be downloaded with 
+the getData() function from the `raster` package. It is possible to adjust the 
+spatial resolution `res` to 30 arc seconds, 2.5, 5, and 10 arc minutes.
 
 ```{r getdata}
-# This function from the raster package loads bioclimatic layers. It first attempts to do this
-# from files in data/GIS/wc10, but if these are not found it will attempt to download them
-# and cache them locally. Since the files are small enough to commit to github we will normally
-# have these files already. This could change if we move to a resolution that is finer than 10
-# arcminutes, as the layer files will then grow above 10MB.
-currentEnv1 <- raster::getData(
+# This function from the raster package loads bioclimatic layers. It first 
+# attempts to do this from files in data/GIS/wc5, but if these are not found it 
+# will attempt to download them and cache them locally. Since the files are 
+# small enough to commit to github we will normally have these files already. 
+# This could change if we move to a resolution that is finer than 5 arcminutes, 
+# as the layer files will then grow above 15MB.
+gis.layers <- raster::getData(
   "worldclim",
   var = "bio",
   res = 5,
@@ -80,64 +88,57 @@ currentEnv1 <- raster::getData(
 )
 ```
 
-The other environmental datasets that we used are the new ENVIREM variables that give additional 
-climatic information to the Bioclim datasets. We used median elevation variables from the Harmonized 
-World Soil Database (HWSD), which are based on NASA’s Shuttle Radar Topographic Mission to calculate 
-worldwide slope and aspect. We used indirect height measures such as slope and aspect because the 
-height variables are directly correlated with the temperature Bioclim datasets. To capture soil 
-characteristics, we used organic carbon, pH CaCL, bulk density and clay percentage datasets obtained 
-from the land-atmosphere interaction research group at Sun Yat-sen University.
-
-The additional environmental datasets that we used for this research can be downloaded from our 
-dropbox folder at a spatial resolution of 5 and 10 minutes.
+The other environmental datasets that we used are the new ENVIREM variables that 
+give additional climatic information to the Bioclim datasets. We used median 
+elevation variables from the Harmonized World Soil Database (HWSD), which are 
+based on NASA’s Shuttle Radar Topographic Mission to calculate worldwide slope 
+and aspect. We used indirect height measures such as slope and aspect because 
+the height variables are directly correlated with the temperature Bioclim 
+datasets. To capture soil characteristics, we used organic carbon, pH CaCL, bulk 
+density and clay percentage datasets obtained from the land-atmosphere 
+interaction research group at Sun Yat-sen University.
 
 ```{r add_layers}
 # The location of the TIFF file with the stacked layers described directly above
-files_list <- list.files(paste(REPO_HOME, "/data/GIS/5_deg", sep = ""))
+files.names <- list.files(paste(REPO_HOME, "/data/GIS/5_deg", sep = ""))
 
-additional_datasets <- stack()
-for (i in 1:length(files_list)) {
-  # Open the raster file in the list
-  # open files for 5 degrees or 10 degrees
-  directorypath <- paste(REPO_HOME, "/data/GIS/5_deg/", files_list[i], sep = "")
-  name <- files_list[i]
-  dataset <- raster(directorypath)
-  additional_datasets <- stack(additional_datasets, dataset)
+# Turn the file names into layer names: strip the prefix, which might include
+# the resolution, and strip the file extension
+gis.layers.names <- files.names
+gis.layers.names <- gsub('current_5arcmin_','',gis.layers.names)
+gis.layers.names <- gsub('.tif','',gis.layers.names)
+
+# Combine the layer names with those we've already read from BIOCLIM
+gis.layers.names <- c(names(gis.layers),gis.layers.names)
+
+# Iterate over files
+for (i in 1:length(files.names)) {
+  
+  # Stack with previously read layers
+  gis.layers <- stack(
+    gis.layers,
+    
+    # Read as raster
+    raster(
+      
+      # Construct file name
+      paste(REPO_HOME, "/data/GIS/5_deg/", files.names[i], sep = "")
+    )
+  )
 }
 
-names(additional_datasets) <- c(
-  "Aspect",
-  "BulkDensity",
-  "ClayPercentage",
-  "annualPET",
-  "aridityIndexThornthwaite",
-  "climaticMoistureIndex",
-  "continentality",
-  "embergerQ",
-  "growingDegDays0",
-  "growingDegDays5",
-  "maxTempColdest",
-  "minTempWarmest",
-  "monthCountByTemp10",
-  "PETColdestQuarter",
-  "PETDriestQuarter",
-  "PETseasonality",
-  "PETWarmestQuarter",
-  "PETWettestQuarter",
-  "thermicityIndex",
-  "OrganicCarbon",
-  "PhCaCL",
-  "slope"
-)
-
-currentEnv <- stack(additional_datasets, currentEnv1)
+# Apply all names
+names(gis.layers) <- gis.layers.names
+rm(gis.layers.names, files.names, i)
 ```
 
-The occurrence datasets are needed to extract useful environmental information per species. The 
-segment below reads a list of the species of interest from the `/data/filtered/taxa.txt` file. From 
-this list we construct paths to input and output files per species. This way, we can work incrementally,
-and cache intermediate results, such as maps of raw occurrence data, maxent models, model predictions,
-and global projections.
+Taxon data
+----------
+
+In a project that includes many taxa, such as this one, it is helpful if we can
+work incrementally by having separate input and output files per taxon. To set 
+this up we first read in the list of taxa from `/data/filtered/taxa.txt` and 
+create corresponding output directories:
 
 ```{r load_taxa}
 # read listing
@@ -153,42 +154,73 @@ for (i in 1:length(taxa)) {
 rm(i, taxon.dir.name)
 ```
 
-When calculating the species distribution models a dataframe containing all the occurence points is needed and created below. 
-```{r combine_occurences}
+The PhyloPic web service provides line drawings (silhouettes) for many species.
+Here we download such an image for each of our species:
 
-# create an emtpy dataframe 
-empty.df = data.frame(matrix(vector(), 0, 4,
-                dimnames=list(c(), c("gbif_id", "taxon_name", "decimal_latitude", "decimal_longitude"))),
-                stringsAsFactors=F)
-# loop to add the occurence data to the empty dataframe
+```{r download_phylopic}
 for (i in 1:length(taxa)) {
-  taxon<- taxa[i]
- load.csv <- sprintf("%s/data/filtered/%s.csv", REPO_HOME, taxon)
- csv <- read.csv(load.csv, header = T)
- empty.df<- rbind(empty.df, csv)
+  taxon <- taxa[i]
+  image.name <- sprintf("%s/results/per_species/%s/image_taxa.png", REPO_HOME, taxon)
+  if (!file.exists(image.name)) {
+    taxon.name <- gsub("_", " ", taxon)
+    ubio.name <- rphylopic::name_search(text = taxon.name, options = "namebankID")[[1]]
+    image.search <- rphylopic::name_images(ubio.name$uid[1])
+    if ( !is.null(image.search$same[1][[1]]) ) {
+      image <- rphylopic::image_data(image.search$same[1], size = "128")
+      rphylopic::save_png(image[[1]], image.name)
+    }
+  }
 }
+
 ```
 
-Below, the raw occurrence data are plotted on a map, which goes to `/results/per_species/<taxon>/occurrences.png`:
+When calculating the species distribution models a dataframe containing all the 
+occurence points is needed and created below. 
+
+```{r combine_occurences}
+
+# create an empty dataframe 
+occurrences.df = data.frame(
+  matrix(
+    vector(), 0, 4,
+    dimnames=list(
+      c(), 
+      c("gbif_id", "taxon_name", "decimal_latitude", "decimal_longitude")
+    )
+  ),
+  stringsAsFactors=F
+)
+
+# loop to add the occurence data to the empty dataframe
+for ( i in 1:length(taxa) ) {
+  csv.file <- sprintf("%s/data/filtered/%s.csv", REPO_HOME, taxa[i])
+  csv <- read.csv(csv.file, header = T)
+  occurrences.df <- rbind(occurrences.df, csv)
+}
+rm(csv.file,csv,i)
+```
+
+Below, the raw occurrence data are plotted on a map, which goes to 
+`/results/per_species/<taxon>/occurrences.png`:
 
 ```{r plot_points}
 data(wrld_simpl)
 for (i in 1:length(taxa)) {
+  
   # construct the name of the occurrences file for the current taxon
   taxon <- taxa[i]
   occ.map.file <- sprintf("%s/results/per_species/%s/occurrences.png", REPO_HOME, taxon)
 
   # generate the map
   if (!file.exists(occ.map.file)) {
-    taxon_name<- gsub( "_", " ", taxon)
+    taxon.name <- gsub( "_", " ", taxon)
 
-    # create the path for the file whose occurrences you want to plot, then load occurrences as CSV
-    csv.file <- sprintf("%s/data/filtered/%s.csv", REPO_HOME, taxon)
-    occ <- read.csv(csv.file, header = T)
-    lon <- occ$decimal_longitude
-    lat <- occ$decimal_latitude
+    # select the longitude and latitude of the focal taxon from the data frame
+    taxon.occurrences <- dplyr::filter(occurrences.df, taxon_name == taxon.name)
+    lon <- dplyr::select(taxon.occurrences, decimal_longitude)$decimal_longitude
+    lat <- dplyr::select(taxon.occurrences, decimal_latitude)$decimal_latitude
 
-    # plot a simple world map
+    # plot a simple map ±5 degrees long and lat around the occurrences
     png(file = occ.map.file)
     plot(
       wrld_simpl,
@@ -196,35 +228,23 @@ for (i in 1:length(taxa)) {
       xlim = c(min(lon) - 5, max(lon) + 5),
       ylim = c(min(lat) - 5, max(lat) + 5),
       col = "gray93",
-      main = sprintf("Filtered occurrences for %s", taxon_name)
+      main = sprintf("Filtered occurrences for %s", taxon.name)
     )
     points(lon, lat, col = "red", pch = 20, cex = 0.75)
     box()
     dev.off()
+    
+    # clean up
+    rm(taxon.name,taxon.occurrences,lat,lon)
   }
+  rm(occ.map.file, taxon)
 }
-rm(i, occ.map.file, taxon, wrld_simpl)
+rm(i, wrld_simpl)
 ```
 
-download phylopic 
 
-```{r download_phylopic}
-for (i in 1:length(taxa)) {
-  taxon <- taxa[i]
-  image.name <- sprintf("%s/results/per_species/%s/image_taxa.png", REPO_HOME, taxon)
-
-  if (!file.exists(image.name)) {
-    taxon_name <- gsub("_", " ", taxa[i])
-    ubio_name <- rphylopic::name_search(text = taxon_name, options = "namebankID")[[1]]
-    image_search <- rphylopic::name_images(ubio_name$uid[1])
-    image <- rphylopic::image_data(image_search$same[1], size = "128")
-    rphylopic::save_png(image[[1]], image.name)
-  }
-}
-```
-
-Maxent: species distribution model
-----------------------------------
+Maxent: species distribution modeling
+-------------------------------------
 
 For this research we used the Maximum Entropy (MaxEnt) machine learning algorithm version 3.3.3 to 
 construct SDMs for all available species. Previous research has demonstrated that the MaxEnt technique 
