@@ -298,7 +298,6 @@ for (i in c(1:134, 136:150, 152:154)) {
   invalid.model.file <- sprintf("%s/results/per_species/%s/invalid_maxent_model.rda", REPO_HOME, name)
 
   # check if we have the model cached
-  
   if (!file.exists(valid.model.file) && !file.exists(invalid.model.file)) {
     message(name)
 
@@ -322,20 +321,25 @@ for (i in c(1:134, 136:150, 152:154)) {
     # - remove the species from the dataframe with all species 
     # - random sample x points from the dataframe 
     # - run the maxent model 100 times 
-    name_underscore<- gsub( "_", " ", name)
-    occurence_samples<- nrow(species_occurence)
+    name_underscore <- gsub( "_", " ", name)
+    occurence_samples <- nrow(species_occurence)
     visited_areas <- subset(empty.df, empty.df$taxon_name != name_underscore)
     modelenvironment <- species_model[[2]]
-    polygonextent<- species_model[[4]]
+    polygonextent <- species_model[[4]]
 
-    AUCvalues<- nullModel_without_spatial(visited_areas, modelenvironment, polygonextent, occurence_samples, rep = 100)
+    AUCvalues <- nullModel_without_spatial(
+      visited_areas, 
+      modelenvironment, 
+      polygonextent, 
+      occurence_samples, rep = 100
+    )
     
     auc <- sort(unlist(AUCvalues), decreasing = FALSE)
     # select 95th number in the list 
     confidence.interval<- auc[95]
     
   
-    # populate two stacks, one with the models with a low accuracy  and one with a high accuracy 
+    # populate two stacks, one with the models with low accuracy and one with high accuracy 
     if (trainingAUC > confidence.interval) {
       model <- species_model[[1]]
       list_species_model_high_accuracy[[name]] <- model
@@ -364,48 +368,32 @@ for (i in c(1:134, 136:150, 152:154)) {
 ```
 
 ```{r list_aucvalues}
-
 # combine two lists of valid and invalid models
-
 output_AUC_valid <- data.frame(matrix(ncol = 3, nrow = length(list_species_model_high_accuracy)))
-colnames(output_AUC_valid) <- c("taxon","trainingAUC","validation")
-AUC.csv <- paste(REPO_HOME, "/results/maxent/AUCvalues.csv", sep="")
+colnames(output_AUC_valid) <- c("taxon", "trainingAUC", "validation")
+AUC.csv <- paste(REPO_HOME, "/results/maxent/AUCvalues.csv", sep = "")
 
 for (i in 1:length(list_species_model_high_accuracy)) {
-
-open_species_model <- list_species_model_high_accuracy[[i]]
-
-name <- names(list_species_model_high_accuracy[i])
-name_underscore<- gsub( "_", " ", name)
-
- 
-trainingAUC<-open_species_model@results[[5,1]]
-
-output_AUC_valid[i,] <- c(name_underscore, trainingAUC, "valid")
-
+  open_species_model <- list_species_model_high_accuracy[[i]]
+  name <- names(list_species_model_high_accuracy[i])
+  name_underscore <- gsub("_", " ", name)
+  trainingAUC <- open_species_model@results[[5, 1]]
+  output_AUC_valid[i, ] <- c(name_underscore, trainingAUC, "valid")
 }
 
 output_AUC_invalid <- data.frame(matrix(ncol = 3, nrow = length(list_species_model_low_accuracy)))
-colnames(output_AUC_invalid) <- c("taxon","trainingAUC","validation")
+colnames(output_AUC_invalid) <- c("taxon", "trainingAUC", "validation")
 
 for (i in 1:length(list_species_model_low_accuracy)) {
-
-open_species_model <- list_species_model_low_accuracy[[i]]
-
-name <- names(list_species_model_low_accuracy[i])
-name_underscore<- gsub( "_", " ", name)
-
- 
-trainingAUC<-open_species_model@results[[5,1]]
-
-output_AUC_invalid[i,] <- c(name_underscore, trainingAUC, "invalid")
-
+  open_species_model <- list_species_model_low_accuracy[[i]]
+  name <- names(list_species_model_low_accuracy[i])
+  name_underscore <- gsub("_", " ", name)
+  trainingAUC <- open_species_model@results[[5, 1]]
+  output_AUC_invalid[i, ] <- c(name_underscore, trainingAUC, "invalid")
 }
 
-combined_auc<- rbind(output_AUC_invalid, output_AUC_valid)
-
-write.csv(combined_auc, file= AUC.csv)
-
+combined_auc <- rbind(output_AUC_invalid, output_AUC_valid)
+write.csv(combined_auc, file = AUC.csv)
 ```
 
 The models are now stacked in a list but can be viewed and examined as follows:
