@@ -154,28 +154,8 @@ for (i in 1:length(taxa)) {
 rm(i, taxon.dir.name)
 ```
 
-The PhyloPic web service provides line drawings (silhouettes) for many species.
-Here we download such an image for each of our species:
-
-```{r download_phylopic}
-for (i in 1:length(taxa)) {
-  taxon <- taxa[i]
-  image.name <- sprintf("%s/results/per_species/%s/image_taxa.png", REPO_HOME, taxon)
-  if (!file.exists(image.name)) {
-    taxon.name <- gsub("_", " ", taxon)
-    ubio.name <- rphylopic::name_search(text = taxon.name, options = "namebankID")[[1]]
-    image.search <- rphylopic::name_images(ubio.name$uid[1])
-    if ( !is.null(image.search$same[1][[1]]) ) {
-      image <- rphylopic::image_data(image.search$same[1], size = "128")
-      rphylopic::save_png(image[[1]], image.name)
-    }
-  }
-}
-
-```
-
 When calculating the species distribution models a dataframe containing all the 
-occurence points is needed and created below. 
+occurence points is needed, which is created and filled below:
 
 ```{r combine_occurences}
 
