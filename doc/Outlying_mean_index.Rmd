@@ -165,6 +165,7 @@ This standardized dataframe is used a an input dataset for the niche function to
 
 ```{r PCA_analysis}
 dud <- dudi.pca(dfavail[2:42], scannf=F)
+rm(dfavail,cp)
 ```
 
 
@@ -174,8 +175,12 @@ nic <- niche(dud, dfused, scannf=F)
 # shows the averages per species for the standardized environmental variables
 p <- nic$tab
 
+# write to file
 normalized.csv <- paste(REPO_HOME, "/results/OMI/normalized_values.csv", sep="")
 write.csv(p, normalized.csv)
+
+# clean up
+rm(p,nic)
 ```
 
 calculate gower's distance
@@ -191,7 +196,7 @@ rownames(tree.withouthnames) <- normalized.values[,1]
 
 # save gowers dataframe 
 overlap.csv <- paste(REPO_HOME, "/results/maxent/gowers_overlap.csv", sep="")
-gow <- daisy(tree.withouthnames[2:42], metric ="gower", stand=FALSE)
+gow <- daisy(tree.withouthnames, metric="gower", stand=FALSE)
 gow_df <- as.matrix(gow)
 
 if (!file.exists(overlap.csv)) {
@@ -201,11 +206,12 @@ if (!file.exists(overlap.csv)) {
 # create tree
 # compute distances, i.e. inverse of overlap
 distances <- as.dist(gow_df)
-
 hclust.tree <- hclust(distances)
 tree <- as.phylo(hclust.tree)
 
-
+# write tree 
+tree.file <- paste(REPO_HOME, "/results/maxent/overlap_gower.tree", sep="")
+write.tree(tree, file = tree.file)
 ```
 
 
@@ -259,7 +265,7 @@ for (i in 1:sam.num) {
 
 
 {
-  clustering.pdf.file <- sprintf("%s/results/maxent/clustering3.pdf", REPO_HOME)
+  clustering.pdf.file <- sprintf("%s/results/maxent/clustering.pdf", REPO_HOME)
   pdf(file = clustering.pdf.file)
   h <- hist(
     sam.dist,
