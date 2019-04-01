@@ -563,23 +563,158 @@ joined.df <- joined.df[societies,]
 
 plot( tree, show.tip.label = F, use.edge.length = F, type = "fan" )
 ```
-### fitPagel
+### Hypothesis testing: abiotic niche clusters as predictors 
 
+Given the data and the tree, we can now perform a succession of hypothesis 
+tests. Firstly, we will test the relationship between the niche clusters
+(the provisional names we've chosen for this are `steppe` and `pasture`), which
+we expect to predict the population density: the steppe supports much lower
+population densities than the more fertile lands. The relationship doesn't work
+the other way, the population density does not predict the niche cluster; hence,
+the former is the dependent variable:
 
-```{r fitpagel}
-subsistence <- as.integer(as.factor(joined.df$subsistence.SCCS833))-1
-names(subsistence) <- joined.df$language_glottocode
+```{r niche_pop_density}
+# the variables need to be named integer vectors whose values can only be 0 or 1
 habitat <- as.integer(joined.df$habitat)-1
 names(habitat) <- joined.df$language_glottocode
-sedentism <- as.integer(joined.df$sedentism.SCCS150)-1
-names(sedentism) <- joined.df$language_glottocode
-stratification <- as.integer(joined.df$stratification.SCCS158)-1
-names(stratification) <- joined.df$language_glottocode
 pop.density <- as.integer(joined.df$pop.density.SCCS1130)-1
 names(pop.density) <- joined.df$language_glottocode
+
+# note the dependent variable:
+pagel <- fitPagel(tree, habitat, pop.density, dep.var = "y")
+pagel
+plot(pagel)
+```
+
+The relationship is highly significant: p=0.000008296388**
+
+Next, we check to see how the niche clusters correlate with sedentism. The 
+`steppe` species are roaming animals with large ranges (note: it would be worth
+checking this using species traits), compatible with a nomadic lifestyle.
+The `pasture` species are less migratory and live in habitats where agriculture
+can be productive enough to enable sedentism. Hence, the lifestyle depends on
+the niche cluster of domesticated animals:
+
+```{r niche_sedentism}
+# the variables need to be named integer vectors whose values can only be 0 or 1
+sedentism <- as.integer(joined.df$sedentism.SCCS150)-1
+names(sedentism) <- joined.df$language_glottocode
+
+# note the dependent variable:
+pagel <- fitPagel(tree, habitat, sedentism, dep.var = "y")
+pagel
+plot(pagel)
+```
+
+The relationship is significant: p=0.01743421*
+
+The relationship between the niche clusters and sedentism is mediated by the
+subsistence mode(s). A sedentary lifestyle is possible almost exclusively in the
+context of agriculture. Conversely, impermanent settlement is the rule when the
+food source needs to be followed, e.g. as in pastoral nomadism, but also when 
+`steppe` animals are complementary to hunting or fishing. Hence, we expect the
+same relationship between habitat and subsistence as between the former and 
+sedentism:
+
+```{r niche_subsistence}
+# the variables need to be named integer vectors whose values can only be 0 or 1
+subsistence <- as.integer(as.factor(joined.df$subsistence.SCCS833))-1
+names(subsistence) <- joined.df$language_glottocode
+
+# note the dependent variable:
+pagel <- fitPagel(tree, habitat, subsistence, dep.var = "y")
+pagel
+plot(pagel)
+```
+
+The relationship is indeed significant (the patterns in the data are such that
+the p value is actually identical): p=0.01743421*
+
+Another, more direct way to go about this is to directly test the relationship
+where sedentism is made possible by (i.e. depends on) subsistence, which is 
+highly significant:
+
+```{r sedentism_subsistence}
+pagel <- fitPagel(tree, subsistence, sedentism, dep.var = "y")
+pagel
+plot(pagel)
+```
+
+p=0.0000000001493953**
+
+Finally, there is evidence to suggest that social stratification correlates with
+animal husbandry (in general). Here we test whether this differs between the 
+different niche clusters such that there is a direct correlation between 
+clusters and social complexity is something we can test:
+
+```{r niche_stratification}
+# the variables need to be named integer vectors whose values can only be 0 or 1
+stratification <- as.integer(joined.df$stratification.SCCS158)-1 
+names(stratification) <- joined.df$language_glottocode
+
+pagel <- fitPagel(tree,habitat,stratification, dep.var = "y")
+pagel
+plot(pagel)
+```
+
+It turns out that this is not a significant correlation (p=0.05345692), though
+it's not far off.
+
+```{r fitpagel}
 
 
 pagel <- fitPagel(tree,subsistence,stratification, dep.var = "y")
 pagel
 plot(pagel)
 ```
+
+### Hypothesis testing: population density classes as predictors
+
+Having established that the abiotic niche clusters strongly correlate with
+population density, we now assess how the latter in turn correlates with 
+the other variables: sedentism, subsistence, and stratification. To begin with,
+population density and sedentism are linked: the societies with the highest
+population densities are sedentary. Or, conversely, a society that can afford
+to be sedentary due to its subsistence strategy can probably achieve high
+densities. Let's be agnostic about what the dependent variable is:
+
+```{r pop_sedentism}
+pagel <- fitPagel(tree,pop.density,sedentism)
+pagel
+plot(pagel)
+```
+
+The two are strongly correlated: p=0.005100353**
+
+How does population density interact with subsistence? The causal link would
+appear to be more straightforward: _thanks to_ agriculture, the population
+density can go up:
+
+```{r pop_subsistence}
+pagel <- fitPagel(tree,pop.density,subsistence,dep.var = "x")
+pagel
+plot(pagel)
+```
+
+Tested in this way, the two are highly correlated: p=0.0008374419**, which is
+an order of magnitude higher than the link between population density and
+sedentism (which are linked by way of the subsistence strategy, probably).
+
+What about the relationship between population density and stratification? Let's
+model stratification as something that depends on population density:
+
+```{r pop_stratification}
+pagel <- fitPagel(tree,pop.density,stratification, dep.var = "x")
+pagel
+plot(pagel)
+```
+
+Modeled in this way (or, indeed, in any way), the two are not correlated:
+p=0.1084162.
+
+### Hypothesis testing: sedentism as a predictor variable
+
+Sedentism and subsistence should be tightly linked: agriculture is in most forms
+a sedentary practice. Conversely, a sedentary lifestyle can mostly only be 
+afforded thanks to agriculture, at least in comparison with pastoralism, hunting
+and gathering, or fishing.
