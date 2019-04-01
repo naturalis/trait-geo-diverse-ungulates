@@ -472,7 +472,7 @@ for ( i in 1:length(taxa) ) {
     maskedprediction <- mask(
       species.pred, 
       polys.sub, 
-      updatevalue = 0, 
+      updatevalue=0, 
       updateNA=TRUE
     )
     
