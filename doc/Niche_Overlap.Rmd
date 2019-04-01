@@ -226,56 +226,67 @@ rm(i, wrld_simpl)
 Maxent: species distribution modeling
 -------------------------------------
 
-For this research we used the Maximum Entropy (MaxEnt) machine learning algorithm version 3.3.3 to 
-construct SDMs for all available species. Previous research has demonstrated that the MaxEnt technique 
-performs well when using presence only data to estimate the relationships between environmental 
-predictors and the occurrences of species (Elith et al., 2011, Philips et al., 2006, Tognelli et al., 2009, 
-Conolly et al., 2012). The widely used machine learning algorithm is very efficient in the complex 
-handling of response and predictor variable interactions and works well with little occurrence data 
+For this research we used the Maximum Entropy (MaxEnt) machine learning 
+algorithm version 3.3.3 to construct SDMs for all available species. Previous 
+research has demonstrated that the MaxEnt technique performs well when using 
+presence only data to estimate the relationships between environmental 
+predictors and the occurrences of species (Elith et al., 2011, Philips et al., 
+2006, Tognelli et al., 2009, Conolly et al., 2012). The widely-used machine 
+learning algorithm is very efficient in the complex handling of response and 
+predictor variable interactions and works well with little occurrence data 
 points (Elith et al., 2011, Elith et al., 2006, Wisz et al., 2008).
 
-Before the construction of the maxent model the environmental rasters are cropped to the extent 
-of the occurrence points for a specific species + a buffer around the total extent. Buffers that 
-are too small can result in underestimations of edge effects while buffers that are too large 
-have the risk of losing track of favorable environmental conditions due to noise. In this research 
-we base the extent of the buffer on the maximum distribution between two occurrence points, in 
-this way we account for species with a wide distribution and species with a small distribution. 
-The cropped environmental data are checked for collinearity, because only uncorrelated environmental 
-raster layers can be used in the SDM (Dormann et al., 2013, Reas & Aguirre-Gutierrez, 2018). To 
-remove correlated layers the removeCollinearity function in the virtualspecies version 1.4-4 R 
-package was used (Leroy et al., 2016). Environmental variables with a Pearson’s R correlation 
-coefficients above 0.7 were grouped and one variable within this group was randomly chosen, 
-resulting in a raster stack with only uncorrelated environmental rasters.
+Before the construction of the maxent model the environmental rasters are 
+cropped to the extent of the occurrence points for a specific species + a buffer 
+around the total extent. Buffers that are too small can result in 
+underestimations of edge effects while buffers that are too large have the risk 
+of losing track of favorable environmental conditions due to noise. In this 
+research we set the extent of the buffer in proportion to the maximum distance 
+between two occurrence points, in this way we account for species with a wide 
+distribution and species with a small distribution. 
 
-Afterwards the occurrence dataset is split in k-fold partitions: a training dataset containing 
-75% of the data and a test dataset containing 25% of the data. The maxent model is constructed 
-using the maxent function from the dismo R package (Hijmans & Elith, 2013). The function extracts 
-abiotic environmental data for the training occurrence locations and 1000 random sampled 
-background locations, resulting in a model maxent object that can be used to predict which other 
-locations are suitable.
+The cropped environmental data are checked for collinearity, because only 
+uncorrelated environmental raster layers can be used in the SDM (Dormann et al., 
+2013, Reas & Aguirre-Gutierrez, 2018). To remove correlated layers the 
+removeCollinearity function in the virtualspecies version 1.4-4 R package was 
+used (Leroy et al., 2016). Environmental variables with a Pearson’s R 
+correlation coefficients above 0.7 were grouped and one variable within this 
+group was randomly chosen, resulting in a raster stack with only uncorrelated 
+environmental rasters.
 
-To assess the model performance we used the area under the receiver operating curve (ROC), also 
-known as the AUC, which is often used to estimate the ability of models (Fourcade et al., 2014). 
-The AUC was interpreted as the probability that a randomly chosen “presence point”, the location 
-of a species occurrence, has a higher predicted probability of occurrence than a randomly chosen 
-absence point (Reas & Aguirre-Gutierrez, 2018). To compare a presence point to an absence point 
-1000 absence points were randomly sampled within the study area. The test occurence datasets were 
-used to evaluate the model performance with the evaluate function in the dismo R package 
-(Hijmans & Elith, 2013). Only SDMs with an AUC value higher than 0.7 were used in the further steps, 
-since these models are generally accepted as useful models (Swets et al., 2000).
+Afterwards the occurrence dataset is split in k-fold partitions: a training 
+dataset containing 75% of the data and a test dataset containing 25% of the 
+data. The maxent model is constructed using the maxent function from the dismo 
+R package (Hijmans & Elith, 2013). The function extracts abiotic environmental 
+data for the training occurrence locations and 1000 random sampled background 
+locations, resulting in a model maxent object that can be used to predict which 
+other locations are suitable.
 
-The script below shows a loop that automatically loops through each species in the list and 
-separates them into two groups: 
+To assess the model performance we used the area under the receiver operating 
+curve (ROC), also known as the AUC, which is often used to estimate the ability 
+of models (Fourcade et al., 2014). The AUC was interpreted as the probability 
+that a randomly chosen “presence point”, the location of a species occurrence, 
+has a higher predicted probability of occurrence than a randomly chosen absence 
+point (Reas & Aguirre-Gutierrez, 2018). To compare a presence point to an 
+absence point 1000 absence points were randomly sampled within the study area. 
+The test occurence datasets were used to evaluate the model performance with 
+the evaluate function in the dismo R package (Hijmans & Elith, 2013). Only SDMs 
+with an AUC value higher than 0.7 were used in the further steps, since these 
+models are generally accepted as useful models (Swets et al., 2000).
 
-1. the models with a high accuracy and, 
-2. the models with a low accuracy. 
+The script below loops through each species in the list, assesses the niche 
+model, and classifies it into one of two options:
 
-The Maxent function used in this loop can be viewed and adapted in our Github repository in this [script](https://github.com/naturalis/trait-geo-diverse-ungulates/blob/master/script/MaxEnt_function.R).
+1. "valid"
+2. "invalid"
+
+The Maxent function used in this loop can be viewed and adapted in our Github 
+repository in this [script](../script/MaxEnt_function.R).
 
 ```{r maxent1}
 
-# first we created two empty lists, one list for models with a low accuracy (AUC below 0.7) and one
-# list for models with a high accuracy (AUC above 0.7)
+# first we created two empty lists, one list for models with a low accuracy (AUC 
+# below 0.7) and one list for models with a high accuracy (AUC above 0.7)
 list_species_model_low_accuracy <- list()
 list_species_model_high_accuracy <- list()
 
@@ -302,9 +313,9 @@ for (i in c(1:134, 136:150, 152:154)) {
     # - run dismo::maxent()
     species_model <- Maxent_function(species_occurence, currentEnv)
     # select species model from the output list
-    spmod<- species_model[[1]] 
+    spmod <- species_model[[1]] 
     # select trainingAUC
-    trainingAUC<-spmod@results[[5,1]]
+    trainingAUC <- spmod@results[[5,1]]
     
     ## null model 
     # - select occurence points within the clip environment 
