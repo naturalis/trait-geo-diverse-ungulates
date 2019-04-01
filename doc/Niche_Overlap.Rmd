@@ -479,7 +479,7 @@ for ( i in 1:length(taxa) ) {
     # remove the 10% lowest prediction values under the occurence points 
     projection.values <- extract(maskedprediction, points, method="simple")
     sort.projection.values <- sort(unlist(projection.values), decreasing = FALSE)
-    percentage.number <- round((0.1* nrow(occ)), digits = 0)
+    percentage.number <- round((0.1* nrow(points)), digits = 0)
     threshold.value <- sort.projection.values[percentage.number]
     maskedprediction[maskedprediction < threshold.value] <- 0
 
@@ -496,28 +496,39 @@ names(prediction_rasters) <- taxa
 Now that we have the prediction rasters we can write them to files:
 
 ```{r write_predictions}
-for (i in 1:length(names(prediction_rasters))) {
-  taxon.name <- names(prediction_rasters)[[i]]
-  prediction.map.file <- sprintf("%s/results/per_species/%s/prediction_map.png", REPO_HOME, taxon.name)
+for ( i in 1:length(taxa) ) {
+  
+  # construct prediction map file name
+  prediction.map.file <- sprintf(
+    "%s/results/per_species/%s/prediction_map.png", 
+    REPO_HOME, 
+    taxa[i]
+  )
   if (!file.exists(prediction.map.file)) {
     png(file = prediction.map.file)
     plot(prediction_rasters[[i]])
     dev.off()
   }
 
-  prediction.occurence.map.file <- sprintf("%s/results/per_species/%s/prediction_occurence_map.png", REPO_HOME, taxon.name)
-
+  # construction prediction map with occurrences file name
+  prediction.occurence.map.file <- sprintf(
+    "%s/results/per_species/%s/prediction_occurence_map.png", 
+    REPO_HOME, 
+    taxa[i]
+  )
   if (!file.exists(prediction.occurence.map.file)) {
-    # select correct occurence datasets
-    csv.file <- sprintf("%s/data/filtered/%s.csv", REPO_HOME, taxon.name)
-    occ <- read.csv(csv.file, header = T)
-    lon <- occ$decimal_longitude
-    lat <- occ$decimal_latitude
-
-
+    
+    # get occurrences of focal taxon, superimpose on prediction map
+    occ <- filter(occurrences.df, taxon_name == taxa[i])
     png(file = prediction.occurence.map.file)
     plot(prediction_rasters[[i]])
-    points(lon, lat, col = "red", pch = 20, cex = 0.2)
+    points(
+      occ$decimal_longitude, 
+      occ$decimal_latitude, 
+      col = "red", 
+      pch = 20, 
+      cex = 0.2
+    )
     box()
     dev.off()
   }
