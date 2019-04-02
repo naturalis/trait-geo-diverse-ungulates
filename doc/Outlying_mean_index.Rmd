@@ -94,8 +94,53 @@ Transform the csv files with longitude and latitude values to a
 SpatialPointsDataFrame:
 
 ```{r SpatialPointDataFrame}
+# two spatialPointsDataFrames are made 
+# (i) a SpatialPointsDataFrame based on the raw occurence data
+# (ii) a SpatialPointsDataFrame based on the MaxEnt projection layers
+
+# (i) raw occurences 
+
 # create an empty SpatialPointDataFrame to populate in the following loop
-spdf <- new(
+spdf_raw_occurences <- new(
+  "SpatialPointsDataFrame", 
+  coords = structure(
+    numeric(0), 
+    .Dim = c(0L, 2L),
+    .Dimnames = list( NULL, c("x", "y") )
+  ),  
+  bbox = structure(
+    c(1,1,1,1), 
+    .Dim = c(2L, 2L),                         
+    .Dimnames = list( c("x","y"), c("min","max") )
+  ),
+  proj4string = new( "CRS", projargs = crs.string )
+) 
+
+# populate the empty dataframe with lat/lon values from the taxa list
+for ( i in length(taxa.names) ) {
+  message(taxa.names[i])
+  
+  csv.file <- sprintf('%s/data/filtered/%s.csv', REPO_HOME, taxa.names[i])
+  species_occurence<-as.matrix(read.csv(csv.file))
+  name<- paste(taxa.names[i])
+  length_df<- NROW(species_occurence)
+  bindlonglat<- as.data.frame(cbind(species_occurence[, c("decimal_longitude", "decimal_latitude")]))
+  points<- bindlonglat
+  points$decimal_longitude<- as.numeric(as.character(points$decimal_longitude))
+  points$decimal_latitude<- as.numeric(as.character(points$decimal_latitude))
+  coordinates(points)<- ~ decimal_longitude + decimal_latitude
+  spdf2<- SpatialPointsDataFrame(points, data.frame(species = rep(name, length_df)), proj4string = CRS)
+  proj4string(spdf2) <- CRS("+proj=longlat +datum=WGS84")
+  
+  spdf_raw_occurences<- rbind(spdf_raw_occurences, spdf2)
+
+}
+
+
+# (ii) MaxEnt projection layers 
+
+# create an empty SpatialPointDataFrame to populate in the following loop
+spdf_MaxEnt <- new(
   "SpatialPointsDataFrame", 
   coords = structure(
     numeric(0), 
@@ -134,9 +179,12 @@ for ( i in 1:length(taxa.names) ) {
     data.frame( species = rep( taxa.names[i], nrow(points) ) )
   )
   proj4string(spdf2) <- CRS(crs.string)
-  spdf <- rbind(spdf, spdf2)
+  spdf_MaxEnt <- rbind(spdf_MaxEnt, spdf2)
 }
-rm(i,nm,valid.model.prediction,env,raster,spdf2,points)
+
+rm(i,nm,valid.model.prediction,env,raster,spdf2,points, species_occurence, csv.file, gis.layers, bindlonglat)
+
+
 ```
 
 Two data frames are constructed:
@@ -147,7 +195,11 @@ Two data frames are constructed:
 
 ```{r create_dataframes}
 # XXX `grid has empty column/rows in dimension 2`
-cp <- count.points(spdf, gis.layers.spdf)
+
+# choose which spdf you want to use (i) raw occurences, (ii) MaxEnt projections 
+# (i) spdf_raw_occurences
+# (ii) spdf_MaxEnt
+cp <- count.points(spdf_raw_occurences, gis.layers.spdf)
 
 dfavail <- slot(gis.layers.spdf, "data")
 dfavail <- tibble::rowid_to_column(dfavail, "ID")
@@ -158,6 +210,8 @@ dfused <- tibble::rowid_to_column(dfused, "ID")
 
 dfused <- subset(dfused, dfused$ID %in% dfavail$ID )
 dfused <- subset(dfused, select = -ID )
+
+
 ```
 
 A PCA analysis is conducted to standardize all the environmental variables. 
@@ -165,18 +219,19 @@ This standardized dataframe is used a an input dataset for the niche function to
 
 ```{r PCA_analysis}
 dud <- dudi.pca(dfavail[2:42], scannf=F)
-rm(dfavail,cp)
+rm(dfavail, cp)
+
 ```
 
 
 ```{r OMI_analysis}
-nic <- niche(dud, dfused, scannf=F)
+nic<- niche(dud, dfused, scannf=F)
 
 # shows the averages per species for the standardized environmental variables
 p <- nic$tab
 
 # write to file
-normalized.csv <- paste(REPO_HOME, "/results/OMI/normalized_values.csv", sep="")
+normalized.csv <- paste(REPO_HOME, "/results/OMI/normalized_raw_values.csv", sep="")
 write.csv(p, normalized.csv)
 
 # clean up
@@ -187,7 +242,7 @@ calculate gower's distance
 
 ```{r gowers_distance}
 # load the normalized values from the github
-normalized.repo <- paste(REPO_HOME, 'results/OMI/normalized_values.csv', sep = '')
+normalized.repo <- paste(REPO_HOME, '/results/OMI/normalized_raw_values.csv', sep = '')
 normalized.values <- read.csv(normalized.repo)
 
 # set names of species to rownames
