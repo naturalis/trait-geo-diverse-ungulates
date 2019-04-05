@@ -387,7 +387,7 @@ for (i in 1:length(list_species_model_high_accuracy)) {
   variable.map.file <- sprintf(
     "%s/results/per_species/%s/valid_maxent_variable_importance.png", 
     REPO_HOME, 
-    name
+    taxon.name
   )
   if (!file.exists(variable.map.file)) {
     png(file = variable.map.file)
@@ -399,7 +399,7 @@ for (i in 1:length(list_species_model_high_accuracy)) {
   response.map.file <- sprintf(
     "%s/results/per_species/%s/valid_maxent_response_curve.png", 
     REPO_HOME, 
-    name
+    taxon.name
   )
   if (!file.exists(response.map.file)) {
     png(file = response.map.file, res = 80, units = "px")
@@ -460,27 +460,27 @@ for ( i in 1:length(taxa) ) {
     proj4string(points) <- CRS(crs.string)
     
     # select realms in which occurrence points are recorded
-    polys.sub <- realms[!is.na(sp::over(realms, sp::geometry(points))), ] 
-    polys.sub <- gUnaryUnion(polys.sub)
+    #polys.sub <- realms[!is.na(sp::over(realms, sp::geometry(points))), ] 
+    #polys.sub <- gUnaryUnion(polys.sub)
 
     # set all the values outside the polygon to 0
-    maskedprediction <- mask(
-      species.pred, 
-      polys.sub, 
-      updatevalue=0, 
-      updateNA=TRUE
-    )
+    #maskedprediction <- mask(
+    #  species.pred, 
+    #  polys.sub, 
+     # updatevalue=0, 
+     # updateNA=TRUE
+    #)
     
     # remove the 10% lowest prediction values under the occurence points 
-    projection.values <- extract(maskedprediction, points, method="simple")
+    projection.values <- extract(species.pred, points, method="simple")
     sort.projection.values <- sort(unlist(projection.values), decreasing = FALSE)
     percentage.number <- round((0.1* nrow(points)), digits = 0)
     threshold.value <- sort.projection.values[percentage.number]
-    maskedprediction[maskedprediction < threshold.value] <- 0
+    species.pred[species.pred < species.pred] <- 0
 
     # save file, stack projection contents
-    save(maskedprediction, file = valid.model.prediction)
-    prediction_rasters <- stack(prediction_rasters, maskedprediction)
+    save(species.pred, file = valid.model.prediction)
+    prediction_rasters <- stack(prediction_rasters, species.pred)
   }
 }
 
@@ -584,7 +584,7 @@ overlap to 1 which is a complete overlap and is based on the model prediction ma
 
 ```{r calc_dist}
 # location of a triangular, inverse distance matrix file
-overlap.file <- paste(REPO_HOME, "/results/maxent/overlap.csv", sep = "")
+overlap.file <- paste(REPO_HOME, "/results/maxent/overlap_SchoenersD.csv", sep = "")
 if (!file.exists(overlap.file)) {
 
   # file doesn't exist, calculate Schoener's Distance and store file
