@@ -252,12 +252,10 @@ to a file `valid_maxent_model.rda`, otherwise to a file
 
 ```{r run_maxent}
 
-# first we created two empty lists, one list for models with a low accuracy (AUC 
-# below 0.7) and one list for models with a high accuracy (AUC above 0.7)
+# containers for models with low/high accuracy
 list_species_model_low_accuracy <- list()
 list_species_model_high_accuracy <- list()
 
-# length(taxa)
 # iterate over n species
 for (i in 1:length(taxa)) {
   name <- taxa[i]
@@ -269,12 +267,12 @@ for (i in 1:length(taxa)) {
   # check if we have the model cached
   if (!file.exists(valid.model.file) && !file.exists(invalid.model.file)) {
     taxon.name <- gsub('_', ' ', name)
+    message(taxon.name)
     taxon.occurrences <- dplyr::filter(occurrences.df, taxon_name == taxon.name)
 
     # Run maxent:
-    # - clip environment to ± 9 degrees lat/long relative to the occurrences
+    # - buffer environment to ± 9 degrees lat/long relative to the occurrences
     # - remove colinear layers
-    # - prepare k-folds cross-validation partition
     # - run dismo::maxent()
     species_model <- Maxent_function(taxon.occurrences, gis.layers)
     # select species model from the output list
@@ -283,14 +281,11 @@ for (i in 1:length(taxa)) {
     trainingAUC <- spmod@results[[5,1]]
     
     ## null model 
-    # - select occurence points within the clip environment 
-    # - remove the species from the dataframe with all species 
-    # - random sample x points from the dataframe 
-    # - run the maxent model 100 times 
+    # - sample occurence points within the buffered environment 
+    # - run the maxent model 100 times using the selected layers
     visited_areas <- dplyr::filter(occurrences.df, taxon_name != taxon.name)
-    modelenvironment <- species_model[[2]]
-    polygonextent <- species_model[[4]]
-
+    modelenvironment <- species_model[[2]] # selected layers
+    polygonextent <- species_model[[4]] # buffered environment
     AUCvalues <- nullModel_without_spatial(
       visited_areas, 
       modelenvironment, 

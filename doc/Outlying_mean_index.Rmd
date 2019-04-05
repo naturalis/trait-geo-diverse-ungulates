@@ -14,6 +14,7 @@ library(SDMTools, quietly = T)
 library(factoextra, quietly = T)
 library(ecospat, quietly = T)
 library(cluster, quietly = T)
+library(ape, quietly=T)
 ```
 
 Set the location of the root directory of the git repository
@@ -230,6 +231,30 @@ nic<- niche(dud, dfused, scannf=F)
 # shows the averages per species for the standardized environmental variables
 p <- nic$tab
 
+# add domesticated TRUE or FALSE
+# vector of all domesticated taxa
+  dom.taxa <- c(
+    "Bos_frontalis_gaurus", "Bos_grunniens_mutus", "Bos_javanicus", "Bos_taurus_primigenius",
+   	"Bubalus_bubalis_arnee", "Camelus_bactrianus", "Camelus_dromedarius", "Capra_hircus_aegagrus",
+   	"Equus_przewalskii", "Lama_glama_guanicoe", "Ovis_aries_orientalis",
+   	"Rangifer_tarandus", "Sus_scrofa", "Vicagna_vicugna"
+  )
+
+# create empty column
+p["IsDomesticated"]<- NA 
+
+# iterate over taxa
+  for ( i in 1:length(taxa.names) ) {
+    taxon.name <- taxa.names[i]
+    message(taxon.name)
+    
+    # store whether this taxon is domesticated
+    if ( taxon.name %in% dom.taxa ) {
+      p[i,43] <- T
+    } else {
+      p[i,43] <- F
+    }
+  }
 # write to file
 normalized.csv <- paste(REPO_HOME, "/results/OMI/normalized_raw_values.csv", sep="")
 write.csv(p, normalized.csv)
@@ -250,7 +275,7 @@ tree.withouthnames <- normalized.values[,-1]
 rownames(tree.withouthnames) <- normalized.values[,1]
 
 # save gowers dataframe 
-overlap.csv <- paste(REPO_HOME, "/results/maxent/gowers_overlap.csv", sep="")
+overlap.csv <- paste(REPO_HOME, "/results/maxent/gowers_overlap_raw_occurencepoints.csv", sep="")
 gow <- daisy(tree.withouthnames, metric="gower", stand=FALSE)
 gow_df <- as.matrix(gow)
 
@@ -259,14 +284,23 @@ if (!file.exists(overlap.csv)) {
 }
 
 # create tree
-# compute distances, i.e. inverse of overlap
+# hclust tree is used to plot the dendrogram
 distances <- as.dist(gow_df)
 hclust.tree <- hclust(distances)
 tree <- as.phylo(hclust.tree)
 
+# nj tree is used to calculate the distances
+nj<- nj(distances)
+nj.tree<- as.phylo(nj)
+
+
 # write tree 
-tree.file <- paste(REPO_HOME, "/results/maxent/overlap_gower.tree", sep="")
+tree.file <- paste(REPO_HOME, "/results/maxent/overlap_gower_raw_occurences_hclust.tree", sep="")
 write.tree(tree, file = tree.file)
+
+tree.nj.file<- paste(REPO_HOME, "/results/maxent/overlap_gower_raw_occurences_nj.tree", sep="")
+write.tree(nj.tree, file = tree.nj.file)
+
 ```
 
 
@@ -283,11 +317,11 @@ dom.taxa <- c(
 )
 
 # tips in tree
-dom.tips <- tree$tip.label[ which(tree$tip.label %in% dom.taxa) ]
+dom.tips <- nj.tree$tip.label[ which(nj.tree$tip.label %in% dom.taxa) ]
 
 # this function calculates the average pairwise patristic distance among an
 # input vector of tip labels
-mean_pw_distance <- function(tree, tip.vector) {
+mean_pw_distance <- function(nj.tree, tip.vector) {
 
   # calculate size of distance matrix, instantiate vector
   nt <- length(tip.vector)
@@ -300,7 +334,7 @@ mean_pw_distance <- function(tree, tip.vector) {
   for (i in 1:max) {
     min <- i + 1
     for (j in min:nt) {
-      dist.vector[k] <- phytools::fastDist(tree, tip.vector[i], tip.vector[j])
+      dist.vector[k] <- phytools::fastDist(nj.tree, tip.vector[i], tip.vector[j])
       k <- k + 1
     }
   }
@@ -308,19 +342,19 @@ mean_pw_distance <- function(tree, tip.vector) {
 }
 
 # calculate average pairwise distance (APD) among domesticates
-dom.dist <- mean_pw_distance(tree, dom.tips)
+dom.dist <- mean_pw_distance(nj.tree, dom.tips)
 
 # take random tip samples, compute APD among these many time
 sam.num <- 1000
 sam.dist <- vector(mode = "numeric", length = sam.num)
 for (i in 1:sam.num) {
-  sam.tips <- sample(tree$tip.label, length(dom.tips), replace = F)
-  sam.dist[i] <- mean_pw_distance(tree, sam.tips)
+  sam.tips <- sample(nj.tree$tip.label, length(dom.tips), replace = F)
+  sam.dist[i] <- mean_pw_distance(nj.tree, sam.tips)
 }
 
 
 {
-  clustering.pdf.file <- sprintf("%s/results/maxent/clustering.pdf", REPO_HOME)
+  clustering.pdf.file <- sprintf("%s/results/maxent/clustering_nj_raw_occurences.pdf", REPO_HOME)
   pdf(file = clustering.pdf.file)
   h <- hist(
     sam.dist,
