@@ -1,6 +1,6 @@
 # trait-geo-diverse-ungulates
 
-![](doc/Ungulates.JPG)
+![](doc/project.png)
 
 
 Project repository for the analysis of abiotic niches of Ungulates. Contains

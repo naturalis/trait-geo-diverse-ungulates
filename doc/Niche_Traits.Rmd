@@ -95,7 +95,7 @@ traits.contributions <- data.frame(matrix(
 )
 
 # start iterating over taxa
-for (i in c(1:134, 136:150, 152:154)) {
+for (i in 1: length(taxa.names)) {
   
   # load maxent model if it exists
   maxent.model <- get_maxent_model( REPO_HOME, taxa.names[i] )
@@ -112,6 +112,9 @@ for (i in c(1:134, 136:150, 152:154)) {
     }
   }
 }
+
+traits.contributions.csv<- paste(REPO_HOME, "Results/maxent/traits_contribution_maxent.csv", sep="")
+write.csv(traits.contributions, traits.contributions.csv)
 
 ```
 
