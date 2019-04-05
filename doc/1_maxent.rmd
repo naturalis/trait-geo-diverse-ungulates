@@ -387,7 +387,7 @@ for (i in 1:length(list_species_model_high_accuracy)) {
   variable.map.file <- sprintf(
     "%s/results/per_species/%s/valid_maxent_variable_importance.png", 
     REPO_HOME, 
-    name
+    taxon.name
   )
   if (!file.exists(variable.map.file)) {
     png(file = variable.map.file)
@@ -399,7 +399,7 @@ for (i in 1:length(list_species_model_high_accuracy)) {
   response.map.file <- sprintf(
     "%s/results/per_species/%s/valid_maxent_response_curve.png", 
     REPO_HOME, 
-    name
+    taxon.name
   )
   if (!file.exists(response.map.file)) {
     png(file = response.map.file, res = 80, units = "px")
