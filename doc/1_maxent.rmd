@@ -422,8 +422,6 @@ biomes in which the occurrences were recorded to begin with.
 # combine all prediction rasters, either by doing the projection or by reading from a file
 prediction_rasters <- stack()
 crs.string <- "+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs"
-realms <- readOGR(paste(REPO_HOME, "/data/GIS/Realms/newRealms.shp", sep = ""))
-realms <- spTransform(realms, CRS(crs.string))
 
 for ( i in 1:length(taxa) ) {
   taxon.name <- gsub( '_', ' ', taxa[i] )
@@ -452,7 +450,7 @@ for ( i in 1:length(taxa) ) {
 
     # make projection of the whole earth based on the maxent SDM
     species.pred <- dismo::predict(maxent.model, subsetworldEnv)
-    
+
     # create occurrence points for focal taxon
     points <- dplyr::filter( occurrences.df, taxon_name == taxon.name )
     points <- dplyr::select( points, decimal_longitude, decimal_latitude )
@@ -465,19 +463,18 @@ for ( i in 1:length(taxa) ) {
 
     # set all the values outside the polygon to 0
     #maskedprediction <- mask(
-    #  species.pred, 
-    #  polys.sub, 
-     # updatevalue=0, 
-     # updateNA=TRUE
-    #)
+      #species.pred, 
+      #polys.sub, 
+      #updatevalue=0, 
+      #updateNA=TRUE
+   # )
     
     # remove the 10% lowest prediction values under the occurence points 
     projection.values <- extract(species.pred, points, method="simple")
     sort.projection.values <- sort(unlist(projection.values), decreasing = FALSE)
-    percentage.number <- round((0.1* nrow(points)), digits = 0)
-    threshold.value <- sort.projection.values[percentage.number]
-    species.pred[species.pred < species.pred] <- 0
-
+    percentage.number <- round((0.1* dplyr::count(as.data.frame(sort.projection.values))), digits = 0)
+    threshold.value <- sort.projection.values[percentage.number[1,1]]
+    species.pred[species.pred < threshold.value] <- 0
     # save file, stack projection contents
     save(species.pred, file = valid.model.prediction)
     prediction_rasters <- stack(prediction_rasters, species.pred)
@@ -488,20 +485,53 @@ names(prediction_rasters) <- taxa
 
 ```
 
-Now that we have the prediction rasters we can write them to files:
+```{r restriction_realm}
+taxa.prediction.rasters<-names(prediction_rasters)
+crs.string <- "+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs"
+realms <- readOGR(paste(REPO_HOME, "/data/GIS/Realms/newRealms.shp", sep = ""))
+realms <- spTransform(realms, CRS(crs.string))
 
-```{r write_predictions}
-for ( i in 1:length(taxa) ) {
+for ( i in 1: length(prediction_rasters) ) {
+# construct restricted projection file name
+  prediction.restricted.file <- sprintf(
+    "%s/results/per_species/%s/valid_maxent_prediction_restricted.rda", 
+    REPO_HOME, 
+    taxa.prediction.rasters[i]
+  )
+  if (!file.exists(prediction.restricted.file)) {
+   projection.raster<- prediction_rasters[[i]]
+   taxa.name<- gsub("_", " ", taxa.prediction.rasters[i])
+
+  # create occurrence points for focal taxon
+  points <- dplyr::filter( occurrences.df, taxon_name == taxa.name )
+  points <- dplyr::select( points, decimal_longitude, decimal_latitude )
+  coordinates(points) <- ~ decimal_longitude + decimal_latitude
+  proj4string(points) <- CRS(crs.string)
+    
+  #select realms in which occurrence points are recorded
+  polys.sub <- realms[!is.na(sp::over(realms, sp::geometry(points))), ] 
+  polys.sub <- gUnaryUnion(polys.sub)
+
+  # set all the values outside the polygon to 0
+  maskedprediction <- mask(
+      projection.raster, 
+      polys.sub, 
+      updatevalue=0, 
+      updateNA=TRUE )
   
+  save(maskedprediction, file = prediction.restricted.file)
+
+  }
+
   # construct prediction map file name
   prediction.map.file <- sprintf(
     "%s/results/per_species/%s/prediction_map.png", 
     REPO_HOME, 
-    taxa[i]
+    taxa.prediction.rasters[i]
   )
   if (!file.exists(prediction.map.file)) {
     png(file = prediction.map.file)
-    plot(prediction_rasters[[i]])
+    plot(maskedprediction)
     dev.off()
   }
 
@@ -509,17 +539,17 @@ for ( i in 1:length(taxa) ) {
   prediction.occurence.map.file <- sprintf(
     "%s/results/per_species/%s/prediction_occurence_map.png", 
     REPO_HOME, 
-    taxa[i]
+      taxa.prediction.rasters[i]
   )
   if (!file.exists(prediction.occurence.map.file)) {
     
     # get occurrences of focal taxon, superimpose on prediction map
-    occ <- filter(occurrences.df, taxon_name == taxa[i])
+    taxa.name<- gsub("_", " ", taxa.prediction.rasters[i])
     png(file = prediction.occurence.map.file)
-    plot(prediction_rasters[[i]])
+    plot(maskedprediction)
     points(
-      occ$decimal_longitude, 
-      occ$decimal_latitude, 
+      points$decimal_longitude, 
+      points$decimal_latitude, 
       col = "red", 
       pch = 20, 
       cex = 0.2
@@ -527,8 +557,10 @@ for ( i in 1:length(taxa) ) {
     box()
     dev.off()
   }
+
 }
 ```
+
 
 Write readme files to the github. 
 
@@ -584,7 +616,7 @@ overlap to 1 which is a complete overlap and is based on the model prediction ma
 
 ```{r calc_dist}
 # location of a triangular, inverse distance matrix file
-overlap.file <- paste(REPO_HOME, "/results/maxent/overlap_SchoenersD.csv", sep = "")
+overlap.file <- paste(REPO_HOME, "/results/maxent/overlap.csv", sep = "")
 if (!file.exists(overlap.file)) {
 
   # file doesn't exist, calculate Schoener's Distance and store file
