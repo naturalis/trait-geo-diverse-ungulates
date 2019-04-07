@@ -40,14 +40,18 @@ gis.layers <- raster::getData(
   download = T
 )
 
+# The location of the TIFF file with the stacked layers described directly above
 files.names <- list.files(paste(REPO_HOME, "/data/GIS/5_deg", sep = ""))
+
 # Turn the file names into layer names: strip the prefix (which might include
 # the resolution) and strip the file extension
 gis.layers.names <- files.names
 gis.layers.names <- gsub('current_5arcmin_','',gis.layers.names)
 gis.layers.names <- gsub('.tif','',gis.layers.names)
+
 # Combine the layer names with those we've already read from BIOCLIM
 gis.layers.names <- c(names(gis.layers),gis.layers.names)
+
 # Iterate over files
 for (i in 1:length(files.names)) {
   
@@ -63,6 +67,7 @@ for (i in 1:length(files.names)) {
     )
   )
 }
+
 # Apply all names
 names(gis.layers) <- gis.layers.names
 ```
@@ -134,7 +139,7 @@ We are going to look at the trait means as predictor variables for domestication
 we create a data frame with domestication as a state:
 
 ```{r domestication}
-traits.means.file <- sprintf('%s/results/OMI/normalized_values.csv', REPO_HOME)
+traits.means.file <- sprintf('%s/results/OMI/normalized_MaxEnt_values.csv', REPO_HOME)
 
 # do the averaging if we haven't already
 if (!file.exists(traits.means.file) ) {
@@ -211,13 +216,13 @@ tree <- keep.tip(tree,tip.idx)
 traits.means.tree <- traits.means[tree$tip.label,]
 
 # run variable selection
-pglm.formula.tmpl <- 'IsDomesticated ~ %s'
-aic <- vector(mode = "numeric", length = length(layers.names))
-lnl <- vector(mode = "numeric", length = length(layers.names))
-results <- data.frame( aic = aic, lnl = lnl, row.names = layers.names)
+pglm.formula.tmpl <- 'IsDomesticated  ~ bio4 + %s'
+aic <- vector(mode = "numeric", length = length(gis.layers.names))
+lnl <- vector(mode = "numeric", length = length(gis.layers.names))
+results <- data.frame( aic = aic, lnl = lnl, row.names = gis.layers.names)
 
-for ( i in 1:length(layers.names) ) {
-  l <- layers.names[i]
+for ( i in 1:length(gis.layers.names) ) {
+  l <- gis.layers.names[i]
   f <- sprintf(pglm.formula.tmpl, l)
   message(l)
   r <- phyloglm(f, traits.means.tree, tree, method = "logistic_MPLE", btol = 30)
@@ -232,33 +237,28 @@ in the results df. We add that layer to the formula, and then iterate again to
 find the layer that minimizes the AIC in combination. If we keep doing this we
 find the combination that overall minimizes the AIC:
 
-first run
+MaxEnt 
+bio4 67.32846
 
-- bio3  72.21593
-- bio3 + bio14 72.89198
-- *bio3 + bio14 + current_10arcmin_embergerQ 70.63874*
-- bio3 + bio14 + current_10arcmin_embergerQ + bio15 70.74186
-- bio3 + bio14 + current_10arcmin_embergerQ + bio15 + bio2  71.68594
+raw occurences 
 
-second run with new projections
-- maxTempColdest 67.68816
-- maxTempColdest + bio13 68.38021
-- maxTempColdest + bio13 + PETDriestQuarter 68.93208
-- maxTempColdest + bio13 + PETDriestQuarter + embergerQ 70.50978
-- maxTempColdest + bio13 + PETDriestQuarter + embergerQ + OrganicCarbon 71.74734
-- maxTempColdest + bio13 + PETDriestQuarter + embergerQ + OrganicCarbon + slope 73.46344
-- maxTempColdest + bio13 + PETDriestQuarter + embergerQ + OrganicCarbon + slope + bio14 75.68701
+bio3 69.77260
+
+bio3 + OrganicCarbon_5min 68.11076
+bio3 + OrganicCarbon_5min + bio2  67.96198
+bio3 + OrganicCarbon_5min + bio2 + bio17 63.80596
+bio3 + OrganicCarbon_5min + bio2 + bio17 + BulkDensity_5min 61.71878
 
 
 
 
 ```{r plot3d}
-f <- IsDomesticated ~ maxTempColdest 
+f <- IsDomesticated  ~ bio3 + OrganicCarbon_5min + bio2 + bio17 + BulkDensity_5min
 r <- phyloglm(f, traits.means.tree, tree, method = "logistic_MPLE", btol = 30)
 summary(r)
 
 
-p3d <- as.matrix(dplyr::select(traits.means.tree, maxTempColdest, bio13, PETDriestQuarter, embergerQ, OrganicCarbon, slope, bio14))
+p3d <- as.matrix(dplyr::select(traits.means.tree, bio3, OrganicCarbon_5min, bio2, bio17, BulkDensity_5min))
 phylomorphospace3d(tree,p3d)
 ```
 
@@ -335,8 +335,8 @@ layers.names <- names(dplyr::select(dom.df,-IsDomesticated,-taxon.name))
 #dom.df <- filter(dom.df, taxon.name != 'Rangifer_tarandus')
 
 # iterate over layers
-for ( i in 1:length(layers.names) ) {
-  layer <- layers.names[i]
+for ( i in 1:length(gis.layers.names) ) {
+  layer <- gis.layers.names[i]
   dom.values <- dom.df[,layer]
   min <- min(dom.values)
   max <- max(dom.values)
