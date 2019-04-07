@@ -30,7 +30,7 @@ dom.taxa <- c(
 
 ```{r cluster}
 # CSV file location of all pairwise comparisons of niche overlap in Gowers's D
-overlap.file <- paste(REPO_HOME, '/results/maxent/gowers_overlap.csv', sep = '')
+overlap.file <- paste(REPO_HOME, '/results/maxent/gowers_overlap_raw_occurencepoints.csv', sep = '')
 # load data
 overlap <- read.table(overlap.file, sep=",", header=TRUE, row.names = 1)
 
@@ -89,7 +89,7 @@ partitions.df <- make_df(partitions)
 ### Select niche traits of greatest magnitude
 
 ```{r omi}
-omi.file <- sprintf('%s/results/OMI/normalized_values.csv',REPO_HOME)
+omi.file <- sprintf('%s/results/OMI/normalized_raw_values.csv',REPO_HOME)
 omi.data <- read.table(omi.file, header = T, sep = ',', row.names = 1)
 trait.names <- names(omi.data)[2:length(omi.data)]
 trait.taxa <- row.names(omi.data)
@@ -118,7 +118,7 @@ row.names(magnitude.df) <- trait.names
 ```{r mrcas}
 hclust.phylo <- as.phylo(hclust.tree)
 mrcas <- list()
-mrcas.labels <- c('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z', 'az', 'bz')
+mrcas.labels <- c('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z', 'az', 'bz', 'cz', 'dz', 'ez', 'fz')
 for ( i in 1:optimum.nclusters ) {
   tips <- dplyr::select(filter(partitions.df,cluster==i),taxon.name)$taxon.name
   l <- mrcas.labels[i]
@@ -158,7 +158,9 @@ colors <- c(
   '#681c10',
   '#FF7F50',
   '#FF7F42',
-  '#220d0f'
+  '#220d0f', 
+  'salmon',
+  'skyblue'
 )
 
 # prepare: coerce dendrogram to phylo; generate palette; instantiate edge color vector
