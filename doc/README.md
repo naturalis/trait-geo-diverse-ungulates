@@ -3,15 +3,29 @@ Available workflows
 
 ![](images/Dy4DWFnWkAAx-Qg.jpeg)
 
-1. The [maximum entropy](1_maxent.rmd) workflow performs species distribution 
-   modeling using MaxEnt. The modeling is performed on the data sets in 
-   `/data/filtered`, and the results are written in `/results/per_species`. For 
-   valid (accurate) models, the habitat suitability projection is written to a 
-   map, including a version with the input occurrences. In addition, the variable 
-   importance per species, and the species response to each variable is plotted.
+1. [**maximum entropy**](1_maxent.rmd) - perform species distribution modeling 
+   using dismo::maxent. The modeling is performed on the data sets in 
+   `/data/filtered`. The performance of the models is assessed by comparing 
+   their AUC with a distribution of AUC values obtained by modeling on randomly
+   selected points within the buffered species area. The results of this 
+   assessment are written to `/results/maxent/model_summaries/AUCvalues.csv`.
+   The modeling results themselves are written to `/results/per_species/` and
+   include:
+   - raw occurrences (occurrences.png), i.e. the input data
+   - the maxent model as an rda file (valid_maxent_model.rda)
+   - the maxent projection as rda, unrestricted (valid_maxent_prediction.rda) 
+     and restricted by zoogeographic region 
+     (valid_maxent_predication_restricted.rda)
+   - a prediction map (prediction_map.png), and the same with the input 
+     occurrences superimposed on this (prediction_occurence_map.png)
+   - the curves plotting the species' response to the selected variables
+     (valid_maxent_response_curve.png)
+   - the relative importance of the selected variables
+     (valid_maxent_variable_importance.png)
+   - a placeholder README.md file that links these result files together
 2. The [variable importance](2_variable_importance.rmd) workflow summarizes the
-   importance the variables (i.e. GIS layers) have had in the maxent models across 
-   all species.
+   importance the variables (i.e. GIS layers) have had in the maxent models 
+   across all species.
 3. The [outlying mean index](3_omi.rmd) workflow computes 'trait' values for each
    species and for each GIS layer. The values are obtained either by taking the
    GIS layers directly under the raw occurrences and by taking values averaged

@@ -1,24 +1,42 @@
 # Hippotragus niger 
 
-![](image_taxa.png) 
+## Distribution of occurrence points 
 
-## Distribution of occurence points 
-The following map shows the distribution of the filtered occurence points for Hippotragus niger used in the Maxent model. 
+The following map shows the distribution of the filtered 
+[occurrences](../../data/filtered/Hippotragus niger.csv) for Hippotragus niger used in 
+[the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     
 ## Variable importance 
-The variable importance graph shows the relative importance of the abiotic raster layers in the  Maxent model for Hippotragus niger. 
+
+The variable importance graph shows the relative importance of the abiotic 
+raster layers in the model
 
 ![](valid_maxent_variable_importance.png)
     
-## Response curve 
-The response curve graphs show the response of the Maxent model for Hippotragus niger to different values in the abiotic raster layers. 
+## Response curves
+
+The response curve graphs show the modeled response of Hippotragus niger to the 
+selected abiotic raster layers. 
 
 ![](valid_maxent_response_curve.png)
     
-## prediction map 
-The first map shows the predicted suitable areas on earth based on the niche preferences for Hippotragus niger calculated in the Maxent model. The second map shows the suitable area map with the original occurence points.
+## Model predictions
+
+To be able to compute the potential distribution overlap, worldwide, between
+all pairs of species, a model [prediction](valid_maxent_prediction.Rda) is
+available. However, for prediction maps that take into account large-scale 
+biogeographic barriers to dispersal, we use a 
+[restricted prediction](valid_maxent_prediction_restricted.rda) that limits 
+the projection to the 
+[zoogeographical realm(s)](../../data/GIS/Realms/newRealms.shp) in which the
+raw occurrences are located. The maps below are based on this restricted
+projection.
+
+The first map shows the predicted suitable areas on earth based on the niche 
+preferences for Hippotragus niger calculated in the Maxent model. The second map 
+shows the suitable area map with the original occurrence points superimposed.
 
 ![](prediction_map.png)
 ![](prediction_occurence_map.png)
