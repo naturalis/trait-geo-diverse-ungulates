@@ -616,7 +616,7 @@ overlap to 1 which is a complete overlap and is based on the model prediction ma
 
 ```{r calc_dist}
 # location of a triangular, inverse distance matrix file
-overlap.file <- paste(REPO_HOME, "/results/maxent/overlap_schoener.csv", sep = "")
+overlap.file <- paste(REPO_HOME, "/results/maxent/comparative/schoener/overlap.csv", sep = "")
 if (!file.exists(overlap.file)) {
 
   # file doesn't exist, calculate Schoener's Distance and store file
@@ -633,7 +633,7 @@ Having calculated the Schoener's D distances, we can now use these to make a sym
 matrix, and perform a neighbor joining clustering to visualize the distances in niche space.
 
 ```{r cluster_dist}
-dendrogram.file <- paste(REPO_HOME, "/results/maxent/dendrogram_schoener_nj.tree", sep = "")
+dendrogram.file <- paste(REPO_HOME, "/results/maxent/comparative/schoener/inverse_overlap_nj.tree", sep = "")
 if (!file.exists(dendrogram.file)) {
 
   # create a distance matrix, i.e. the inverse of the overlap
