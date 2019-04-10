@@ -156,7 +156,7 @@ if (!file.exists(traits.means.file) ) {
     "Bos_frontalis_gaurus", "Bos_grunniens_mutus", "Bos_javanicus", "Bos_taurus_primigenius",
    	"Bubalus_bubalis_arnee", "Camelus_bactrianus", "Camelus_dromedarius", "Capra_hircus_aegagrus",
    	"Equus_przewalskii", "Lama_glama_guanicoe", "Ovis_aries_orientalis",
-   	"Rangifer_tarandus", "Sus_scrofa", "Vicagna_vicugna"
+   	"Rangifer_tarandus", "Sus_scrofa", "Vicugna_vicugna"
   )
   
   # iterate over taxa
