@@ -561,8 +561,7 @@ for ( i in 1: length(prediction_rasters) ) {
 }
 ```
 
-
-Write readme files to the github. 
+### Write species-specific documentation file
 
 ```{r readme_files}
 # location of a triangular, inverse distance matrix file
@@ -609,6 +608,12 @@ The first map shows the predicted suitable areas on earth based on the niche pre
 }
 
 ```
+
+Niche overlap using Schoener's D
+--------------------------------
+
+### Calculate and store overlap values 
+
 To assess whether the predicted suitable niche spaces differ per species we calculate their niche 
 overlap. We use Schoener’s D to calculate niche overlap since it has been suggested to be the best 
 suited index for maxent SDM outputs (Rödder & Engler, 2011). The index ranges from 0 which is no 
@@ -628,6 +633,8 @@ if (!file.exists(overlap.file)) {
   overlap <- read.table(overlap.file, sep = ",")
 }
 ```
+
+### Construct and store NJ tree
 
 Having calculated the Schoener's D distances, we can now use these to make a symmetrical distance
 matrix, and perform a neighbor joining clustering to visualize the distances in niche space.
