@@ -42,6 +42,8 @@ Available workflows
 7. [**trait-dependent diversification**](7_trait-dependent_diversification.rmd)
    - assesses whether there is evidence for an adaptive radiation in relation
    to grazing, using a BiSSE analysis.
+8. [**DPLACE**](8_dplace.rmd) - performs statistical tests to link societal
+   data from DPLACE to Ungulate niches.
 
 Manuscript
 ----------
