@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Hippotragus niger.csv) for Hippotragus niger used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Hippotragus_niger.csv) for Hippotragus niger 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Neotragus batesi.csv) for Neotragus batesi used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Neotragus_batesi.csv) for Neotragus batesi 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

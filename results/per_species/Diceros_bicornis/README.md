@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Diceros bicornis.csv) for Diceros bicornis used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Diceros_bicornis.csv) for Diceros bicornis 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

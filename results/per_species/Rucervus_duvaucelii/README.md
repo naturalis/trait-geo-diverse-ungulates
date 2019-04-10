@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Rucervus duvaucelii.csv) for Rucervus duvaucelii used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Rucervus_duvaucelii.csv) for Rucervus duvaucelii 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

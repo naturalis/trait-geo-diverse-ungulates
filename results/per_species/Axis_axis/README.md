@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Axis axis.csv) for Axis axis used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Axis_axis.csv) for Axis axis 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

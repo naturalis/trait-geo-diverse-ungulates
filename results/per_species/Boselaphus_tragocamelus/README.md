@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Boselaphus tragocamelus.csv) for Boselaphus tragocamelus used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Boselaphus_tragocamelus.csv) for Boselaphus tragocamelus 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

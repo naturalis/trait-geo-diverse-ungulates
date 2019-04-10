@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Cervus elaphus.csv) for Cervus elaphus used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Cervus_elaphus.csv) for Cervus elaphus 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

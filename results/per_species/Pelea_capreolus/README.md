@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Pelea capreolus.csv) for Pelea capreolus used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Pelea_capreolus.csv) for Pelea capreolus 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

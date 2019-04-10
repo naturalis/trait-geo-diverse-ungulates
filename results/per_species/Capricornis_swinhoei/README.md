@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Capricornis swinhoei.csv) for Capricornis swinhoei used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Capricornis_swinhoei.csv) for Capricornis swinhoei 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

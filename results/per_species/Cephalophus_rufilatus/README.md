@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Cephalophus rufilatus.csv) for Cephalophus rufilatus used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Cephalophus_rufilatus.csv) for Cephalophus rufilatus 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

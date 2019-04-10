@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Redunca redunca.csv) for Redunca redunca used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Redunca_redunca.csv) for Redunca redunca 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

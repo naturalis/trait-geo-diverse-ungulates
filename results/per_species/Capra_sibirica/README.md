@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Capra sibirica.csv) for Capra sibirica used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Capra_sibirica.csv) for Capra sibirica 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

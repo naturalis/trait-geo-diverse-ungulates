@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Ovis aries orientalis.csv) for Ovis aries orientalis used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Ovis_aries_orientalis.csv) for Ovis aries orientalis 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

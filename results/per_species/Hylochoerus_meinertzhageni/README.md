@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Hylochoerus meinertzhageni.csv) for Hylochoerus meinertzhageni used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Hylochoerus_meinertzhageni.csv) for Hylochoerus meinertzhageni 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Mazama gouazoubira.csv) for Mazama gouazoubira used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Mazama_gouazoubira.csv) for Mazama gouazoubira 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

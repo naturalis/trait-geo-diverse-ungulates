@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Hemitragus jemlahicus.csv) for Hemitragus jemlahicus used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Hemitragus_jemlahicus.csv) for Hemitragus jemlahicus 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Rangifer tarandus.csv) for Rangifer tarandus used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Rangifer_tarandus.csv) for Rangifer tarandus 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

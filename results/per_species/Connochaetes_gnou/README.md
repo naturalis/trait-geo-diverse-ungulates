@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Connochaetes gnou.csv) for Connochaetes gnou used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Connochaetes_gnou.csv) for Connochaetes gnou 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

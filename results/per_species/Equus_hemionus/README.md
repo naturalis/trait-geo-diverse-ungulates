@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Equus hemionus.csv) for Equus hemionus used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Equus_hemionus.csv) for Equus hemionus 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

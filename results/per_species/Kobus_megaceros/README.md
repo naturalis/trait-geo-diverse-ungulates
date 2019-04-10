@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Kobus megaceros.csv) for Kobus megaceros used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Kobus_megaceros.csv) for Kobus megaceros 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

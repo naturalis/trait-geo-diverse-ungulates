@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Pudu puda.csv) for Pudu puda used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Pudu_puda.csv) for Pudu puda 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

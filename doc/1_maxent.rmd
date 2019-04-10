@@ -578,8 +578,8 @@ for ( i in 1:length(taxa)) {
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/{{taxa_name}}.csv) for {{taxa_name}} used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/{{taxa_underscore}}.csv) for {{taxa_name}} 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     
@@ -616,7 +616,7 @@ shows the suitable area map with the original occurrence points superimposed.
 ![](prediction_map.png)
 ![](prediction_occurence_map.png)
     '
-    data <- list( taxa_name = taxa_remove)
+    data <- list( taxa_name = taxa_remove, taxa_underscore = name )
     
     text <- whisker.render(template, data)
     

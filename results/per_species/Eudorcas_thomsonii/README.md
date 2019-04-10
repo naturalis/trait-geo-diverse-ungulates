@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Eudorcas thomsonii.csv) for Eudorcas thomsonii used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Eudorcas_thomsonii.csv) for Eudorcas thomsonii 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

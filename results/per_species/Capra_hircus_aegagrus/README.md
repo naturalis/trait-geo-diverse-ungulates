@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Capra hircus aegagrus.csv) for Capra hircus aegagrus used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Capra_hircus_aegagrus.csv) for Capra hircus aegagrus 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

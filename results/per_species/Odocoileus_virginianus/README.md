@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Odocoileus virginianus.csv) for Odocoileus virginianus used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Odocoileus_virginianus.csv) for Odocoileus virginianus 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

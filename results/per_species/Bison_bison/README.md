@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Bison bison.csv) for Bison bison used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Bison_bison.csv) for Bison bison 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

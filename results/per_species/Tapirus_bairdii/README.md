@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Tapirus bairdii.csv) for Tapirus bairdii used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Tapirus_bairdii.csv) for Tapirus bairdii 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

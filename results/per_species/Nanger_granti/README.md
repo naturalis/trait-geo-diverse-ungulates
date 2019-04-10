@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Nanger granti.csv) for Nanger granti used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Nanger_granti.csv) for Nanger granti 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

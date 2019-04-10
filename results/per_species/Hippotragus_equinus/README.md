@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Hippotragus equinus.csv) for Hippotragus equinus used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Hippotragus_equinus.csv) for Hippotragus equinus 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

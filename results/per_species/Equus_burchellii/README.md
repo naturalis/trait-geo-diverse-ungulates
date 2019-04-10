@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Equus burchellii.csv) for Equus burchellii used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Equus_burchellii.csv) for Equus burchellii 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

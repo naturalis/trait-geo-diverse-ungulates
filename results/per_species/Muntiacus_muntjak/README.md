@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Muntiacus muntjak.csv) for Muntiacus muntjak used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Muntiacus_muntjak.csv) for Muntiacus muntjak 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Hippocamelus antisensis.csv) for Hippocamelus antisensis used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Hippocamelus_antisensis.csv) for Hippocamelus antisensis 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

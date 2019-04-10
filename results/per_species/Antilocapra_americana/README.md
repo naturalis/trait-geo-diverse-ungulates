@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Antilocapra americana.csv) for Antilocapra americana used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Antilocapra_americana.csv) for Antilocapra americana 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

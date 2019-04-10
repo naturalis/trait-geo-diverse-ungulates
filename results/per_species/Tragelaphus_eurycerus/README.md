@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Tragelaphus eurycerus.csv) for Tragelaphus eurycerus used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Tragelaphus_eurycerus.csv) for Tragelaphus eurycerus 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

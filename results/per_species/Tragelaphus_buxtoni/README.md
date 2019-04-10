@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Tragelaphus buxtoni.csv) for Tragelaphus buxtoni used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Tragelaphus_buxtoni.csv) for Tragelaphus buxtoni 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

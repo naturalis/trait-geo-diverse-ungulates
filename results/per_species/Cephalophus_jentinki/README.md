@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Cephalophus jentinki.csv) for Cephalophus jentinki used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Cephalophus_jentinki.csv) for Cephalophus jentinki 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

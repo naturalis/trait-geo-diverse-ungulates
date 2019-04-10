@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Madoqua guentheri.csv) for Madoqua guentheri used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Madoqua_guentheri.csv) for Madoqua guentheri 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

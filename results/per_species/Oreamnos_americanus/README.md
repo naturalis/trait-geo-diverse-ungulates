@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Oreamnos americanus.csv) for Oreamnos americanus used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Oreamnos_americanus.csv) for Oreamnos americanus 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

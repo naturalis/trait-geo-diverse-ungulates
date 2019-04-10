@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Oryx leucoryx.csv) for Oryx leucoryx used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Oryx_leucoryx.csv) for Oryx leucoryx 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

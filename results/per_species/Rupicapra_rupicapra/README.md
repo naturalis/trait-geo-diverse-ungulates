@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Rupicapra rupicapra.csv) for Rupicapra rupicapra used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Rupicapra_rupicapra.csv) for Rupicapra rupicapra 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

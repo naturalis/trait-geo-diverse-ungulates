@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Mazama pandora.csv) for Mazama pandora used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Mazama_pandora.csv) for Mazama pandora 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

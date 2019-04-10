@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Phacochoerus aethiopicus.csv) for Phacochoerus aethiopicus used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Phacochoerus_aethiopicus.csv) for Phacochoerus aethiopicus 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

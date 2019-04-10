@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Tayassu pecari.csv) for Tayassu pecari used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Tayassu_pecari.csv) for Tayassu pecari 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

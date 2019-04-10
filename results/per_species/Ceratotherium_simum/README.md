@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Ceratotherium simum.csv) for Ceratotherium simum used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Ceratotherium_simum.csv) for Ceratotherium simum 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

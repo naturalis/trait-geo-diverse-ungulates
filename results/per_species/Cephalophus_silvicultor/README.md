@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Cephalophus silvicultor.csv) for Cephalophus silvicultor used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Cephalophus_silvicultor.csv) for Cephalophus silvicultor 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

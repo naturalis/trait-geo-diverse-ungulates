@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Capricornis crispus.csv) for Capricornis crispus used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Capricornis_crispus.csv) for Capricornis crispus 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Capra pyrenaica.csv) for Capra pyrenaica used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Capra_pyrenaica.csv) for Capra pyrenaica 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

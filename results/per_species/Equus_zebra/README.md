@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Equus zebra.csv) for Equus zebra used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Equus_zebra.csv) for Equus zebra 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Ovis ammon.csv) for Ovis ammon used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Ovis_ammon.csv) for Ovis ammon 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

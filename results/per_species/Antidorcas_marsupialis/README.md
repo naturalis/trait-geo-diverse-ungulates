@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Antidorcas marsupialis.csv) for Antidorcas marsupialis used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Antidorcas_marsupialis.csv) for Antidorcas marsupialis 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     

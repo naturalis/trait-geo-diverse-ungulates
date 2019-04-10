@@ -3,8 +3,8 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Dama dama.csv) for Dama dama used in 
-[the Maxent model](valid_maxent_model.rda). 
+[occurrences](../../data/filtered/Dama_dama.csv) for Dama dama 
+used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
     
