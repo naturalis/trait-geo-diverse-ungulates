@@ -29,7 +29,7 @@ Available workflows
    in clusters that are specific to the domesticated species. Visualizes these
    clusterings. Identifies the niche traits with the greatest magnitude 
    difference between the cluster ingroup and outgroup.
-2. [**phylogeny**](5_phylogeny.rmd) workflow tests whether evolutionary 
+5. [**phylogeny**](5_phylogeny.rmd) - tests whether evolutionary 
    relatedness, i.e. phylogeny, shapes the pattern of similarities and 
    differences in abiotic niche dimensions among the terrestrial Ungulates. The 
    general approach to test this is to perform a Mantel test that randomizes
