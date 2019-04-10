@@ -70,10 +70,10 @@ for (i in 1:length(files.names)) {
 names(gis.layers) <- gis.layers.names
 ```
 
-Maxent models for variable contributions
-----------------------------------------
+Contribution of layers to maxent models
+---------------------------------------
 
-Populate a data.frame of taxa x traits and record the contribution of each of these traits:
+Populate a data.frame of taxa x layers and record the contribution of each of these layers:
 
 ```{r models}
 
@@ -103,7 +103,7 @@ for (i in 1: length(taxa.names)) {
   }
 }
 
-traits.contributions.csv<- paste(REPO_HOME, "Results/maxent/traits_contribution_maxent.csv", sep="")
+traits.contributions.csv <- paste(REPO_HOME, "results/maxent/traits_contribution_maxent.csv", sep="")
 write.csv(traits.contributions, traits.contributions.csv)
 
 ```
@@ -126,7 +126,7 @@ for ( i in 1:length(traits.contributions.summary$names) ) {
   traits.contributions.df[i,2] <- traits.contributions.summary$n[i]
 }
 
-mean.traits.contributions.csv<- paste(REPO_HOME, "Results/maxent/mean_traits_contribution_maxent.csv", sep="")
+mean.traits.contributions.csv <- paste(REPO_HOME, "results/maxent/mean_traits_contribution_maxent.csv", sep="")
 write.csv(traits.contributions.df, mean.traits.contributions.csv)
 ```
 
