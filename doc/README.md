@@ -1,7 +1,7 @@
 Available workflows
 ===================
 
-![](Dy4DWFnWkAAx-Qg.jpeg)
+![](images/Dy4DWFnWkAAx-Qg.jpeg)
 
 1. The [maximum entropy](1_maxent.rmd) workflow performs species distribution 
    modeling using MaxEnt. The modeling is performed on the data sets in 
@@ -9,11 +9,14 @@ Available workflows
    valid (accurate) models, the habitat suitability projection is written to a 
    map, including a version with the input occurrences. In addition, the variable 
    importance and the response to each variable is plotted.
-2. The [outlying mean index](2_omi.rm) workflow computes 'trait' values for each
+2. The [outlying mean index](2_omi.rmd) workflow computes 'trait' values for each
    species and for each GIS layer. The values are obtained either by taking the
    GIS layers directly under the raw occurrences and by taking values averaged
    over the GIS layer pixels whose habitat suitability is higher than that of
-   the worst 10% of the raw occurrences.
+   the worst 10% of the raw occurrences. Subsequently the Gower's distance 
+   between species is computed for these values, and the species are then 
+   clustered.
+3. The [niche clusters](3_niche_clusters.rmd) workflow
 2. The [phylogeny](2_phylogeny.rmd) workflow tests whether evolutionary 
    relatedness, i.e. phylogeny, shapes the pattern of similarities and 
    differences in abiotic niche dimensions among the terrestrial Ungulates. The 
