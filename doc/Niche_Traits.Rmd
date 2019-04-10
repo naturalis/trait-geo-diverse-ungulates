@@ -8,8 +8,6 @@ output: html_document
 Load the required libraries:
 
 ```{r load_libs}
-.libPaths("C:/Users/elkeh/OneDrive/Documenten/R/win-library/3.4")
-
 library(dismo, quietly=T)
 library(phytools, quietly = T)
 library(phylolm, quietly = T)
