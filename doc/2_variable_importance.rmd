@@ -103,7 +103,7 @@ for (i in 1: length(taxa.names)) {
   }
 }
 
-traits.contributions.csv <- paste(REPO_HOME, "results/maxent/traits_contribution_maxent.csv", sep="")
+traits.contributions.csv <- paste(REPO_HOME, "results/maxent/model_summaries/traits_contribution_maxent.csv", sep="")
 write.csv(traits.contributions, traits.contributions.csv)
 
 ```
@@ -126,6 +126,6 @@ for ( i in 1:length(traits.contributions.summary$names) ) {
   traits.contributions.df[i,2] <- traits.contributions.summary$n[i]
 }
 
-mean.traits.contributions.csv <- paste(REPO_HOME, "results/maxent/mean_traits_contribution_maxent.csv", sep="")
+mean.traits.contributions.csv <- paste(REPO_HOME, "results/maxent/model_summaries/mean_traits_contribution_maxent.csv", sep="")
 write.csv(traits.contributions.df, mean.traits.contributions.csv)
 ```

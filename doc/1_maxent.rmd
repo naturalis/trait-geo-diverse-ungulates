@@ -338,7 +338,7 @@ output_AUC_valid <- data.frame(
   )
 )
 colnames(output_AUC_valid) <- c("taxon", "trainingAUC", "validation")
-AUC.csv <- paste(REPO_HOME, "/results/maxent/AUCvalues.csv", sep = "")
+AUC.csv <- paste(REPO_HOME, "/results/maxent/model_summaries/AUCvalues.csv", sep = "")
 
 # iterate over accurate models and add to data frame
 for (i in 1:length(list_species_model_high_accuracy)) {

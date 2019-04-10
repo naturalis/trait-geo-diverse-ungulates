@@ -8,10 +8,10 @@ Available workflows
    `/data/filtered`, and the results are written in `/results/per_species`. For 
    valid (accurate) models, the habitat suitability projection is written to a 
    map, including a version with the input occurrences. In addition, the variable 
-   importance and the response to each variable is plotted.
+   importance per species, and the species response to each variable is plotted.
 2. The [variable importance](2_variable_importance.rmd) workflow summarizes the
-   importance the various GIS layers have had in the maxent models across all 
-   species.
+   importance the variables (i.e. GIS layers) have had in the maxent models across 
+   all species.
 3. The [outlying mean index](3_omi.rmd) workflow computes 'trait' values for each
    species and for each GIS layer. The values are obtained either by taking the
    GIS layers directly under the raw occurrences and by taking values averaged
