@@ -263,7 +263,10 @@ write.csv(p, normalized.csv)
 rm(p,nic)
 ```
 
-calculate gower's distance
+Using the OMI values we can now calculate the distance between all pairs of species. For
+this we use [Gower's distance](http://doi.org/10.2307/2528823). Given the distance matrix
+we then construct dendrograms using hierarchical clustering (hclust) and neighbor-joining
+(nj).
 
 ```{r gowers_distance}
 # load the normalized values from the github
@@ -275,7 +278,7 @@ tree.withouthnames <- normalized.values[,-1]
 rownames(tree.withouthnames) <- normalized.values[,1]
 
 # save gowers dataframe 
-overlap.csv <- paste(REPO_HOME, "/results/maxent/gowers_overlap_raw_occurencepoints.csv", sep="")
+overlap.csv <- paste(REPO_HOME, "/results/maxent/comparative/gower/raw_omi.csv", sep="")
 gow <- daisy(tree.withouthnames, metric="gower", stand=FALSE)
 gow_df <- as.matrix(gow)
 
@@ -295,10 +298,10 @@ nj.tree<- as.phylo(nj)
 
 
 # write tree 
-tree.file <- paste(REPO_HOME, "/results/maxent/overlap_gower_raw_occurences_hclust.tree", sep="")
+tree.file <- paste(REPO_HOME, "/results/maxent/comparative/gower/raw_omi_hclust.tree", sep="")
 write.tree(tree, file = tree.file)
 
-tree.nj.file<- paste(REPO_HOME, "/results/maxent/overlap_gower_raw_occurences_nj.tree", sep="")
+tree.nj.file<- paste(REPO_HOME, "/results/maxent/comparative/gower/raw_omi_nj.tree", sep="")
 write.tree(nj.tree, file = tree.nj.file)
 
 ```
