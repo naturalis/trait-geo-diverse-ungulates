@@ -36,6 +36,9 @@ Available workflows
    niche clustering a predefined number of times (e.g. 100) with respect to the
    phylogenetic clustering, and then assesses the distribution of correlation
    coefficients.
+6. [**phyloglm**](6_phyloglm.rmd) - performs phylogenetic generalized linear
+   modeling and model selection to identify which niche traits most predict
+   domestication.
 
 Manuscript
 ----------
