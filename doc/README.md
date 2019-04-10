@@ -39,6 +39,9 @@ Available workflows
 6. [**phyloglm**](6_phyloglm.rmd) - performs phylogenetic generalized linear
    modeling and model selection to identify which niche traits most predict
    domestication.
+7. [**trait-dependent diversification**](7_trait-dependent_diversification.rmd)
+   - assesses whether there is evidence for an adaptive radiation in relation
+   to grazing, using a BiSSE analysis.
 
 Manuscript
 ----------
