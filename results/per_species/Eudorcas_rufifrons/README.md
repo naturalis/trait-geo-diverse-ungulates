@@ -3,7 +3,7 @@
 ## Distribution of occurrence points 
 
 The following map shows the distribution of the filtered 
-[occurrences](../../data/filtered/Eudorcas_rufifrons.csv) for Eudorcas rufifrons 
+[occurrences](../../../data/filtered/Eudorcas_rufifrons.csv) for Eudorcas rufifrons 
 used in [the Maxent model](valid_maxent_model.rda). 
 
 ![](occurrences.png)
@@ -30,7 +30,7 @@ available. However, for prediction maps that take into account large-scale
 biogeographic barriers to dispersal, we use a 
 [restricted prediction](valid_maxent_prediction_restricted.rda) that limits 
 the projection to the 
-[zoogeographical realm(s)](../../data/GIS/Realms/newRealms.shp) in which the
+[zoogeographical realm(s)](../../../data/GIS/Realms/newRealms.shp) in which the
 raw occurrences are located. The maps below are based on this restricted
 projection.
 
