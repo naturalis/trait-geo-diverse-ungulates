@@ -3,38 +3,33 @@ Available workflows
 
 ![](images/Dy4DWFnWkAAx-Qg.jpeg)
 
-1. [**maximum entropy**](1_maxent.rmd) - perform species distribution modeling 
-   using dismo::maxent. The modeling is performed on the data sets in 
+1. [**maximum entropy**](1_maxent.rmd) - species distribution modeling using 
+   dismo::maxent. The modeling is performed on the data sets in 
    `/data/filtered`. The performance of the models is assessed by comparing 
    their AUC with a distribution of AUC values obtained by modeling on randomly
    selected points within the buffered species area. The results of this 
    assessment are written to `/results/maxent/model_summaries/AUCvalues.csv`.
    The modeling results themselves are written to `/results/per_species/` and
-   include:
-   - raw occurrences (occurrences.png), i.e. the input data
-   - the maxent model as an rda file (valid_maxent_model.rda)
-   - the maxent projection as rda, unrestricted (valid_maxent_prediction.rda) 
-     and restricted by zoogeographic region 
-     (valid_maxent_predication_restricted.rda)
-   - a prediction map (prediction_map.png), and the same with the input 
-     occurrences superimposed on this (prediction_occurence_map.png)
-   - the curves plotting the species' response to the selected variables
-     (valid_maxent_response_curve.png)
-   - the relative importance of the selected variables
-     (valid_maxent_variable_importance.png)
-   - a placeholder README.md file that links these result files together
-2. The [variable importance](2_variable_importance.rmd) workflow summarizes the
+   include a README.md file for each species that explains the source and 
+   purpose of the different output files.
+2. [**variable importance**](2_variable_importance.rmd) - summarizes the
    importance the variables (i.e. GIS layers) have had in the maxent models 
-   across all species.
-3. The [outlying mean index](3_omi.rmd) workflow computes 'trait' values for each
+   across all species. Produces output for each species and for each GIS
+   layer, both written to `/results/maxent/model_summaries/`.
+3. [**outlying mean index**](3_omi.rmd) - computes 'trait' values for each
    species and for each GIS layer. The values are obtained either by taking the
-   GIS layers directly under the raw occurrences and by taking values averaged
-   over the GIS layer pixels whose habitat suitability is higher than that of
-   the worst 10% of the raw occurrences. Subsequently the Gower's distance 
-   between species is computed for these values, and the species are then 
-   clustered.
-3. The [niche clusters](3_niche_clusters.rmd) workflow
-2. The [phylogeny](2_phylogeny.rmd) workflow tests whether evolutionary 
+   GIS pixel values directly under the raw occurrences or by taking values 
+   averaged over the GIS pixels whose habitat suitability is higher than 
+   that of the worst 10% of the raw occurrences. Subsequently the Gower's 
+   distance between species is computed for these values, and the species are 
+   then clustered using neighbor-joining and hierarchical clustering.
+4. [**niche clusters**](4_niche_clusters.rmd) - takes a dendrogram (whether
+   Schoener's D or Gower's D, and irrespective of clustering algorithm) and
+   attempts to partition this optimally such that the dendrogram is subdivided
+   in clusters that are specific to the domesticated species. Visualizes these
+   clusterings. Identifies the niche traits with the greatest magnitude 
+   difference between the cluster ingroup and outgroup.
+2. [**phylogeny**](5_phylogeny.rmd) workflow tests whether evolutionary 
    relatedness, i.e. phylogeny, shapes the pattern of similarities and 
    differences in abiotic niche dimensions among the terrestrial Ungulates. The 
    general approach to test this is to perform a Mantel test that randomizes
