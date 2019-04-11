@@ -271,15 +271,17 @@ we then construct dendrograms using hierarchical clustering (hclust) and neighbo
 ```{r gowers_distance}
 # load the normalized values from the github
 normalized.repo <- paste(REPO_HOME, '/results/OMI/normalized_raw_values.csv', sep = '')
-normalized.values <- read.csv(normalized.repo)
+normalized.values <- read.csv(normalized.repo, header=TRUE, row.names = 1)
 
-# set names of species to rownames
-tree.withouthnames <- normalized.values[,-1]
-rownames(tree.withouthnames) <- normalized.values[,1]
+
+# load the variable importance constructed in the previous script 2_variable_importance.rmd
+mean.traits.contributions.csv <- paste(REPO_HOME, "results/maxent/model_summaries/mean_traits_contribution_maxent.csv", sep="")
+mean.traits<- read.csv(mean.traits.contributions.csv)
+mean.importance<- as.numeric(mean.traits[,2])
 
 # save gowers dataframe 
-overlap.csv <- paste(REPO_HOME, "/results/maxent/comparative/gower/raw_omi.csv", sep="")
-gow <- daisy(tree.withouthnames, metric="gower", stand=FALSE)
+overlap.csv <- paste(REPO_HOME, "/results/maxent/comparative/gower/maxent_omi.csv", sep="")
+gow <- daisy(normalized.values[1:41], metric="gower", stand=FALSE, weights = mean.importance )
 gow_df <- as.matrix(gow)
 
 if (!file.exists(overlap.csv)) {
@@ -298,10 +300,10 @@ nj.tree<- as.phylo(nj)
 
 
 # write tree 
-tree.file <- paste(REPO_HOME, "/results/maxent/comparative/gower/raw_omi_hclust.tree", sep="")
+tree.file <- paste(REPO_HOME, "/results/maxent/comparative/gower/maxent_omi_hclust.tree", sep="")
 write.tree(tree, file = tree.file)
 
-tree.nj.file<- paste(REPO_HOME, "/results/maxent/comparative/gower/raw_omi_nj.tree", sep="")
+tree.nj.file<- paste(REPO_HOME, "/results/maxent/comparative/gower/maxent_omi_nj.tree", sep="")
 write.tree(nj.tree, file = tree.nj.file)
 
 ```
