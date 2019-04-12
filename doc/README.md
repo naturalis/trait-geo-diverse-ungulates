@@ -15,7 +15,7 @@ Available workflows
 2. [**variable importance and model summaries**](2_variable_importance.rmd) - summarizes the
    importance the variables (i.e. GIS layers) have had in the maxent models 
    across all species. Produces output for each species and for each GIS
-   layer, written to `/results/maxent/model_summaries/traits_contribution_maxent.csv` and `/results/maxent/model_summaries/mean_traits_contribution_maxent.csv` 
+   layer, written to `/results/maxent/model_summaries/traits_contribution_maxent.csv` and `/results/maxent/model_summaries/mean_traits_contribution_maxent.csv`. The variable importance dataframes are used to summarize the models per species (AUC value, n occurrence points, variable importance in descending order), written to `/results/maxent/model_summaries/summary_df.csv`
 3. [**outlying mean index**](3_omi.rmd) - computes 'trait' values for each
    species and for each GIS layer. The values are obtained either by taking the
    GIS pixel values directly under the raw occurrences or by taking values 
