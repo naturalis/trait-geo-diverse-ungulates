@@ -1,9 +1,6 @@
----
-title: "Niche Traits"
-author: "Rutger Vos (@rvosa)"
-date: "27-2-2019"
-output: html_document
----
+
+Variable importance 
+============
 
 Load the required libraries:
 
@@ -77,6 +74,9 @@ Populate a data.frame of taxa x layers and record the contribution of each of th
 
 ```{r models}
 
+traits.contributions.csv <- paste(REPO_HOME, "results/maxent/model_summaries/traits_contribution_maxent.csv", sep="")
+
+ if (!file.exists(traits.contributions.csv)) {
 # instantiate variable contributions frame from a matrix of taxa x layers
 traits.contributions <- data.frame(matrix(
   nrow = length(taxa.names), 
@@ -103,8 +103,11 @@ for (i in 1: length(taxa.names)) {
   }
 }
 
-traits.contributions.csv <- paste(REPO_HOME, "results/maxent/model_summaries/traits_contribution_maxent.csv", sep="")
 write.csv(traits.contributions, traits.contributions.csv)
+ }
+
+traits.contributions <- read.csv(traits.contributions.csv)
+    
 
 ```
 
@@ -115,6 +118,9 @@ Now let's summarize the variable importance:
 # make a box plot. as a side effect, the summary statistics are returned
 traits.contributions.summary <- boxplot.default(traits.contributions, varwidth = T, outline = F)
 
+mean.traits.contributions.csv <- paste(REPO_HOME, "results/maxent/model_summaries/mean_traits_contribution_maxent.csv", sep="")
+
+if (!file.exists(mean.traits.contributions.csv)) {
 # we will populate a data frame with the returned summary statistics
 traits.contributions.df <- data.frame(matrix(
   nrow = length(gis.layers.names), 
@@ -126,6 +132,50 @@ for ( i in 1:length(traits.contributions.summary$names) ) {
   traits.contributions.df[i,2] <- traits.contributions.summary$n[i]
 }
 
-mean.traits.contributions.csv <- paste(REPO_HOME, "results/maxent/model_summaries/mean_traits_contribution_maxent.csv", sep="")
 write.csv(traits.contributions.df, mean.traits.contributions.csv)
+}
+```
+
+As a last step we summarize all models: AUC values, number of occurrence points and the descending order of variable importance per model. 
+
+```{r model summaries}
+output.csv<- paste(REPO_HOME, "/Results/maxent/summary_df.csv", sep="")  
+
+if (!file.exists(mean.traits.contributions.csv)) {
+  
+# create empty dataframe with columns "Species_name", "AUC values, "n", "important_variables"
+df.summary <- data.frame(matrix(ncol = 4, nrow = length(taxa.names)))
+x <- c("species", "n", "AUC", "important_variables")
+colnames(df.summary) <- x
+
+# load AUC df
+df.auc<- sprintf("%s/Results/maxent/model_summaries/AUCvalues.csv", REPO_HOME)
+df.auc<- read.csv(df.auc, header = T)
+
+# load trait contribution
+df.traits<- sprintf("%s/Results/maxent/model_summaries/traits_contribution_maxent.csv", REPO_HOME)
+df.traits <- read.csv(df.traits, header = T, row.names = 1)
+y <- c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29","30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41")
+colnames(df.traits) <- y
+
+for (i in 1:length(taxa.names)) {
+  # set species name
+  df.summary[i,1] <- taxa.names[i]
+  # count number of occurence points 
+  csv.file <- sprintf("%s/data/filtered/%s.csv", REPO_HOME, taxa.names[i])
+  csv <- read.csv(csv.file, header = T)
+  df.summary[i,2] <- nrow(csv)
+  # select the AUC value
+  df.summary[i,3] <- df.auc[i,"trainingAUC"]
+  # order the trait contribution
+  traits.row <- df.traits[i,]
+  traits.row<- na.omit(t(traits.row))
+  traits.row<-traits.row[order(traits.row, decreasing = TRUE),] 
+  traits.row<- as.data.frame(traits.row)
+  traits.row<- rownames(traits.row)
+  df.summary[i,4] <- paste(traits.row, collapse= "," )
+  }
+
+write.csv(df.summary, output.csv)
+}
 ```
