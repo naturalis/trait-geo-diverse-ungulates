@@ -1,3 +1,8 @@
+---
+output:
+  html_document: default
+  pdf_document: default
+---
 
 Niche Models
 ============
@@ -283,7 +288,8 @@ list_species_model_low_accuracy <- list()
 list_species_model_high_accuracy <- list()
 
 # iterate over n species
-for (i in 1:length(taxa)) {
+for (i in 1: length(taxa) )
+    {
   name <- taxa[i]
   valid.model.file <- sprintf(
     "%s/results/per_species/%s/valid_maxent_model.rda", REPO_HOME, name)
@@ -460,6 +466,7 @@ biomes in which the occurrences were recorded to begin with.
 prediction_rasters <- stack()
 crs.string <- "+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs"
 
+# the stacking of all the suitability rasters uses a lot of memory. You can change 1: lenth(taxa) to for example the first 20 species 1:20. When calculating the Schoener's distance in {calc_dist} all the suitability rasters need to be stacked and therefore it is recommended to use a computer with sufficient memory. 
 for ( i in 1:length(taxa) ) {
   taxon.name <- gsub( '_', ' ', taxa[i] )
 
