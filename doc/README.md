@@ -4,7 +4,7 @@ Available workflows
 
 ![](images/Dy4DWFnWkAAx-Qg.jpeg)
 
-1. [**maximum entropy**](1.maxent/1_maxent.html) - species distribution modeling using 
+1. [**maximum entropy**](1.maxent/index.html) - species distribution modeling using 
    dismo::maxent. The modeling is performed on the data sets in 
    `/data/filtered`. The performance of the models is assessed by comparing 
    their AUC with a distribution of AUC values obtained by modeling on randomly
