@@ -1,15 +1,15 @@
 
-Variable importance 
+2. variable importance and model summaries
 ============
 
 Load the required libraries:
 
-```{r load_libs}
+```{r load_libs, message=FALSE, warning=FALSE}
 library(dismo, quietly=T)
 library(phytools, quietly = T)
 library(phylolm, quietly = T)
 library(dplyr, quietly = T)
-source(Data.R)
+source("../script/Data.R")
 ```
 
 Initialize global variables:
@@ -65,6 +65,7 @@ for (i in 1:length(files.names)) {
 
 # Apply all names
 names(gis.layers) <- gis.layers.names
+plot(gis.layers)
 ```
 
 Contribution of layers to maxent models
@@ -116,7 +117,7 @@ Now let's summarize the variable importance:
 ```{r contributions}
 
 # make a box plot. as a side effect, the summary statistics are returned
-traits.contributions.summary <- boxplot.default(traits.contributions, varwidth = T, outline = F)
+traits.contributions.summary <- boxplot.default(traits.contributions[2:42], varwidth = T, outline = F, col = c("darkorange", "firebrick1", "goldenrod1"))
 
 mean.traits.contributions.csv <- paste(REPO_HOME, "results/maxent/model_summaries/mean_traits_contribution_maxent.csv", sep="")
 
