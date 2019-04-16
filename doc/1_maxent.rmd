@@ -1,8 +1,3 @@
----
-output:
-  html_document: default
-  pdf_document: default
----
 
 1. maximum entropy 
 ============
@@ -450,8 +445,7 @@ prediction_rasters <- stack()
 crs.string <- "+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs"
 
 # the stacking of all the suitability rasters uses a lot of memory. You can change 1: lenth(taxa) to for example the first 20 species 1:20. When calculating the Schoener's distance in {calc_dist} all the suitability rasters need to be stacked (use 1:length(taxa)) and therefore it is recommended to use a computer with sufficient memory. 
-for ( i in 1:20
-      #length(taxa) 
+for ( i in 1:length(taxa) 
       ) {
   taxon.name <- gsub( '_', ' ', taxa[i] )
 
@@ -510,7 +504,7 @@ for ( i in 1:20
   }
 }
 # if you only stack the first 20 used taxa[1:20]
-names(prediction_rasters) <- taxa[1:20]
+names(prediction_rasters) <- taxa
 
 ```
 
