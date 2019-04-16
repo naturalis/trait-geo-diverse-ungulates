@@ -4,7 +4,7 @@ output:
   pdf_document: default
 ---
 
-Niche Models
+1. maximum entropy 
 ============
 
 Introduction
@@ -19,32 +19,15 @@ to calculate the niche per species:
 
 The following libraries and scripts need to be loaded:
 
-```{r libraries}
+```{r libraries, message=FALSE, warning=FALSE}
 library(raster, quietly = T)
 library(knitr, quietly = T)
 library(maxent, quietly = T)
-library(maps, quietly = T)
 library(rJava, quietly = T)
 library(maptools, quietly = T)
-library(jsonlite, quietly = T)
-library(caret, quietly = T)
-library(ENMeval, quietly = T)
-library(repmis, quietly = T)
-library(CoordinateCleaner, quietly = T)
 library(dismo, quietly = T)
-library(virtualspecies, quietly = T)
 library(sp, quietly = T)
-library(rgeos, quietly = T)
 library(ape, quietly = T)
-library(adehabitatMA, quietly = T)
-library(ade4, quietly = T)
-library(raster, quietly = T)
-library(SDMTools, quietly = T)
-library(factoextra, quietly = T)
-library(ecospat, quietly = T)
-library(phytools, quietly = T)
-library(rphylopic, quietly = T)
-library(whisker, quietly = T)
 library(rgdal, quietly=T)
 library(dplyr, quietly=T)
 
@@ -461,13 +444,15 @@ thus generate disregard barriers to dispersal and are therefore quite unnatural.
 For more plausible projections we restrict the extent in which we project to the
 biomes in which the occurrences were recorded to begin with.
 
-```{r plot_suitability}
+```{r plot_suitability, message=FALSE}
 # combine all prediction rasters, either by doing the projection or by reading from a file
 prediction_rasters <- stack()
 crs.string <- "+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs"
 
-# the stacking of all the suitability rasters uses a lot of memory. You can change 1: lenth(taxa) to for example the first 20 species 1:20. When calculating the Schoener's distance in {calc_dist} all the suitability rasters need to be stacked and therefore it is recommended to use a computer with sufficient memory. 
-for ( i in 1:length(taxa) ) {
+# the stacking of all the suitability rasters uses a lot of memory. You can change 1: lenth(taxa) to for example the first 20 species 1:20. When calculating the Schoener's distance in {calc_dist} all the suitability rasters need to be stacked (use 1:length(taxa)) and therefore it is recommended to use a computer with sufficient memory. 
+for ( i in 1:20
+      #length(taxa) 
+      ) {
   taxon.name <- gsub( '_', ' ', taxa[i] )
 
   # file name: load if exists, create otherwise
@@ -524,7 +509,8 @@ for ( i in 1:length(taxa) ) {
     prediction_rasters <- stack(prediction_rasters, species.pred)
   }
 }
-names(prediction_rasters) <- taxa
+# if you only stack the first 20 used taxa[1:20]
+names(prediction_rasters) <- taxa[1:20]
 
 ```
 
@@ -533,8 +519,9 @@ taxa.prediction.rasters<-names(prediction_rasters)
 crs.string <- "+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs"
 realms <- readOGR(paste(REPO_HOME, "/data/GIS/Realms/newRealms.shp", sep = ""))
 realms <- spTransform(realms, CRS(crs.string))
+plot(realms)
 
-for ( i in 1: length(prediction_rasters) ) {
+for ( i in 1: length(taxa.prediction.rasters) ) {
 # construct restricted projection file name
   prediction.restricted.file <- sprintf(
     "%s/results/per_species/%s/valid_maxent_prediction_restricted.rda", 
@@ -603,7 +590,7 @@ for ( i in 1: length(prediction_rasters) ) {
 
 }
 
-plot(maskedprediction)
+
 ```
 
 ### Write species-specific documentation file
