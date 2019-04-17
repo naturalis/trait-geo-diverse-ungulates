@@ -1,8 +1,8 @@
 SDM results
 ===========
-We constructed seperate maxent models for the following species
+![](doc/images/Ungulates.JPG)
 
-- moet nog een scriptje maken zodat er een readme.md file in elk mapje komt met de naam van de species erboven
+The results per species viewed for the following species. 
 
 [Aepyceros melampus](Aepyceros_melampus)
 
