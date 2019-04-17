@@ -3,7 +3,7 @@ SDM results
 
 ![](Ungulates.JPG)
 
-The results per species viewed for the following species. 
+The results per species can be viewed for the species in the list below:
 
 [Aepyceros melampus](Aepyceros_melampus)
 
