@@ -22,7 +22,7 @@ Available workflows
    variable importance dataframes are used to summarize the models per species 
    (AUC value, n occurrence points, variable importance in descending order), 
    written to `/results/maxent/model_summaries/summary_df.csv`
-3. [**outlying mean index**](3_omi.rmd) - computes 'trait' values for each
+3. [**outlying mean index**](html_files/3.omi) - computes 'trait' values for each
    species and for each GIS layer. The values are obtained either by taking the
    GIS pixel values directly under the raw occurrences or by taking values 
    averaged over the GIS pixels whose habitat suitability is higher than 
