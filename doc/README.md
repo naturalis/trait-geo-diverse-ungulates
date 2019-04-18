@@ -66,6 +66,10 @@ Available workflows
    to grazing, using a BiSSE analysis.
 8. [**DPLACE**](8_dplace.rmd) - performs statistical tests to link societal
    data from DPLACE to Ungulate niches.
+9. [**n-dimensional hypervolume**](9_hypervolume.rmd) - ranks niche traits by
+   magnitude differences between domesticated and wild. Performs weighted 
+   clustering (to enhance substructure within domesticated) and incorporates
+   the three highest ranking niche traits in a `hypervolume` visualization.
 
 Manuscript
 ----------
