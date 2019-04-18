@@ -105,7 +105,7 @@ write.csv(partitions.df, partitionsdf.name)
 omi.file.maxent <- sprintf('%s/results/OMI/normalized_MaxEnt_values.csv',REPO_HOME)
 omi.file.raw.occurrences<- sprintf('%s/results/OMI/normalized_raw_values.csv',REPO_HOME)
 omi.file<- list(omi.file.maxent, omi.file.raw.occurrences)
-omi.names<- list("magnitudes.Maxent.probeer.csv", "magnitudes.raw.probeer.csv")
+omi.names<- list("magnitudes.Maxent.csv", "magnitudes.raw.csv")
 
 part.df.maxent<- sprintf('%s/results/maxent/clusters.Maxent.traits.gower.csv',REPO_HOME)
 part.df.occurrences<- sprintf('%s/results/maxent/clusters.raw.occurences.gower.csv',REPO_HOME)
@@ -254,4 +254,6 @@ for ( i in 1:length(anc.acctran) ) {
   }
 }
 }
+
+file:///C:/Users/elkeh/Documents/Stage_Naturalis/Scripts_R/trait-geo-diverse-ungulates/Results/maxent/clusters.Maxent.Schoener.csv
 ```
