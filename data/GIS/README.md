@@ -1,4 +1,4 @@
-# Candidate data sets for land cover / vegetation
+# GIS datasets 
 
 ## [Land Cover (GLCNMO) - Global version](https://globalmaps.github.io/glcnmo.html)
 
