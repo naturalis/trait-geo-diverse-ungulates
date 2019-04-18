@@ -36,4 +36,4 @@ The results section is devided in three sections all containing the results deri
 - [clusters.Maxent.Schoener.csv](clusters.Maxent.Schoener.csv) contains per species the cluster it belongs to based on niche overlap derived from the MaxEnt habitat projections.
 - [dendrogram.Maxent.Schoener.pdf](dendrogram.Maxent.Schoener.pdf) shows the clusters plotted on a dendrogram based on MaxEnt habitat projections.
 - [overlap.csv](schoener/overlap.csv) contains the overlap between the species niche space measured with Schoener's D. To create a measure over distance we subtractedthe overlap, i.e. the inverse of the overlap from 1.
-- [schoener/inverse_overlap_nj.tree](schoener/inverse_overlap_nj.tree) phylogenetic tree based on hierarchical agglomerative clustering of the distance data. 
+- [inverse_overlap_nj.tree](schoener/inverse_overlap_nj.tree) phylogenetic tree based on hierarchical agglomerative clustering of the distance data. 
