@@ -311,5 +311,5 @@ The results per species can be viewed for the species in the list below:
 
 [Tragulus napu](Tragulus_napu)
 
-[Vicagna vicugna](Vicagna_vicugna)
+[Vicugna vicugna](Vicugna_vicugna)
 
