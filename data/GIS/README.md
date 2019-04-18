@@ -1,6 +1,7 @@
-# Candidate data sets for land cover / vegetation
+# GIS datasets 
 
 ## [Land Cover (GLCNMO) - Global version](https://globalmaps.github.io/glcnmo.html)
+![](images/landcover1.png)
 
 ### Metadata
 
@@ -33,6 +34,7 @@
 20. Water bodies
 
 ## [Ecoregions](https://ecoregions2017.appspot.com/)
+![](images/ecoregions.PNG)
 
 ### Metadata
 
@@ -58,6 +60,8 @@ Shape file: https://storage.googleapis.com/teow2016/Ecoregions2017.zip
 
 ## Climate 
 Both the [Bioclim](http://worldclim.org/version2) dataset and the [ENVIREM](https://deepblue.lib.umich.edu/data/concern/data_sets/gt54kn05f) dataset are used as climatic variables. 
+
+![](images/bioclim.PNG)
 
 ### Datasets Bioclim 
 1. BIO1 Annual Mean Temperature
@@ -109,6 +113,8 @@ Median elevation variables were extracted from the [Harmonized World Soil Databa
 3. Topographic wetness index
 4. Terrain roughness index
 
+![](images/slope.PNG)
+
 ## Soil 
 The soil characteristics are extracted from the [Land-Atmosphere Interaction Research Group](http://globalchange.bnu.edu.cn/research/soilw) with a spatial
 resolution of 5 arcminutes. 
@@ -117,3 +123,5 @@ resolution of 5 arcminutes.
 2. Clay percentage
 3. pH CaCL
 4. Organic carbon 
+
+![](images/ph.PNG)

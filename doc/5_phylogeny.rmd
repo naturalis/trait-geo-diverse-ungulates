@@ -1,13 +1,5 @@
----
-title: "Phylogenetic conservatism"
-author: "Rutger Vos (@rvosa)"
-date: "8-3-2019"
-output:
-  pdf_document: default
-  html_document: default
----
 
-Phylogenetic conservatism of the Ungulate niche
+5. phylogeny 
 ===============================================
 
 The realized, abiotic Hutchinsonian niche [@Hutchinson57], i.e. an n-dimensional
