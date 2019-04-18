@@ -1,4 +1,4 @@
-# trait-geo-diverse-ungulates
+# The diversity of Ungulate abiotic niches
 
 ![](doc/images/project.png)
 
