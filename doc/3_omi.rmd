@@ -1,13 +1,9 @@
----
-title: "Outlying mean index"
-author: "Elke Hendrix"
-date: "February 28, 2019"
-output: html_document
----
+3. outlying mean index  
+============
 
 Load the required libraries:
 
-```{r load_libs}
+```{r load_libs, message=FALSE, warning=FALSE}
 library(adehabitatHS, quietly = T)
 library(raster, quietly = T)
 library(SDMTools, quietly = T)
@@ -86,7 +82,7 @@ crs.string <- "+proj=longlat +datum=WGS84"
 
 The raster layers are transformed to a spatialpixelsdataframe
 
-```{r taxa}
+```{r spatialpixelsdataframe}
 gis.layers.spdf <- as(gis.layers, "SpatialPixelsDataFrame")
 sp::proj4string(gis.layers.spdf) <- CRS(crs.string)
 ```
@@ -100,6 +96,8 @@ SpatialPointsDataFrame:
 # (ii) a SpatialPointsDataFrame based on the MaxEnt projection layers
 
 # (i) raw occurences 
+
+## warning: the SpatialPointDataFrames are large files and therefore it might not be possible to run both datasets in the same run or even run all 152 species. The datasets can be split by for example changing 'i in length(taxa.names)' to 'i in 1:100' to calculate the normalized mean values for the first 100 species. Splitting the datasets in smaller subsets does not affect the outcomes because the normalization and averaging is done per species.
 
 # create an empty SpatialPointDataFrame to populate in the following loop
 spdf_raw_occurences <- new(
@@ -118,7 +116,8 @@ spdf_raw_occurences <- new(
 ) 
 
 # populate the empty dataframe with lat/lon values from the taxa list
-for ( i in length(taxa.names) ) {
+# set for example i in 1:100 in the case of memory limits 
+for ( i in 1:length(taxa.names)) {
   message(taxa.names[i])
   
   csv.file <- sprintf('%s/data/filtered/%s.csv', REPO_HOME, taxa.names[i])
@@ -157,12 +156,13 @@ spdf_MaxEnt <- new(
 ) 
 
 # populate the empty dataframe with lat/lon values from the taxa list
-for ( i in 1:length(taxa.names) ) {
+# 1:length(taxa.names)
+for ( i in 1:length(taxa.names)) {
   message(taxa.names[i])
   
   # construct file name
   valid.model.prediction <- sprintf(
-    "%s/results/per_species/%s/valid_maxent_prediction.rda", 
+    "%s/results/per_species/%s/valid_maxent_prediction_restricted.rda", 
     REPO_HOME, 
     taxa.names[i]
   )
@@ -192,15 +192,24 @@ Two data frames are constructed:
 
 1. a data frame (dfavail) with the values in the SpatialPixelsDataframe, i.e. 
    the traits 
-2. a data frame (dfused) with the amount of occurrences per pixel  
+2. a data frame (dfused) with the amount of occurrences per pixel 
+
+The constructed dataframes are used in a principal component analysis (PCA). A PCA analysis is conducted to standardize all the environmental variables. This standardized dataframe is used a an input dataset for the niche function to calculate the normalized averaged niche traits per species.  
+
 
 ```{r create_dataframes}
-# XXX `grid has empty column/rows in dimension 2`
-
-# choose which spdf you want to use (i) raw occurences, (ii) MaxEnt projections 
+# a loop is used to create the used and available dataframes for (i) raw occurences, (ii) MaxEnt projections 
 # (i) spdf_raw_occurences
 # (ii) spdf_MaxEnt
-cp <- count.points(spdf_raw_occurences, gis.layers.spdf)
+
+files<- list(spdf_raw_occurences, spdf_MaxEnt)
+names<- list("normalized_raw_values", "normalized_MaxEnt_values")
+
+for (i in 1:length(names)) {
+niche.file <- sprintf("%s/Results/OMI/%s.csv", REPO_HOME, names[i])
+
+if (!file.exists(niche.file)) {
+cp <- count.points(files[[i]], gis.layers.spdf)
 
 dfavail <- slot(gis.layers.spdf, "data")
 dfavail <- tibble::rowid_to_column(dfavail, "ID")
@@ -212,20 +221,11 @@ dfused <- tibble::rowid_to_column(dfused, "ID")
 dfused <- subset(dfused, dfused$ID %in% dfavail$ID )
 dfused <- subset(dfused, select = -ID )
 
-
-```
-
-A PCA analysis is conducted to standardize all the environmental variables. 
-This standardized dataframe is used a an input dataset for the niche function to calculate the OMI per species. The OMI is used to plot both niche breadth and niche position per species. 
-
-```{r PCA_analysis}
+# PCA analysis to collect and standardize the environmental variables per occurrence point
 dud <- dudi.pca(dfavail[2:42], scannf=F)
 rm(dfavail, cp)
 
-```
-
-
-```{r OMI_analysis}
+# niche analysis to average the standardized values fromt the PCA per species
 nic<- niche(dud, dfused, scannf=F)
 
 # shows the averages per species for the standardized environmental variables
@@ -250,14 +250,17 @@ p["IsDomesticated"]<- NA
     
     # store whether this taxon is domesticated
     if ( taxon.name %in% dom.taxa ) {
-      p[i,43] <- T
+      p[i,42] <- T
     } else {
-      p[i,43] <- F
+      p[i,42] <- F
     }
   }
 # write to file
-normalized.csv <- paste(REPO_HOME, "/results/OMI/normalized_raw_values.csv", sep="")
-write.csv(p, normalized.csv)
+write.csv(p, niche.file)
+
+}
+
+}
 
 # clean up
 rm(p,nic)
@@ -269,24 +272,32 @@ we then construct dendrograms using hierarchical clustering (hclust) and neighbo
 (nj).
 
 ```{r gowers_distance}
-# load the normalized values from the github
-normalized.repo <- paste(REPO_HOME, '/results/OMI/normalized_raw_values.csv', sep = '')
-normalized.values <- read.csv(normalized.repo, header=TRUE, row.names = 1)
-
-
 # load the variable importance constructed in the previous script 2_variable_importance.rmd
 mean.traits.contributions.csv <- paste(REPO_HOME, "results/maxent/model_summaries/mean_traits_contribution_maxent.csv", sep="")
 mean.traits<- read.csv(mean.traits.contributions.csv)
 mean.importance<- as.numeric(mean.traits[,2])
+names.omi.files<- list("raw_omi_probeer", "maxent_omi_probeer")
+for (i in 1:length(names)) {
+
+# name for the gowers distance dataframe
+Omi.file<- paste(names.omi.files[i], '.csv', sep='')
+overlap.csv <- sprintf("%s/results/maxent/comparative/gower/%s.csv", REPO_HOME, Omi.file)
+if (!file.exists(overlap.csv)) {
+  
+# load the normalized values from the github repository
+niche.file <- sprintf("%s/results/OMI/%s.csv", REPO_HOME, names[i])
+normalized.values <- read.csv(niche.file, header=TRUE, row.names = 1)
 
 # save gowers dataframe 
-overlap.csv <- paste(REPO_HOME, "/results/maxent/comparative/gower/maxent_omi.csv", sep="")
 gow <- daisy(normalized.values[1:41], metric="gower", stand=FALSE, weights = mean.importance )
 gow_df <- as.matrix(gow)
 
-if (!file.exists(overlap.csv)) {
-  write.csv(gow_df, overlap.csv)
-}
+# save gowers dataframe as a csv file
+write.csv(gow_df, overlap.csv)
+
+# name for the hclust tree
+Omi.hclust<- paste(names.omi.files[i], '_hclust.tree', sep='')
+Omi.hclust <- sprintf("%s/results/maxent/comparative/gower/%s.csv", REPO_HOME, Omi.hclust)
 
 # create tree
 # hclust tree is used to plot the dendrogram
@@ -294,24 +305,44 @@ distances <- as.dist(gow_df)
 hclust.tree <- hclust(distances)
 tree <- as.phylo(hclust.tree)
 
+# write tree 
+write.tree(tree, file = Omi.hclust)
+
+# name for the nj tree
+Omi.njtree<- paste(names.omi.files[i], '_omi_nj.tree', sep='')
+Omi.njtree <- sprintf("%s/results/maxent/comparative/gower/%s.csv", REPO_HOME, Omi.njtree)
+
 # nj tree is used to calculate the distances
 nj<- nj(distances)
 nj.tree<- as.phylo(nj)
 
-
-# write tree 
-tree.file <- paste(REPO_HOME, "/results/maxent/comparative/gower/maxent_omi_hclust.tree", sep="")
-write.tree(tree, file = tree.file)
-
-tree.nj.file<- paste(REPO_HOME, "/results/maxent/comparative/gower/maxent_omi_nj.tree", sep="")
-write.tree(nj.tree, file = tree.nj.file)
+write.tree(nj.tree, file = Omi.njtree)
+}
+}
 
 ```
-
 
 Now we can assess whether domesticated Ungulates come from specific areas in niche space:
 
 ```{r resample_niche_clustering}
+
+# here we calculate the average pairwise patristic distance between domesticates and domesticates and domesticates and wild Ungulates. 
+
+# load nj trees. 
+nj.tree.raw.occurrences<- read.tree(paste(REPO_HOME, "/Results/maxent/comparative/gower/raw_omi_nj.tree", sep=""))
+nj.tree.maxent.trait.projections<- read.tree(paste(REPO_HOME, "/Results/maxent/comparative/gower/maxent_omi_nj.tree", sep=""))
+nj.tree.maxent.projections<- read.tree(paste(REPO_HOME, "/Results/maxent/comparative/schoener/inverse_overlap_nj.tree", sep=""))
+  
+names.list<- list("clustering_nj_raw_occurences_probeer.pdf","clustering_nj_MaxEnt_occurences_probeer.pdf","clustering_nj_schoener_probeer.pdf")
+list.trees<- list(nj.tree.raw.occurrences, nj.tree.maxent.trait.projections, nj.tree.maxent.projections)
+
+for (i in 1:length(names.list)) {
+  
+clustering.pdf.file <- sprintf("%s/results/maxent/%s", REPO_HOME, names.list[i] )
+
+if (!file.exists(clustering.pdf.file)) {
+  
+nj.tree<- list.trees[[i]]
 
 # vector of all tips
 dom.taxa <- c(
@@ -359,7 +390,6 @@ for (i in 1:sam.num) {
 
 
 {
-  clustering.pdf.file <- sprintf("%s/results/maxent/clustering_nj_raw_occurences.pdf", REPO_HOME)
   pdf(file = clustering.pdf.file)
   h <- hist(
     sam.dist,
@@ -382,4 +412,7 @@ for (i in 1:sam.num) {
   abline(v = dom.dist, col = "red")
   dev.off()
 }
+}
+}
+
 ```
