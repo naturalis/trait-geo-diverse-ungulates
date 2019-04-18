@@ -276,7 +276,7 @@ we then construct dendrograms using hierarchical clustering (hclust) and neighbo
 mean.traits.contributions.csv <- paste(REPO_HOME, "results/maxent/model_summaries/mean_traits_contribution_maxent.csv", sep="")
 mean.traits<- read.csv(mean.traits.contributions.csv)
 mean.importance<- as.numeric(mean.traits[,2])
-names.omi.files<- list("raw_omi_probeer", "maxent_omi_probeer")
+names.omi.files<- list("raw_omi", "maxent_omi")
 for (i in 1:length(names)) {
 
 # name for the gowers distance dataframe
@@ -297,7 +297,7 @@ write.csv(gow_df, overlap.csv)
 
 # name for the hclust tree
 Omi.hclust<- paste(names.omi.files[i], '_hclust.tree', sep='')
-Omi.hclust <- sprintf("%s/results/maxent/comparative/gower/%s.csv", REPO_HOME, Omi.hclust)
+Omi.hclust <- sprintf("%s/results/maxent/comparative/gower/%s", REPO_HOME, Omi.hclust)
 
 # create tree
 # hclust tree is used to plot the dendrogram
@@ -310,7 +310,7 @@ write.tree(tree, file = Omi.hclust)
 
 # name for the nj tree
 Omi.njtree<- paste(names.omi.files[i], '_omi_nj.tree', sep='')
-Omi.njtree <- sprintf("%s/results/maxent/comparative/gower/%s.csv", REPO_HOME, Omi.njtree)
+Omi.njtree <- sprintf("%s/results/maxent/comparative/gower/%s", REPO_HOME, Omi.njtree)
 
 # nj tree is used to calculate the distances
 nj<- nj(distances)
