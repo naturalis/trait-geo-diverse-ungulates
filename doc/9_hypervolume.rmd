@@ -1,0 +1,152 @@
+---
+title: "n-dimensional hypervolume"
+author: "Rutger Vos (@rvosa)"
+date: "18-4-2019"
+output: html_document
+---
+
+## Setup environment
+
+Here we configure the global variables and paths, and load all required 
+libraries:
+
+```{r preamble}
+library(hypervolume)
+library(dplyr)
+library(ape)
+library(phylolm)
+REPO_HOME <- paste(getwd(),'/../',sep='')
+```
+
+## Load data
+
+Here we load the main data objects that we will include in our subsequent
+analyses:
+
+1. the OMI transformed niche traits that we obtained from the raw occurrences.
+2. the names of these traits, which consist of all column names once the first
+   (unlabeled) columnm, with the taxon names, is treated as the row names, and
+   once the IsDomesticated column (which holds boolean values) is filtered out.
+3. a phylogenetic tree, obtained from the Bininda-Emonds et al. mammal 
+   supertree, pruned to the Ungulates.
+
+We then reconcile the tree and the data frame by way of the taxon names, i.e.
+taking the intersection of the two. If the same species occurs in both data sets
+then the names match: any reconciliation of synonyms has already taken place
+upstream.
+
+```{r load_data}
+# read CSV file into data frame, use taxon names as row names
+niche.traits.file <- sprintf('%s/results/OMI/normalized_raw_values.csv',REPO_HOME)
+niche.traits.df <- read.csv(niche.traits.file, row.names = 1)
+
+# keep all column names except the boolean IsDomesticated, i.e. all niche traits
+niche.traits <- names(niche.traits.df)
+niche.traits <- niche.traits[!niche.traits %in% c('IsDomesticated')]
+
+# read tree file
+tree.file <- sprintf('%s/data/phylogeny/ungulates.tree',REPO_HOME)
+tree <- ape::read.tree(file = tree.file)
+
+# reconcile the two data sets: create the taxon intersection, then keep
+# the records (rows, tips) for the intersection
+taxa <- dplyr::intersect(tree$tip.label,row.names(niche.traits.df))
+niche.traits.df <- niche.traits.df[taxa,]
+tip.idx <- match(taxa,tree$tip.label)
+tip.idx <- tip.idx[!is.na(tip.idx)]
+tree <- ape::keep.tip(tree,tip.idx) # unlike what is advertised, needs indices
+```
+
+## Calculate variable contributions
+
+We want to know which niche traits best predict the state of being domesticated.
+There are two important considerations:
+
+1. The state of being domesticated is at least partly shaped by phylogeny, and
+   so are, presumably, the niches. For example, a disproportionate number of
+   bovids is domesticated (cattle, Bali cattle, mithun, yak), and so are _all_
+   extant camelids. Hence, when selecting predictors of domestication, we need
+   to take relatedness into account.
+2. Our data consists of 41 niche traits, some of which certainly are colinear.
+   Hence, we can't simply take all niche traits and sort them by the differences
+   in the means between domesticated and wild because our 'best' traits probably
+   just predict each other.
+
+Thus, we need to do proper model selection, where we pick the best fitting one
+(by AIC, and given a phylogeny), then the next best one (i.e. such that they
+in combination most improve the AIC, consequently an orthogonal trait), and so
+on. Once we've selected our list of terms that best fit in combination, we then 
+do the MLE to obtain the p-values of the terms.
+
+```{r magnitudes}
+forward.model.selection <- function(tree,data,dependent,aic.list = NULL,model.template = NULL,predictors = NULL) {
+  
+  # create the template in the first pass, initialize once
+  if ( is.null(model.template) ) {
+    model.template <- paste(dependent, '~ %s')
+  }
+  
+  # candidate predictors, initialize once
+  if ( is.null(predictors) ) {
+    predictors <- names(data)
+    predictors <- predictors[!predictors %in% c(dependent)]
+  }
+  
+  # list of best AICs across iterations, initialize once
+  if ( is.null(aic.list) ) {
+    aic.list <- list()
+  }
+  
+  # named vector of AICs in current iteration
+  aics <- vector( mode = "numeric", length = length(predictors))
+  names(aics) <- predictors
+  
+  # iterate over predictors
+  for ( i in 1:length(predictors) ) {
+    myModel <- sprintf(model.template, predictors[i])
+    result <- phyloglm(myModel, data, tree, method = "logistic_MPLE", btol = 30)
+    aics[i] <- result$aic
+  }
+  
+  # pick the best result
+  aics <- sort(aics)
+  best.predictor <- names(aics)[1]
+  best.aic <- aics[1]
+  best.model <- sprintf(model.template, best.predictor)
+  message(sprintf('model="%s", aic="%f"',best.model,best.aic))
+  
+  # check if the current AIC is higher than the best one yet. return list if so
+  if ( length(aic.list) != 0 && best.aic > min(unlist(aic.list)) ) {
+    return(as.formula(names(aic.list)[length(aic.list)]))
+  }
+  
+  # not there yet, so store value
+  aic.list[[best.model]] <- best.aic
+  
+  # return or recurse
+  if ( length(predictors) == 1 ) {
+    return(aic.list)
+  }
+  else {
+    model.template <- paste(best.model, '+ %s')
+    predictors <- predictors[!predictors %in% c(best.predictor)]
+    forward.model.selection(tree,data,dependent,aic.list,model.template,predictors)
+  }
+}
+
+# select the best model and run it
+best.model <- forward.model.selection(tree,niche.traits.df,'IsDomesticated')
+pglm.result <- phyloglm(best.model,niche.traits.df,tree,method="logistic_MPLE",btol=30)
+pglm.summary <- summary(pglm.result)
+
+# take the p-values of the terms, keep those except Intercept, and invert them
+# these will be the results we want: the selected variables and their weights
+pglm.pvalues <- pglm.summary$coefficients[,'p.value']
+pglm.variables <- names(pglm.pvalues)[2:length(pglm.pvalues)]
+pglm.weights <- 1/pglm.pvalues[2:length(pglm.pvalues)]
+```
+
+### Plot 3D niches 
+
+
+
