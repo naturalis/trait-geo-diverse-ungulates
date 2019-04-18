@@ -5,8 +5,8 @@ library(finch) # reads darwincore zip file
 library(dplyr) # data munging library
 
 # what to write in the data file and output csv file name
-genus.name <- "Tragulus"
-species.name <- "kanchil"
+genus.name <- "Vicugna"
+species.name <- "vicugna"
 
 # for the workflow of unpacking a zip file downloaded from gbif into the
 # /data/domesticated folder these variables can be left unchanged

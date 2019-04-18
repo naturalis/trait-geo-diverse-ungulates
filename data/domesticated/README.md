@@ -19,7 +19,7 @@ We consider the following, possibly extinct, (sub)species as wild ancestors of d
 | Ovis aries orientalis  | Mouflon              | Sheep          | 4262537 | 14200833 | 10.1038/hdy.2010.122             | 10.15468/dl.c8cqbw |
 | Rangifer tarandus      | Reindeer             | Reindeer       | 5220114 | 14200328 | 10.1098/rspb.2008.0332           | 10.15468/dl.sh1osv |
 | Sus scrofa             | Wild boar            | Pig            | 7705930 | 14200054 | PMID:10747069                    | 10.15468/dl.rgyaaf |
-| Vicugna vicugna        | Vicugna              | Alpaca         | 5220192 | 14200122 | 10.1098/rspb.2001.1774           | 10.15468/dl.qpjtrx |
+| Vicugna vicugna        | Vicugna              | Alpaca         | 5220192 | 14200122 | 10.1098/rspb.2001.1774           | 10.15468/dl.bdvobp |
 
 Manually selected wild species data
 -----------------------------------
