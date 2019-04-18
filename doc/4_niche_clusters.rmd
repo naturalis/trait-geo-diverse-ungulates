@@ -1,13 +1,9 @@
----
-title: "Niche clusters"
-author: "Rutger Vos (@rvosa)"
-date: "11-3-2019"
-output: html_document
----
+4. niche clusters 
+============
 
 ### Set up environment, global variables, load libraries
 
-```{r preamble}
+```{r preamble, message=FALSE, warning=FALSE}
 library(dplyr)
 library(ape)
 library(phangorn)
@@ -29,17 +25,24 @@ dom.taxa <- c(
 ### Cluster by inverse niche overlap
 
 ```{r cluster}
-# CSV file location of all pairwise comparisons of niche overlap in Gowers's D
-overlap.file <- paste(REPO_HOME, '/results/maxent/gowers_overlap_MaxEnt_occurencepoints.csv', sep = '')
-# load data
+# load the hclust trees based on Gower's D and Schoener's D
+hclust.maxent.traits<-read.csv(paste(REPO_HOME, "/Results/maxent/comparative/gower/maxent_omi.csv", sep=""), header = TRUE, row.names = 1)
+hclust.maxent.traits<- as.dist(hclust.maxent.traits)
+hclust.maxent.traits<- hclust(hclust.maxent.traits)
 
-overlap <- read.table(overlap.file, sep=",", header=TRUE, row.names = 1)
 
-# compute distances, i.e. inverse of overlap
-distances <- as.dist(overlap)
-
-# hierarchical clustering
-hclust.tree <- hclust(distances)
+hclust.raw.occurences<- read.csv(paste(REPO_HOME, "/Results/maxent/comparative/gower/raw_omi.csv", sep=""), header = TRUE, row.names = 1)
+hclust.raw.occurences<- as.dist(hclust.raw.occurences)
+hclust.raw.occurences<- hclust(hclust.raw.occurences)
+  
+  
+hclust.maxent<- read.csv(paste(REPO_HOME, "/Results/maxent/comparative/schoener/overlap.csv", sep=""), header = TRUE, row.names = 1)
+hclust.maxent<- as.dist(1-hclust.maxent)
+hclust.maxent<- hclust(hclust.maxent)
+  
+# list tree files 
+tree.list<- list(hclust.maxent.traits, hclust.raw.occurences, hclust.maxent)
+list.names<- list("clusters.Maxent.traits.gower" ,"clusters.raw.occurences.gower" ,"clusters.Maxent.Schoener")
 
 ```
 
@@ -48,6 +51,9 @@ hclust.tree <- hclust(distances)
 
 ```{r partition}
 # instantiate results vector and transform function
+for (i in 1:length(list.names)) {
+# load hclust tree
+hclust.tree<- tree.list[[i]]
 specificity <- vector(length = 31, mode = "numeric")
 make_df <- function(partitions) {
   partitions.df <- as.data.frame(partitions)
@@ -64,6 +70,7 @@ make_df <- function(partitions) {
   return(partitions.df)
 }
 
+names.plots<- list.names[[i]]
 # do the partition from one for all taxa to one for each taxon
 for ( i in 1:31 ) {
   partitions <- cutree( hclust.tree, k = i )
@@ -80,23 +87,40 @@ optimum.nclusters <- which.min(specificity)
 partitions <- cutree( hclust.tree, k = optimum.nclusters )
 partitions.df <- make_df(partitions)
 
+partitionsdf.name<- sprintf("%s/results/maxent/%s.csv", REPO_HOME, names.plots)
+
+write.csv(partitions.df, partitionsdf.name)
+
 # consecutive plot commands seem to work better when wrapped inside curly braces
 {
-  plot(specificity, type = "b")
+  plot(specificity, type = "b", main= names.plots)
   abline(v = optimum.nclusters)
+}
 }
 ```
 
 ### Select niche traits of greatest magnitude
 
 ```{r omi}
-omi.file <- sprintf('%s/results/OMI/normalized_MaxEnt_values.csv',REPO_HOME)
-omi.data <- read.table(omi.file, header = T, sep = ',', row.names = 1)
+omi.file.maxent <- sprintf('%s/results/OMI/normalized_MaxEnt_values.csv',REPO_HOME)
+omi.file.raw.occurrences<- sprintf('%s/results/OMI/normalized_raw_values.csv',REPO_HOME)
+omi.file<- list(omi.file.maxent, omi.file.raw.occurrences)
+omi.names<- list("magnitudes.Maxent.probeer.csv", "magnitudes.raw.probeer.csv")
+
+part.df.maxent<- sprintf('%s/results/maxent/clusters.Maxent.traits.gower.csv',REPO_HOME)
+part.df.occurrences<- sprintf('%s/results/maxent/clusters.raw.occurences.gower.csv',REPO_HOME)
+part.df<- list(part.df.maxent, part.df.occurrences)
+
+for (i in 1:2) {
+partitions.df<- read.table(part.df[[i]], header = T, sep = ',', row.names = 1)
+omi.data <- read.table(omi.file[[i]], header = T, sep = ',', row.names = 1)
 trait.names <- names(omi.data)[2:length(omi.data)]
 trait.taxa <- row.names(omi.data)
 dom.taxa.clusters <- as.vector(unique(dplyr::select(filter(partitions.df,domesticated),cluster)))$cluster
 magnitude.matrix <- matrix(nrow = length(trait.names), ncol = length(dom.taxa.clusters))
 partitions.df$taxon.name <- row.names(partitions.df)
+csv.file<- omi.file.maxent <- sprintf('%s/results/maxent/%s',REPO_HOME, omi.names[[i]])
+
 
 for ( i in 1:length(trait.names) ) {
   trait <- trait.names[i]
@@ -113,10 +137,19 @@ for ( i in 1:length(trait.names) ) {
 magnitude.df <- data.frame(magnitude.matrix)
 names(magnitude.df) <- dom.taxa.clusters
 row.names(magnitude.df) <- trait.names
+
+write.csv(magnitude.df, csv.file)
+}
 ```
 
 ### Find cluster MRCAs
 ```{r mrcas}
+
+for (i in 1:length(list.names)) {
+
+hclust.tree <- tree.list[[i]]
+name.plot<- list.names[[i]]
+
 hclust.phylo <- as.phylo(hclust.tree)
 mrcas <- list()
 mrcas.labels <- c('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z', 'az', 'bz', 'cz', 'dz', 'ez', 'fz')
@@ -125,11 +158,9 @@ for ( i in 1:optimum.nclusters ) {
   l <- mrcas.labels[i]
   mrcas[[l]] <- mrca.phylo(hclust.phylo, match(tips,hclust.phylo$tip.label))
 }
-```
 
 ### Plot the optimal partitioning
 
-```{r edgecolors}
 colors <- c(
   '#5c5c7d',
   '#0868b4',
@@ -185,11 +216,9 @@ for ( i in 1:length(anc.acctran) ) {
     edge.colors[k] <- '#000000'
   }
 }
-```
 
-### Plot clusters
 
-```{r plotclust}
+
 # plot the tree
 {
   for ( i in 1:length(hclust.phylo$tip.label) ) {
@@ -210,7 +239,8 @@ for ( i in 1:length(anc.acctran) ) {
     label.offset = 0.01,
     x.lim = c(-0.5, 0.5),
     y.lim = c(-0.5, 0.5),
-    align.tip.label = T
+    align.tip.label = T, 
+    main= name.plot
   )
   for ( name in names(mrcas) ) {
     arc.cladelabels(
@@ -223,5 +253,5 @@ for ( i in 1:length(anc.acctran) ) {
     )
   }
 }
-
+}
 ```
