@@ -45,12 +45,11 @@ Available workflows
    `/results/maxent/clustering_nj_MaxEnt_occurences.pdf`, 
    `/results/maxent/clustering_nj_raw_occurences.pdf`  and 
    `/results/maxent/clustering_nj_schoener.pdf`. 
-4. [**niche clusters**](4_niche_clusters.rmd) - takes a dendrogram (whether
+4. [**niche clusters**](html_files/4.clusters) - takes a dendrogram (whether
    Schoener's D or Gower's D, and irrespective of clustering algorithm) and
    attempts to partition this optimally such that the dendrogram is subdivided
    in clusters that are specific to the domesticated species. Visualizes these
-   clusterings. Identifies the niche traits with the greatest magnitude 
-   difference between the cluster ingroup and outgroup.
+   clusterings. The clustering is saved as `/results/maxent/clusters.Maxent.traits.gower.csv`, `/results/maxent/clusters.raw.occurences.gower.csv` and `/results/maxent/clusters.Maxent.Schoener.csv` for the maxent traits based on habitat projections, the traits based on raw occurences and the maxent habitat projections. Identifies the niche traits with the greatest magnitude difference between the cluster ingroup and outgroup and are saved as `/results/maxent/magnitudes.Maxent.csv` and `/results/maxent/magnitudes.raw.csv`. 
 5. [**phylogeny**](5_phylogeny.rmd) - tests whether evolutionary 
    relatedness, i.e. phylogeny, shapes the pattern of similarities and 
    differences in abiotic niche dimensions among the terrestrial Ungulates. The 
