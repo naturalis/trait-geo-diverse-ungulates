@@ -11,6 +11,7 @@ library(factoextra, quietly = T)
 library(ecospat, quietly = T)
 library(cluster, quietly = T)
 library(ape, quietly=T)
+library(adehabitatMA, quietly=T)
 ```
 
 Set the location of the root directory of the git repository
@@ -202,64 +203,62 @@ The constructed dataframes are used in a principal component analysis (PCA). A P
 # (i) spdf_raw_occurences
 # (ii) spdf_MaxEnt
 
-files<- list(spdf_raw_occurences, spdf_MaxEnt)
-names<- list("normalized_raw_values", "normalized_MaxEnt_values")
+files <- list(spdf_raw_occurences, spdf_MaxEnt)
+names <- list("normalized_raw_values", "normalized_MaxEnt_values")
 
 for (i in 1:length(names)) {
-niche.file <- sprintf("%s/Results/OMI/%s.csv", REPO_HOME, names[i])
+  niche.file <- sprintf("%s/results/OMI/%s.csv", REPO_HOME, names[i])
 
-if (!file.exists(niche.file)) {
-cp <- count.points(files[[i]], gis.layers.spdf)
+  if (!file.exists(niche.file)) {
+    cp <- count.points(files[[i]], gis.layers.spdf)
 
-dfavail <- slot(gis.layers.spdf, "data")
-dfavail <- tibble::rowid_to_column(dfavail, "ID")
-dfavail <- na.omit(dfavail)
+    dfavail <- slot(gis.layers.spdf, "data")
+    dfavail <- tibble::rowid_to_column(dfavail, "ID")
+    dfavail <- na.omit(dfavail)
 
-dfused <- slot(cp, "data")
-dfused <- tibble::rowid_to_column(dfused, "ID")
+    dfused <- slot(cp, "data")
+    dfused <- tibble::rowid_to_column(dfused, "ID")
 
-dfused <- subset(dfused, dfused$ID %in% dfavail$ID )
-dfused <- subset(dfused, select = -ID )
+    dfused <- subset(dfused, dfused$ID %in% dfavail$ID)
+    dfused <- subset(dfused, select = -ID)
 
-# PCA analysis to collect and standardize the environmental variables per occurrence point
-dud <- dudi.pca(dfavail[2:42], scannf=F)
-rm(dfavail, cp)
+    # PCA analysis to collect and standardize the environmental variables per occurrence point
+    dud <- dudi.pca(dfavail[2:42], scannf = F)
+    rm(dfavail, cp)
 
-# niche analysis to average the standardized values fromt the PCA per species
-nic<- niche(dud, dfused, scannf=F)
+    # niche analysis to average the standardized values fromt the PCA per species
+    nic <- niche(dud, dfused, scannf = F)
 
-# shows the averages per species for the standardized environmental variables
-p <- nic$tab
+    # shows the averages per species for the standardized environmental variables
+    p <- nic$tab
 
-# add domesticated TRUE or FALSE
-# vector of all domesticated taxa
-  dom.taxa <- c(
-    "Bos_frontalis_gaurus", "Bos_grunniens_mutus", "Bos_javanicus", "Bos_taurus_primigenius",
-   	"Bubalus_bubalis_arnee", "Camelus_bactrianus", "Camelus_dromedarius", "Capra_hircus_aegagrus",
-   	"Equus_przewalskii", "Lama_glama_guanicoe", "Ovis_aries_orientalis",
-   	"Rangifer_tarandus", "Sus_scrofa", "Vicugna_vicugna"
-  )
+    # add domesticated TRUE or FALSE
+    # vector of all domesticated taxa
+    dom.taxa <- c(
+      "Bos_frontalis_gaurus", "Bos_grunniens_mutus", "Bos_javanicus", "Bos_taurus_primigenius",
+      "Bubalus_bubalis_arnee", "Camelus_bactrianus", "Camelus_dromedarius", "Capra_hircus_aegagrus",
+      "Equus_przewalskii", "Lama_glama_guanicoe", "Ovis_aries_orientalis",
+      "Rangifer_tarandus", "Sus_scrofa", "Vicugna_vicugna"
+    )
 
-# create empty column
-p["IsDomesticated"]<- NA 
+    # create empty column
+    p["IsDomesticated"] <- NA
 
-# iterate over taxa
-  for ( i in 1:length(taxa.names) ) {
-    taxon.name <- taxa.names[i]
-    message(taxon.name)
-    
-    # store whether this taxon is domesticated
-    if ( taxon.name %in% dom.taxa ) {
-      p[i,42] <- T
-    } else {
-      p[i,42] <- F
+    # iterate over taxa
+    for (i in 1:length(taxa.names)) {
+      taxon.name <- taxa.names[i]
+      message(taxon.name)
+
+      # store whether this taxon is domesticated
+      if (taxon.name %in% dom.taxa) {
+        p[i, 42] <- T
+      } else {
+        p[i, 42] <- F
+      }
     }
+    # write to file
+    write.csv(p, niche.file)
   }
-# write to file
-write.csv(p, niche.file)
-
-}
-
 }
 
 # clean up
@@ -273,51 +272,51 @@ we then construct dendrograms using hierarchical clustering (hclust) and neighbo
 
 ```{r gowers_distance}
 # load the variable importance constructed in the previous script 2_variable_importance.rmd
-mean.traits.contributions.csv <- paste(REPO_HOME, "results/maxent/model_summaries/mean_traits_contribution_maxent.csv", sep="")
-mean.traits<- read.csv(mean.traits.contributions.csv)
-mean.importance<- as.numeric(mean.traits[,2])
-names.omi.files<- list("raw_omi", "maxent_omi")
+mean.traits.contributions.csv <- paste(REPO_HOME, "results/maxent/model_summaries/mean_traits_contribution_maxent.csv", sep = "")
+mean.traits <- read.csv(mean.traits.contributions.csv)
+mean.importance <- as.numeric(mean.traits[, 2])
+names.omi.files <- list("raw_omi", "maxent_omi")
 for (i in 1:length(names)) {
 
-# name for the gowers distance dataframe
-Omi.file<- paste(names.omi.files[i], '.csv', sep='')
-overlap.csv <- sprintf("%s/results/maxent/comparative/gower/%s.csv", REPO_HOME, Omi.file)
-if (!file.exists(overlap.csv)) {
-  
-# load the normalized values from the github repository
-niche.file <- sprintf("%s/results/OMI/%s.csv", REPO_HOME, names[i])
-normalized.values <- read.csv(niche.file, header=TRUE, row.names = 1)
+  # name for the gowers distance dataframe
+  Omi.file <- paste(names.omi.files[i], ".csv", sep = "")
+  overlap.csv <- sprintf("%s/results/maxent/comparative/gower/%s", REPO_HOME, Omi.file)
+  if (!file.exists(overlap.csv)) {
 
-# save gowers dataframe 
-gow <- daisy(normalized.values[1:41], metric="gower", stand=FALSE, weights = mean.importance )
-gow_df <- as.matrix(gow)
+    # load the normalized values from the github repository
+    niche.file <- sprintf("%s/results/OMI/%s.csv", REPO_HOME, names[i])
+    normalized.values <- read.csv(niche.file, header = TRUE, row.names = 1)
 
-# save gowers dataframe as a csv file
-write.csv(gow_df, overlap.csv)
+    # save gowers dataframe
+    gow <- daisy(normalized.values[1:41], metric = "gower", stand = FALSE, weights = mean.importance)
+    gow_df <- as.matrix(gow)
 
-# name for the hclust tree
-Omi.hclust<- paste(names.omi.files[i], '_hclust.tree', sep='')
-Omi.hclust <- sprintf("%s/results/maxent/comparative/gower/%s", REPO_HOME, Omi.hclust)
+    # save gowers dataframe as a csv file
+    write.csv(gow_df, overlap.csv)
 
-# create tree
-# hclust tree is used to plot the dendrogram
-distances <- as.dist(gow_df)
-hclust.tree <- hclust(distances)
-tree <- as.phylo(hclust.tree)
+    # name for the hclust tree
+    Omi.hclust <- paste(names.omi.files[i], "_hclust.tree", sep = "")
+    Omi.hclust <- sprintf("%s/results/maxent/comparative/gower/%s", REPO_HOME, Omi.hclust)
 
-# write tree 
-write.tree(tree, file = Omi.hclust)
+    # create tree
+    # hclust tree is used to plot the dendrogram
+    distances <- as.dist(gow_df)
+    hclust.tree <- hclust(distances)
+    tree <- as.phylo(hclust.tree)
 
-# name for the nj tree
-Omi.njtree<- paste(names.omi.files[i], '_omi_nj.tree', sep='')
-Omi.njtree <- sprintf("%s/results/maxent/comparative/gower/%s", REPO_HOME, Omi.njtree)
+    # write tree
+    write.tree(tree, file = Omi.hclust)
 
-# nj tree is used to calculate the distances
-nj<- nj(distances)
-nj.tree<- as.phylo(nj)
+    # name for the nj tree
+    Omi.njtree <- paste(names.omi.files[i], "_nj.tree", sep = "")
+    Omi.njtree <- sprintf("%s/results/maxent/comparative/gower/%s", REPO_HOME, Omi.njtree)
 
-write.tree(nj.tree, file = Omi.njtree)
-}
+    # nj tree is used to calculate the distances
+    nj <- nj(distances)
+    nj.tree <- as.phylo(nj)
+
+    write.tree(nj.tree, file = Omi.njtree)
+  }
 }
 
 ```
@@ -326,93 +325,91 @@ Now we can assess whether domesticated Ungulates come from specific areas in nic
 
 ```{r resample_niche_clustering}
 
-# here we calculate the average pairwise patristic distance between domesticates and domesticates and domesticates and wild Ungulates. 
+# here we calculate the average pairwise patristic distance between domesticates and domesticates and domesticates and wild Ungulates.
 
-# load nj trees. 
-nj.tree.raw.occurrences<- read.tree(paste(REPO_HOME, "/Results/maxent/comparative/gower/raw_omi_nj.tree", sep=""))
-nj.tree.maxent.trait.projections<- read.tree(paste(REPO_HOME, "/Results/maxent/comparative/gower/maxent_omi_nj.tree", sep=""))
-nj.tree.maxent.projections<- read.tree(paste(REPO_HOME, "/Results/maxent/comparative/schoener/inverse_overlap_nj.tree", sep=""))
-  
-names.list<- list("clustering_nj_raw_occurences_probeer.pdf","clustering_nj_MaxEnt_occurences_probeer.pdf","clustering_nj_schoener_probeer.pdf")
-list.trees<- list(nj.tree.raw.occurrences, nj.tree.maxent.trait.projections, nj.tree.maxent.projections)
+# load nj trees.
+nj.tree.raw.occurrences <- read.tree(paste(REPO_HOME, "/results/maxent/comparative/gower/raw_omi_nj.tree", sep = ""))
+nj.tree.maxent.trait.projections <- read.tree(paste(REPO_HOME, "/results/maxent/comparative/gower/maxent_omi_nj.tree", sep = ""))
+nj.tree.maxent.projections <- read.tree(paste(REPO_HOME, "/results/maxent/comparative/schoener/inverse_overlap_nj.tree", sep = ""))
+
+names.list <- list("clustering_nj_raw_occurences_probeer.pdf", "clustering_nj_MaxEnt_occurences_probeer.pdf", "clustering_nj_schoener_probeer.pdf")
+list.trees <- list(nj.tree.raw.occurrences, nj.tree.maxent.trait.projections, nj.tree.maxent.projections)
 
 for (i in 1:length(names.list)) {
-  
-clustering.pdf.file <- sprintf("%s/results/maxent/%s", REPO_HOME, names.list[i] )
+  clustering.pdf.file <- sprintf("%s/results/maxent/%s", REPO_HOME, names.list[i])
 
-if (!file.exists(clustering.pdf.file)) {
-  
-nj.tree<- list.trees[[i]]
+  if (!file.exists(clustering.pdf.file)) {
+    nj.tree <- list.trees[[i]]
 
-# vector of all tips
-dom.taxa <- c(
-  "Bos_frontalis_gaurus", "Bos_grunniens_mutus", "Bos_javanicus", "Bos_taurus_primigenius",
-  "Bubalus_bubalis_arnee", "Camelus_bactrianus", "Camelus_dromedarius", "Capra_hircus_aegagrus",
-  "Equus_przewalskii", "Lama_glama_guanicoe", "Ovis_aries_orientalis",
-  "Rangifer_tarandus", "Sus_scrofa", "Vicugna_vicugna"
-)
+    # vector of all tips
+    dom.taxa <- c(
+      "Bos_frontalis_gaurus", "Bos_grunniens_mutus", "Bos_javanicus", "Bos_taurus_primigenius",
+      "Bubalus_bubalis_arnee", "Camelus_bactrianus", "Camelus_dromedarius", "Capra_hircus_aegagrus",
+      "Equus_przewalskii", "Lama_glama_guanicoe", "Ovis_aries_orientalis",
+      "Rangifer_tarandus", "Sus_scrofa", "Vicugna_vicugna"
+    )
 
-# tips in tree
-dom.tips <- nj.tree$tip.label[ which(nj.tree$tip.label %in% dom.taxa) ]
+    # tips in tree
+    dom.tips <- nj.tree$tip.label[ which(nj.tree$tip.label %in% dom.taxa) ]
 
-# this function calculates the average pairwise patristic distance among an
-# input vector of tip labels
-mean_pw_distance <- function(nj.tree, tip.vector) {
+    # this function calculates the average pairwise patristic distance among an
+    # input vector of tip labels
+    mean_pw_distance <- function(nj.tree, tip.vector) {
 
-  # calculate size of distance matrix, instantiate vector
-  nt <- length(tip.vector)
-  nd <- ((nt * nt) - nt) / 2
-  dist.vector <- vector(mode = "numeric", length = nd)
+      # calculate size of distance matrix, instantiate vector
+      nt <- length(tip.vector)
+      nd <- ((nt * nt) - nt) / 2
+      dist.vector <- vector(mode = "numeric", length = nd)
 
-  # do all pairwise comparisons
-  k <- 1
-  max <- nt - 1
-  for (i in 1:max) {
-    min <- i + 1
-    for (j in min:nt) {
-      dist.vector[k] <- phytools::fastDist(nj.tree, tip.vector[i], tip.vector[j])
-      k <- k + 1
+      # do all pairwise comparisons
+      k <- 1
+      max <- nt - 1
+      for (i in 1:max) {
+        min <- i + 1
+        for (j in min:nt) {
+          dist.vector[k] <- phytools::fastDist(nj.tree, tip.vector[i], tip.vector[j])
+          k <- k + 1
+        }
+      }
+      return(mean(dist.vector))
+    }
+
+    # calculate average pairwise distance (APD) among domesticates
+    dom.dist <- mean_pw_distance(nj.tree, dom.tips)
+
+    # take random tip samples, compute APD among these many time
+    sam.num <- 1000
+    sam.dist <- vector(mode = "numeric", length = sam.num)
+    for (i in 1:sam.num) {
+      sam.tips <- sample(nj.tree$tip.label, length(dom.tips), replace = F)
+      sam.dist[i] <- mean_pw_distance(nj.tree, sam.tips)
+    }
+
+
+    {
+      pdf(file = clustering.pdf.file)
+      h <- hist(
+        sam.dist,
+        xlab = sprintf("Mean pairwise patristic distance in random sample of %i tips (n=%i)", length(dom.tips), sam.num),
+        col = "lightblue",
+        main = "Domesticated Ungulates cluster in niche space"
+      )
+
+      # fit normal distribution
+      xfit <- seq(min(sam.dist), max(sam.dist), length = length(sam.dist))
+      yfit <- dnorm(xfit, mean = mean(sam.dist), sd = sd(sam.dist))
+      yfit <- yfit * diff(h$mids[1:2]) * length(sam.dist)
+      lines(xfit, yfit, col = "black", lwd = 2)
+
+      # draw <U+00B1> 2 * standard deviation
+      abline(v = mean(sam.dist) + 2 * sd(sam.dist), col = "green")
+      abline(v = mean(sam.dist) - 2 * sd(sam.dist), col = "green")
+
+      # indicate domesticated APD
+      abline(v = dom.dist, col = "red")
+      dev.off()
     }
   }
-  return(mean(dist.vector))
-}
-
-# calculate average pairwise distance (APD) among domesticates
-dom.dist <- mean_pw_distance(nj.tree, dom.tips)
-
-# take random tip samples, compute APD among these many time
-sam.num <- 1000
-sam.dist <- vector(mode = "numeric", length = sam.num)
-for (i in 1:sam.num) {
-  sam.tips <- sample(nj.tree$tip.label, length(dom.tips), replace = F)
-  sam.dist[i] <- mean_pw_distance(nj.tree, sam.tips)
-}
-
-
-{
-  pdf(file = clustering.pdf.file)
-  h <- hist(
-    sam.dist,
-    xlab = sprintf("Mean pairwise patristic distance in random sample of %i tips (n=%i)", length(dom.tips), sam.num),
-    col = "lightblue",
-    main = "Domesticated Ungulates cluster in niche space"
-  )
-
-  # fit normal distribution
-  xfit <- seq(min(sam.dist), max(sam.dist), length = length(sam.dist))
-  yfit <- dnorm(xfit, mean = mean(sam.dist), sd = sd(sam.dist))
-  yfit <- yfit * diff(h$mids[1:2]) * length(sam.dist)
-  lines(xfit, yfit, col = "black", lwd = 2)
-
-  # draw ± 2 * standard deviation
-  abline(v = mean(sam.dist) + 2 * sd(sam.dist), col = "green")
-  abline(v = mean(sam.dist) - 2 * sd(sam.dist), col = "green")
-
-  # indicate domesticated APD
-  abline(v = dom.dist, col = "red")
-  dev.off()
-}
-}
 }
 
 ```
