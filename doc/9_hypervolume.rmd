@@ -78,7 +78,7 @@ in combination most improve the AIC, consequently an orthogonal trait), and so
 on. Once we've selected our list of terms that best fit in combination, we then 
 do the MLE to obtain the p-values of the terms.
 
-```{r magnitudes}
+```{r varselect}
 forward.model.selection <- function(tree,data,dependent,aic.list = NULL,model.template = NULL,predictors = NULL) {
   
   # create the template in the first pass, initialize once
@@ -104,7 +104,7 @@ forward.model.selection <- function(tree,data,dependent,aic.list = NULL,model.te
   # iterate over predictors
   for ( i in 1:length(predictors) ) {
     myModel <- sprintf(model.template, predictors[i])
-    result <- phyloglm(myModel, data, tree, method = "logistic_MPLE", btol = 30)
+    result <- phyloglm(myModel, data, tree, method = "logistic_MPLE", btol = 120, boot = 10)
     aics[i] <- result$aic
   }
   
@@ -114,11 +114,19 @@ forward.model.selection <- function(tree,data,dependent,aic.list = NULL,model.te
   best.aic <- aics[1]
   best.model <- sprintf(model.template, best.predictor)
   message(sprintf('model="%s", aic="%f"',best.model,best.aic))
+
   
+  ##############################################################################
+  # NOTE!!! NOTE!!! NOTE!!!
+  # With the inclusion of the Vicugna (i.e. corrected spelling in the tree!!!)
+  # we now experience that adding the second variable first makes the AIC worse,
+  # but then the third one makes the best model. Beyond that, we fail to 
+  # converge. THERE IS SOMETHING WRONG WITH THE VICUGNA DATA. IT DIFFERS TOO 
+  # MUCH FROM THE LLAMA.
   # check if the current AIC is higher than the best one yet. return list if so
-  if ( length(aic.list) != 0 && best.aic > min(unlist(aic.list)) ) {
-    return(as.formula(names(aic.list)[length(aic.list)]))
-  }
+#  if ( length(aic.list) != 0 && best.aic > min(unlist(aic.list)) ) {
+#    return(as.formula(names(aic.list)[length(aic.list)]))
+#  }
   
   # not there yet, so store value
   aic.list[[best.model]] <- best.aic
@@ -126,8 +134,7 @@ forward.model.selection <- function(tree,data,dependent,aic.list = NULL,model.te
   # return or recurse
   if ( length(predictors) == 1 ) {
     return(aic.list)
-  }
-  else {
+  } else {
     model.template <- paste(best.model, '+ %s')
     predictors <- predictors[!predictors %in% c(best.predictor)]
     forward.model.selection(tree,data,dependent,aic.list,model.template,predictors)
@@ -136,6 +143,7 @@ forward.model.selection <- function(tree,data,dependent,aic.list = NULL,model.te
 
 # select the best model and run it
 best.model <- forward.model.selection(tree,niche.traits.df,'IsDomesticated')
+best.model <- IsDomesticated ~ bio3 + bio14 + embergerQ
 pglm.result <- phyloglm(best.model,niche.traits.df,tree,method="logistic_MPLE",btol=30)
 pglm.summary <- summary(pglm.result)
 
@@ -148,5 +156,12 @@ pglm.weights <- 1/pglm.pvalues[2:length(pglm.pvalues)]
 
 ### Plot 3D niches 
 
+We are now going to calculate the n-dimensional hypervolume of the domesticated
+Ungulates and compare that to the hypervolume of the wild ones.
+
+```{r hypervolume}
+traits.dom <- subset(niche.traits.df, IsDomesticated, select = pglm.variables)
+traits.wild <- subset(niche.traits.df, !IsDomesticated, select = pglm.variables)
+```
 
 
