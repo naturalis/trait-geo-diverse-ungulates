@@ -25,6 +25,9 @@ library(sp, quietly = T)
 library(ape, quietly = T)
 library(rgdal, quietly=T)
 library(dplyr, quietly=T)
+library(rgeos, quietly=T)
+library(whisker, quietly=T)
+library(ENMeval, quietly=T)
 
 # our local code. the goal is that this will eventually be properly portable 
 # code that lives inside the ./script folder of the repository
@@ -371,13 +374,13 @@ output_AUC_invalid <- data.frame(
 colnames(output_AUC_invalid) <- c("taxon", "trainingAUC", "validation")
 
 # iterate over inaccurate models and add to data frame
-for (i in 1:length(list_species_model_low_accuracy)) {
-  open_species_model <- list_species_model_low_accuracy[[i]]
-  name <- names(list_species_model_low_accuracy[i])
-  name_underscore <- gsub("_", " ", name)
-  trainingAUC <- open_species_model@results[[5, 1]]
-  output_AUC_invalid[i, ] <- c(name_underscore, trainingAUC, "invalid")
-}
+#for (i in 1:length(list_species_model_low_accuracy)) {
+#  open_species_model <- list_species_model_low_accuracy[[i]]
+#  name <- names(list_species_model_low_accuracy[i])
+#  name_underscore <- gsub("_", " ", name)
+#  trainingAUC <- open_species_model@results[[5, 1]]
+#  output_AUC_invalid[i, ] <- c(name_underscore, trainingAUC, "invalid")
+#}
 
 # concatenate data frames and write to CSV
 combined_auc <- rbind(output_AUC_invalid, output_AUC_valid)
