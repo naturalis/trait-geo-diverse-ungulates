@@ -30,3 +30,5 @@ used for the following:
   and distances in trait space between species (Gower's D).
 - to identify the niche dimensions that determine Ungulate distribution, i.e
   which GIS layers are the most important.
+  
+![](doc/images/hypervolumes.gif)
