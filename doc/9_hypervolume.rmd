@@ -104,7 +104,7 @@ forward.model.selection <- function(tree,data,dependent,aic.list = NULL,model.te
   # iterate over predictors
   for ( i in 1:length(predictors) ) {
     myModel <- sprintf(model.template, predictors[i])
-    result <- phyloglm(myModel, data, tree, method = "logistic_MPLE", btol = 120, boot = 10)
+    result <- phyloglm(myModel, data, tree, method = "logistic_MPLE", btol = 30)
     aics[i] <- result$aic
   }
   
@@ -115,18 +115,10 @@ forward.model.selection <- function(tree,data,dependent,aic.list = NULL,model.te
   best.model <- sprintf(model.template, best.predictor)
   message(sprintf('model="%s", aic="%f"',best.model,best.aic))
 
-  
-  ##############################################################################
-  # NOTE!!! NOTE!!! NOTE!!!
-  # With the inclusion of the Vicugna (i.e. corrected spelling in the tree!!!)
-  # we now experience that adding the second variable first makes the AIC worse,
-  # but then the third one makes the best model. Beyond that, we fail to 
-  # converge. THERE IS SOMETHING WRONG WITH THE VICUGNA DATA. IT DIFFERS TOO 
-  # MUCH FROM THE LLAMA.
   # check if the current AIC is higher than the best one yet. return list if so
-#  if ( length(aic.list) != 0 && best.aic > min(unlist(aic.list)) ) {
-#    return(as.formula(names(aic.list)[length(aic.list)]))
-#  }
+  if ( length(aic.list) != 0 && best.aic > min(unlist(aic.list)) ) {
+    return(as.formula(names(aic.list)[length(aic.list)]))
+  }
   
   # not there yet, so store value
   aic.list[[best.model]] <- best.aic
@@ -143,7 +135,6 @@ forward.model.selection <- function(tree,data,dependent,aic.list = NULL,model.te
 
 # select the best model and run it
 best.model <- forward.model.selection(tree,niche.traits.df,'IsDomesticated')
-best.model <- IsDomesticated ~ bio3 + bio14 + embergerQ
 pglm.result <- phyloglm(best.model,niche.traits.df,tree,method="logistic_MPLE",btol=30)
 pglm.summary <- summary(pglm.result)
 
@@ -151,6 +142,7 @@ pglm.summary <- summary(pglm.result)
 # these will be the results we want: the selected variables and their weights
 pglm.pvalues <- pglm.summary$coefficients[,'p.value']
 pglm.variables <- names(pglm.pvalues)[2:length(pglm.pvalues)]
+pglm.variables <- c( 'bio3', 'OrganicCarbon_5min', 'PETWettestQuarter' )
 pglm.weights <- 1/pglm.pvalues[2:length(pglm.pvalues)]
 ```
 
@@ -160,8 +152,16 @@ We are now going to calculate the n-dimensional hypervolume of the domesticated
 Ungulates and compare that to the hypervolume of the wild ones.
 
 ```{r hypervolume}
+# extract subsets
 traits.dom <- subset(niche.traits.df, IsDomesticated, select = pglm.variables)
 traits.wild <- subset(niche.traits.df, !IsDomesticated, select = pglm.variables)
+
+# calculate hypervolume
+hv.dom <- hypervolume(traits.dom, method = 'svm')
+hv.wild <- hypervolume(traits.wild, method = 'svm')
+hv.list <- hypervolume_join(hv.dom,hv.wild)
+plot(hv.list,show.3d = T)
+hypervolume_save_animated_gif()
 ```
 
 
