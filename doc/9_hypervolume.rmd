@@ -15,6 +15,7 @@ library(hypervolume)
 library(dplyr)
 library(ape)
 library(phylolm)
+library(cluster)
 REPO_HOME <- paste(getwd(),'/../',sep='')
 ```
 
@@ -135,6 +136,7 @@ forward.model.selection <- function(tree,data,dependent,aic.list = NULL,model.te
 
 # select the best model and run it
 best.model <- forward.model.selection(tree,niche.traits.df,'IsDomesticated')
+best.model <- IsDomesticated ~ bio3 + OrganicCarbon_5min + PETWettestQuarter
 pglm.result <- phyloglm(best.model,niche.traits.df,tree,method="logistic_MPLE",btol=30)
 pglm.summary <- summary(pglm.result)
 
@@ -142,7 +144,6 @@ pglm.summary <- summary(pglm.result)
 # these will be the results we want: the selected variables and their weights
 pglm.pvalues <- pglm.summary$coefficients[,'p.value']
 pglm.variables <- names(pglm.pvalues)[2:length(pglm.pvalues)]
-pglm.variables <- c( 'bio3', 'OrganicCarbon_5min', 'PETWettestQuarter' )
 pglm.weights <- 1/pglm.pvalues[2:length(pglm.pvalues)]
 ```
 
@@ -164,4 +165,12 @@ plot(hv.list,show.3d = T)
 hypervolume_save_animated_gif()
 ```
 
+### Build tree
+
+```{r tree}
+traits.dom <- subset(niche.traits.df, IsDomesticated, select = -IsDomesticated)
+traits.dist <- daisy(traits.dom, metric = "gower")
+traits.tree <- nj(traits.dist)
+plot.phylo(traits.tree, type = "fan")
+```
 
