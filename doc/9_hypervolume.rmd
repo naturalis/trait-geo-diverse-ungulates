@@ -56,6 +56,9 @@ niche.traits.df <- niche.traits.df[taxa,]
 tip.idx <- match(taxa,tree$tip.label)
 tip.idx <- tip.idx[!is.na(tip.idx)]
 tree <- ape::keep.tip(tree,tip.idx) # unlike what is advertised, needs indices
+
+# cleanup
+rm(taxa,tip.idx,tree.file,niche.traits.file)
 ```
 
 ## Calculate variable contributions
@@ -84,7 +87,7 @@ forward.model.selection <- function(tree,data,dependent,aic.list = NULL,model.te
   
   # create the template in the first pass, initialize once
   if ( is.null(model.template) ) {
-    model.template <- paste(dependent, '~ %s')
+    model.template <- paste(dependent, '~ 1 + %s')
   }
   
   # candidate predictors, initialize once
@@ -118,7 +121,7 @@ forward.model.selection <- function(tree,data,dependent,aic.list = NULL,model.te
 
   # check if the current AIC is higher than the best one yet. return list if so
   if ( length(aic.list) != 0 && best.aic > min(unlist(aic.list)) ) {
-    return(as.formula(names(aic.list)[length(aic.list)]))
+    #return(as.formula(names(aic.list)[length(aic.list)]))
   }
   
   # not there yet, so store value
@@ -136,8 +139,10 @@ forward.model.selection <- function(tree,data,dependent,aic.list = NULL,model.te
 
 # select the best model and run it
 best.model <- forward.model.selection(tree,niche.traits.df,'IsDomesticated')
-best.model <- IsDomesticated ~ bio3 + OrganicCarbon_5min + PETWettestQuarter
-pglm.result <- phyloglm(best.model,niche.traits.df,tree,method="logistic_MPLE",btol=30)
+
+# aic=62.335019 from phyloglmstep.R
+best.model <- IsDomesticated ~ 1 + bio2 + OrganicCarbon_5min + aridityIndexThornthwaite + minTempWarmest + monthCountByTemp10
+pglm.result <- phyloglm(best.model,niche.traits.df,tree,method="logistic_MPLE",btol=100)
 pglm.summary <- summary(pglm.result)
 
 # take the p-values of the terms, keep those except Intercept, and invert them
@@ -170,6 +175,21 @@ hypervolume_save_animated_gif()
 ```{r tree}
 traits.dom <- subset(niche.traits.df, IsDomesticated, select = -IsDomesticated)
 traits.dist <- daisy(traits.dom, metric = "gower")
+traits.tree <- nj(traits.dist)
+plot.phylo(traits.tree, type = "fan")
+```
+
+```{r deleteme}
+m1 <- IsDomesticated ~ bio3 + OrganicCarbon_5min + annualPET + bio10 + monthCountByTemp10 + bio14 + bio4
+m1.res <- phyloglm(m1, niche.traits.df, tree, method = "logistic_MPLE", btol = 100, boot = 100)
+m1.sum <- summary(m1.res)
+
+pglm.pvalues <- m1.sum$coefficients[,'p.value']
+pglm.variables <- names(pglm.pvalues)[2:length(pglm.pvalues)]
+pglm.weights <- 1/pglm.pvalues[2:length(pglm.pvalues)]
+
+sig.data <- subset(niche.traits.df, select = pglm.variables)
+traits.dist <- daisy(sig.data, metric = "gower", weights = pglm.weights)
 traits.tree <- nj(traits.dist)
 plot.phylo(traits.tree, type = "fan")
 ```
