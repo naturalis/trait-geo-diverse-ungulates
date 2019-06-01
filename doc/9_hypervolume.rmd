@@ -17,6 +17,7 @@ library(ape)
 library(phylolm)
 library(cluster)
 REPO_HOME <- paste(getwd(),'/../',sep='')
+source(paste(REPO_HOME,'/script/phyloglmstep.R',sep=''))
 ```
 
 ## Load data
@@ -162,9 +163,14 @@ Ungulates and compare that to the hypervolume of the wild ones.
 traits.dom <- subset(niche.traits.df, IsDomesticated, select = pglm.variables)
 traits.wild <- subset(niche.traits.df, !IsDomesticated, select = pglm.variables)
 
+# relabel columns
+readable.names <- c( 'daily temp range', 'dryness', 'year-round warmth' )
+names(traits.dom) <- readable.names
+names(traits.wild) <- readable.names
+
 # calculate hypervolume
-hv.dom <- hypervolume(traits.dom, method = 'svm')
-hv.wild <- hypervolume(traits.wild, method = 'svm')
+hv.dom <- hypervolume(traits.dom, method = 'svm', name = 'domesticated', svm.nu = 0.001)
+hv.wild <- hypervolume(traits.wild, method = 'svm', name = 'wild',  svm.nu = 0.001)
 hv.list <- hypervolume_join(hv.dom,hv.wild)
 plot(hv.list,show.3d = T)
 hypervolume_save_animated_gif()
