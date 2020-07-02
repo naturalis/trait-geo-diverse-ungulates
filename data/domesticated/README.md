@@ -13,7 +13,7 @@ We consider the following, possibly extinct, (sub)species as wild ancestors of d
 | Camelus bactrianus     | Bactrian camel       | Bactrian camel | 2441238 | 14200112 | 10.1111/j.1365-2052.2008.01848.x | 10.15468/dl.xpccdk |
 | Camelus dromedarius    | Arabian camel        | Arabian camel  | 9055455 | 14200115 | 10.1073/pnas.1519508113          | 10.15468/dl.q8ai05 |
 | Capra hircus aegagrus  | Bezoar               | Goat           | 4262706 | 14200778 | 10.1073/pnas.0804782105          | 10.15468/dl.eluwca |
-| Equus africanus        | African wild ass     | Donkey         | 5787168 | 14100004 | 10.1098/rspb.2010.0708           | 10.15468/dl.zwa3id |
+| Equus africanus        | African wild ass     | Donkey         | 5787168 | 14100004 | 10.1098/rspb.2010.0708           | 10.15468/dl.vs6yud |
 | Equus przewalskii      | Przewalski's horse   | Horse          | 5787169 | 14100018 | 10.1073/pnas.1111122109          | 10.15468/dl.jemutr |
 | Lama glama guanicoe    | Guanaco              | Llama          | 5706328 | 14200120 | 10.1098/rspb.2001.1774           | 10.15468/dl.zbzcx8 |
 | Ovis aries orientalis  | Mouflon              | Sheep          | 4262537 | 14200833 | 10.1038/hdy.2010.122             | 10.15468/dl.c8cqbw |
